@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signUp } from "../utils/userManagement.js";
-import "../stylesheets/login.css";
+import "../stylesheets/auth.css";
 
 SignUp.propTypes = {
   setToken: PropTypes.func,
