@@ -2,6 +2,7 @@ export async function signUp(username, password) {
   try {
     const res = await fetch("http://localhost:3000/sign-up", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -10,8 +11,8 @@ export async function signUp(username, password) {
     const json = await res.json();
     return json;
   } catch (err) {
-    console.error(err.name);
-    return null;
+    console.log(err);
+    return { error: err };
   }
 }
 
@@ -19,14 +20,16 @@ export async function logIn(username, password) {
   try {
     const res = await fetch("http://localhost:3000/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
     });
-    return res.status;
+    const json = await res.json();
+    return json;
   } catch (err) {
-    console.error(err.name);
-    return null;
+    console.log(err.name);
+    return { error: err };
   }
 }

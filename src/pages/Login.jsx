@@ -1,15 +1,24 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logIn } from "../utils/userManagement.js";
 import "../stylesheets/login.css";
 
+Login.propTypes = {
+  setToken: PropTypes.func,
+};
+
 export default function Login({ setToken }) {
   const [inputs, setInputs] = useState({ name: "", password: "" });
+  const nav = useNavigate();
 
-  function handleLogIn(e) {
+  async function handleLogIn(e) {
     e.preventDefault();
-    logIn(inputs.name, inputs.password);
+    const res = await logIn(inputs.name, inputs.password);
+    if (res.user) {
+      // setToken(res.user);
+      nav("/home");
+    }
   }
 
   return (
@@ -42,7 +51,3 @@ export default function Login({ setToken }) {
     </section>
   );
 }
-
-Login.propTypes = {
-  setToken: PropTypes.func.isRequired,
-};

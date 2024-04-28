@@ -28,7 +28,9 @@ function App() {
           />
           <Route
             path="/sign-up"
-            element={token ? <Navigate to="/home" /> : <SignUp />}
+            element={
+              token ? <Navigate to="/home" /> : <SignUp setToken={setToken} />
+            }
           />
         </Routes>
       </BrowserRouter>

@@ -1,17 +1,27 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signUp } from "../utils/userManagement.js";
 import "../stylesheets/login.css";
 
-export default function Login() {
+SignUp.propTypes = {
+  setToken: PropTypes.func,
+};
+
+export default function SignUp({ setToken }) {
   const [inputs, setInputs] = useState({
-    name: "testUser",
-    password: "123456",
+    name: "TestUser",
+    password: "123123",
   });
+  const nav = useNavigate();
 
   async function handleSignUp(e) {
     e.preventDefault();
-    signUp(inputs.name, inputs.password);
+    const res = await signUp(inputs.name, inputs.password);
+    if (res.user) {
+      // setToken(res.user);
+      nav("/home");
+    }
   }
 
   return (
