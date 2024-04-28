@@ -1,6 +1,6 @@
 export async function signUp(username, password) {
   try {
-    const res = await fetch("http://localhost:3000/sign-up", {
+    const res = await fetch("http://localhost:3000/api/auth/sign-up", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -18,7 +18,7 @@ export async function signUp(username, password) {
 
 export async function logIn(username, password) {
   try {
-    const res = await fetch("http://localhost:3000/login", {
+    const res = await fetch("http://localhost:3000/api/auth/login", {
       method: "POST",
       credentials: "include",
       headers: {

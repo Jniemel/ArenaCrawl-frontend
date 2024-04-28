@@ -1,0 +1,32 @@
+.login,
+.sign-up {
+  padding-top: 2em;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+input {
+  width: 60%;
+  padding: 4px;
+}
+
+form button {
+  width: fit-content;
+  padding: 0px 15px 0px 15px;
+  margin-top: 0.5em;
+  height: 35px;
+}
