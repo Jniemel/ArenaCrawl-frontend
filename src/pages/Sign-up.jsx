@@ -1,56 +1,57 @@
-import PropTypes from "prop-types";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { signUp } from "../utils/userManagement.js";
-import "../stylesheets/auth.css";
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { signUp } from '../utils/userManagement.js';
+import '../stylesheets/auth.css';
 
 SignUp.propTypes = {
-  setToken: PropTypes.func,
+  setSignUp: PropTypes.func,
 };
 
-export default function SignUp({ setToken }) {
+export default function SignUp({ setSignUp }) {
   const [inputs, setInputs] = useState({
-    name: "TestUser",
-    password: "123123",
+    name: '',
+    password: '',
   });
-  const nav = useNavigate();
 
   async function handleSignUp(e) {
     e.preventDefault();
     const res = await signUp(inputs.name, inputs.password);
     if (res.user) {
-      // setToken(res.user);
-      nav("/home");
+      console.log('logged in');
     }
   }
 
   return (
-    <section className="sign-up">
+    <section className='sign-up'>
       <h1>Sign-up!</h1>
       <form onSubmit={handleSignUp}>
-        <div className="form-field">
-          <label htmlFor="new-username">Username:</label>
+        <div className='form-field'>
+          <label htmlFor='new-username'>Username:</label>
           <input
-            type="text"
-            name="new-username"
+            type='text'
+            name='new-username'
             required
             onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
           />
         </div>
-        <div className="form-field">
-          <label htmlFor="new-password">Password:</label>
+        <div className='form-field'>
+          <label htmlFor='new-password'>Password:</label>
           <input
-            type="password"
-            name="new-password"
+            type='password'
+            name='new-password'
             required
             onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
           />
         </div>
         <button>Sign up</button>
       </form>
-      <nav>
-        <Link to="/login">Already have an account? Log in!</Link>
-      </nav>
+      <button
+        onClick={() => {
+          setSignUp(false);
+        }}
+      >
+        Have an account? Log in!
+      </button>
     </section>
   );
 }

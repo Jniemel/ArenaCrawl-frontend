@@ -1,7 +1,7 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
-  font-weight: 400;  
+  font-weight: 400;
   background-color: lightgray;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -25,7 +25,7 @@ a:hover {
   color: darkblue;
 }
 
-body {  
+body {
   min-width: 320px;
   min-height: 100vh;
   display: flex;
@@ -34,18 +34,18 @@ body {
 
 h1 {
   font-size: 2em;
-  line-height: 1.0;
+  line-height: 1;
 }
 
 button {
-  background-color: lavender; 
+  background-color: lavender;
   border: 3px outset gray;
   border-radius: 3px;
   padding: 0.4em 1em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;  
-  cursor: pointer;  
+  font-family: inherit;
+  cursor: pointer;
 }
 
 button:hover {
@@ -63,7 +63,7 @@ input:hover:not(:focus) {
   margin-bottom: -1px;
 }
 
-input:focus {  
+input:focus {
   outline: 2px solid blue;
   outline-offset: -1px;
 }
