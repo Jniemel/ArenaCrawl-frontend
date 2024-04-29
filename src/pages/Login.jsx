@@ -1,6 +1,7 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { logIn } from '../utils/userManagement.js';
+import { useNavigate } from 'react-router-dom';
 import '../stylesheets/auth.css';
 
 Login.propTypes = {
@@ -9,13 +10,13 @@ Login.propTypes = {
 
 export default function Login({ setSignUp }) {
   const [inputs, setInputs] = useState({ name: '', password: '' });
-  // const nav = useNavigate();
+  const nav = useNavigate();
 
   async function handleLogIn(e) {
     e.preventDefault();
     const res = await logIn(inputs.name, inputs.password);
     if (res.user) {
-      console.log('Done');
+      return nav('/home');
     }
   }
 

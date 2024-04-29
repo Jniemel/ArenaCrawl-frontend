@@ -1,15 +1,14 @@
 export async function fetchGameState() {
   try {
-    const res = await fetch("http://localhost:3000/api/home", {
-      method: "GET",
-      credentials: "include",
+    const res = await fetch('http://localhost:3000/api/home', {
+      method: 'GET',
+      credentials: 'include',
     });
-    console.log(res.status);
     const json = await res.json();
-    console.log(json);
+    return json;
   } catch (err) {
     console.log(err);
-    return { error: err };
+    return null;
   }
 }
 
