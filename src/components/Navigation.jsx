@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import '../stylesheets/home.css';
 
 Navigation.propTypes = {
-  setIndex: PropTypes.func,
+  setNav: PropTypes.func,
 };
 
-export default function Navigation({ setIndex }) {
+export default function Navigation({ setNav }) {
   return (
     <nav>
       <div className='to-battle'>
@@ -14,49 +14,49 @@ export default function Navigation({ setIndex }) {
       <div>
         <button
           onClick={() => {
-            setIndex('wep');
+            setNav('wep');
           }}
         >
           Weapons
         </button>
         <button
           onClick={() => {
-            setIndex('arm');
+            setNav('arm');
           }}
         >
           Armory
         </button>
         <button
           onClick={() => {
-            setIndex('mag');
+            setNav('mag');
           }}
         >
           Magic shop
         </button>
         <button
           onClick={() => {
-            setIndex('trn');
+            setNav('trn');
           }}
         >
           Training
         </button>
         <button
           onClick={() => {
-            setIndex('rec');
+            setNav('rec');
           }}
         >
           Recruitment
         </button>
         <button
           onClick={() => {
-            setIndex('div');
+            setNav('div');
           }}
         >
           Divisions
         </button>
         <button
           onClick={() => {
-            setIndex('sch');
+            setNav('sch');
           }}
         >
           Schedule

@@ -115,6 +115,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: var(--default-gap);
+  overflow: auto;
 }
 
 nav div {
@@ -122,6 +123,10 @@ nav div {
   justify-content: space-between;
   padding-left: var(--default-gap);
   padding-right: var(--default-gap);
+}
+
+nav div:nth-child(2) {
+  overflow: auto;
 }
 
 .to-battle button {
