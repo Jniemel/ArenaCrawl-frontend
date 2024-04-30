@@ -2,10 +2,11 @@ import PropTypes from 'prop-types';
 import '../stylesheets/home.css';
 
 Navigation.propTypes = {
+  nav: PropTypes.string,
   setNav: PropTypes.func,
 };
 
-export default function Navigation({ setNav }) {
+export default function Navigation({ nav, setNav }) {
   return (
     <nav>
       <div className='to-battle'>
@@ -13,6 +14,7 @@ export default function Navigation({ setNav }) {
       </div>
       <div>
         <button
+          className={nav === 'wep' && 'selected'}
           onClick={() => {
             setNav('wep');
           }}
@@ -20,6 +22,7 @@ export default function Navigation({ setNav }) {
           Weapons
         </button>
         <button
+          className={nav === 'arm' && 'selected'}
           onClick={() => {
             setNav('arm');
           }}
@@ -27,6 +30,7 @@ export default function Navigation({ setNav }) {
           Armory
         </button>
         <button
+          className={nav === 'mag' && 'selected'}
           onClick={() => {
             setNav('mag');
           }}
@@ -34,6 +38,7 @@ export default function Navigation({ setNav }) {
           Magic shop
         </button>
         <button
+          className={nav === 'trn' && 'selected'}
           onClick={() => {
             setNav('trn');
           }}
@@ -41,6 +46,7 @@ export default function Navigation({ setNav }) {
           Training
         </button>
         <button
+          className={nav === 'rec' && 'selected'}
           onClick={() => {
             setNav('rec');
           }}
@@ -48,6 +54,7 @@ export default function Navigation({ setNav }) {
           Recruitment
         </button>
         <button
+          className={nav === 'div' && 'selected'}
           onClick={() => {
             setNav('div');
           }}
@@ -55,6 +62,7 @@ export default function Navigation({ setNav }) {
           Divisions
         </button>
         <button
+          className={nav === 'sch' && 'selected'}
           onClick={() => {
             setNav('sch');
           }}

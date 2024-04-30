@@ -20,7 +20,7 @@ Home.propTypes = {
 };
 
 export default function Home({ gameState }) {
-  const [nav, setNav] = useState();
+  const [nav, setNav] = useState('rec');
   const playerTeam = [
     '1',
     '2',
@@ -43,7 +43,7 @@ export default function Home({ gameState }) {
         teamName={gameState.owner + "'s team"}
         playerTeam={playerTeam}
       />
-      <Navigation setNav={setNav} />
+      <Navigation nav={nav} setNav={setNav} />
       {nav === 'wep' && <WeaponShop />}
       {nav === 'arm' && <Armory />}
       {nav === 'mag' && <MagicShop />}
