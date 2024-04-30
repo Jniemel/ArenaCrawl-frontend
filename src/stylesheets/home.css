@@ -97,9 +97,9 @@ header button:hover {
 }
 
 .champ-icon-div > div:hover {
-  scale: 1.5;
+  scale: 1.8;
   transition-property: scale;
-  transition-duration: 0.25s;
+  transition-duration: 0.3s;
 }
 
 .champ-details {
@@ -129,6 +129,41 @@ nav div:nth-child(2) {
   overflow: auto;
 }
 
+.selected {
+  background-color: gray;
+  color: azure;
+}
+
 .to-battle button {
   flex-grow: 1;
+  display: flex;
+  height: 100%;
+  padding: 0px;
+  background-color: aliceblue;
+  color: black;
+  transition-property: background-color, color, font-weight, font-size;
+  transition-duration: 0.25s;
+}
+
+.to-battle button:hover {
+  background-color: gray;
+  color: aliceblue;
+  transition-property: background-color, color, font-weight;
+  transition-duration: 0.25s;
+}
+
+.to-battle button span {
+  flex-grow: 1;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-size: 1em;
+  transition-duration: 0.75s;
+  transition-property: font-size, font-weight, font-size;
+}
+
+.to-battle span:hover {
+  font-weight: 700;
+  font-size: 1.2em;
+  transition-duration: 0.5s;
+  transition-property: font-size, font-weight, transform;
 }

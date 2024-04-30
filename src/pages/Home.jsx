@@ -44,7 +44,7 @@ export default function Home({ gameState }) {
         playerTeam={playerTeam}
       />
       <Navigation nav={nav} setNav={setNav} />
-      {nav === 'wep' && <WeaponShop />}
+      {nav === 'wep' && <WeaponShop nav={nav} />}
       {nav === 'arm' && <Armory />}
       {nav === 'mag' && <MagicShop />}
       {nav === 'trn' && <TrainingGrounds />}

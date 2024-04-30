@@ -10,7 +10,13 @@ export default function Navigation({ nav, setNav }) {
   return (
     <nav>
       <div className='to-battle'>
-        <button>To battle!</button>
+        <button
+          onClick={() => {
+            console.log('En garde!');
+          }}
+        >
+          <span>To battle!</span>
+        </button>
       </div>
       <div>
         <button
