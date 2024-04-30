@@ -20,11 +20,13 @@ export default function HomeHeader({ user }) {
 
   return (
     <header>
-      <div className='header-greeting'>
-        <h1>Welcome, {user}</h1>
-      </div>
-      <div className='header-buttons'>
-        <button onClick={handleLogOut}>Logout</button>
+      <div>
+        <div className='header-greeting'>
+          <h1>Welcome, {user}</h1>
+        </div>
+        <div className='header-buttons'>
+          <button onClick={handleLogOut}>Logout</button>
+        </div>
       </div>
     </header>
   );
