@@ -1,0 +1,27 @@
+@keyframes grow-txt {
+  from {
+    background-color: red;
+  }
+  to {
+    background-color: yellow;
+  }
+}
+
+header {
+  display: flex;
+  gap: 1.5em;
+}
+
+header button {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 0;
+  margin-top: 0.3em;
+  width: fit-content;
+  color: blue;
+}
+
+header button:hover {
+  color: darkblue;
+  transform: scale(1.25, 1.25);
+}

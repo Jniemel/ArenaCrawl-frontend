@@ -10,7 +10,7 @@
 form {
   display: flex;
   flex-direction: column;
-  gap: 0.4em;
+  gap: 0.6em;
 }
 
 .form-field {
@@ -22,6 +22,20 @@ form {
 input {
   width: 60%;
   padding: 4px;
+}
+
+.signup-login {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 0;
+  margin-top: 0.3em;
+  width: fit-content;
+  color: blue;
+}
+
+.signup-login:hover {
+  color: darkblue;
+  transform: scale(1.25, 1.25);
 }
 
 form button {

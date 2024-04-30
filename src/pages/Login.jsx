@@ -16,7 +16,8 @@ export default function Login({ setSignUp }) {
     e.preventDefault();
     const res = await logIn(inputs.name, inputs.password);
     if (res.user) {
-      return nav('/home');
+      // refresh page
+      return nav(0);
     }
   }
 
@@ -45,6 +46,7 @@ export default function Login({ setSignUp }) {
         <button>Log in</button>
       </form>
       <button
+        className='signup-login'
         onClick={() => {
           setSignUp(true);
         }}

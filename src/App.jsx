@@ -14,19 +14,16 @@ function App() {
 
   useEffect(() => {
     const dataFetch = async () => {
-      try {
-        const res = await fetch('http://localhost:3000/api/home', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        const state = await res.json();
-        setGameState(state);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-        setGameState(null);
-        setLoading(false);
+      const res = await fetch('http://localhost:3000/api/home', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      let json = null;
+      if (res.ok) {
+        json = await res.json();
       }
+      setGameState(json);
+      setLoading(false);
     };
     dataFetch();
   }, []);
@@ -49,7 +46,9 @@ function App() {
         <Route
           path='/auth'
           element={
-            signUp ? (
+            gameState ? (
+              <Navigate to='/home' />
+            ) : signUp ? (
               <SignUp setSignUp={setSignUp} />
             ) : (
               <Login setSignUp={setSignUp} />
