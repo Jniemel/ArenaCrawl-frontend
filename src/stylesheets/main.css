@@ -50,6 +50,8 @@ button {
 
 button:hover {
   border-color: blue;
+  transition-property: border-color;
+  transition-duration: 0.5s;
 }
 
 input {

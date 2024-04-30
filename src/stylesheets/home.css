@@ -1,27 +1,34 @@
-@keyframes grow-txt {
-  from {
-    background-color: red;
-  }
-  to {
-    background-color: yellow;
-  }
-}
-
 header {
   display: flex;
-  gap: 1.5em;
+  border: 4px outset slategray;
+  padding: 0.5em 1.5em 0.5em 1em;
 }
 
-header button {
+header div {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+header .header-greeting {
+  justify-content: center;
+}
+
+header .header-buttons {
+  justify-content: end;
+}
+
+header div button {
   border: none;
   background-color: rgba(0, 0, 0, 0);
   padding: 0;
-  margin-top: 0.3em;
-  width: fit-content;
+  margin-top: 3px;
   color: blue;
+  justify-self: end;
 }
 
 header button:hover {
-  color: darkblue;
-  transform: scale(1.25, 1.25);
+  transform: scale(1.18);
+  transition-property: transform;
+  transition-duration: 0.2s;
 }

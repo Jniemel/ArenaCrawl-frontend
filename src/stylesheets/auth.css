@@ -34,8 +34,9 @@ input {
 }
 
 .signup-login:hover {
-  color: darkblue;
-  transform: scale(1.25, 1.25);
+  transform: scale(1.18);
+  transition-property: transform;
+  transition-duration: 0.2s;
 }
 
 form button {

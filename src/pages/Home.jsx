@@ -1,21 +1,15 @@
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import HomeHeader from '../components/HomeHeader';
 import '../stylesheets/home.css';
 
-export default function Home() {
+Home.propTypes = {
+  gameState: PropTypes.object,
+};
+
+export default function Home({ gameState }) {
   const nav = useNavigate();
+  const user = 'TEST';
 
-  async function handleLogOut() {
-    await fetch('http://localhost:3000/api/auth/logout', {
-      method: 'GET',
-      credentials: 'include',
-    });
-    return nav(0);
-  }
-
-  return (
-    <header>
-      <h1>Hello from home-page!</h1>
-      <button onClick={handleLogOut}>Logout</button>
-    </header>
-  );
+  return <HomeHeader user={gameState.owner} />;
 }

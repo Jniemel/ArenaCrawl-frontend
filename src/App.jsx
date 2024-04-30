@@ -41,7 +41,9 @@ function App() {
         />
         <Route
           path='/home'
-          element={gameState ? <Home /> : <Navigate to='/auth' />}
+          element={
+            gameState ? <Home gameState={gameState} /> : <Navigate to='/auth' />
+          }
         />
         <Route
           path='/auth'
