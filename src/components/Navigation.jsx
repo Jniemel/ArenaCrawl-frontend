@@ -2,11 +2,36 @@ import PropTypes from 'prop-types';
 import '../stylesheets/home.css';
 
 Navigation.propTypes = {
-  nav: PropTypes.string,
+  nav: PropTypes.object,
   setNav: PropTypes.func,
 };
 
 export default function Navigation({ nav, setNav }) {
+  const navBtns = [
+    { name: 'weapon', defaultSub: 'swords' },
+    { name: 'armory', defaultSub: 'armors' },
+    { name: 'magic', defaultSub: 'offensive' },
+    { name: 'training', defaultSub: null },
+    { name: 'recruitment', defaultSub: null },
+    { name: 'divisions', defaultSub: null },
+    { name: 'schedule', defaultSub: null },
+  ];
+
+  const btns = navBtns.map((btn) => {
+    return (
+      <button
+        key={btn.name}
+        className={nav.window === btn.name && 'selected-window'}
+        onClick={() => {
+          const update = { window: btn.name, sub: btn.defaultSub };
+          setNav(update);
+        }}
+      >
+        {btn.name.charAt(0).toUpperCase() + btn.name.slice(1)}
+      </button>
+    );
+  });
+
   return (
     <nav>
       <div className='to-battle'>
@@ -18,64 +43,7 @@ export default function Navigation({ nav, setNav }) {
           <span>To battle!</span>
         </button>
       </div>
-      <div>
-        <button
-          className={nav === 'wep' && 'selected'}
-          onClick={() => {
-            setNav('wep');
-          }}
-        >
-          Weapons
-        </button>
-        <button
-          className={nav === 'arm' && 'selected'}
-          onClick={() => {
-            setNav('arm');
-          }}
-        >
-          Armory
-        </button>
-        <button
-          className={nav === 'mag' && 'selected'}
-          onClick={() => {
-            setNav('mag');
-          }}
-        >
-          Magic shop
-        </button>
-        <button
-          className={nav === 'trn' && 'selected'}
-          onClick={() => {
-            setNav('trn');
-          }}
-        >
-          Training
-        </button>
-        <button
-          className={nav === 'rec' && 'selected'}
-          onClick={() => {
-            setNav('rec');
-          }}
-        >
-          Recruitment
-        </button>
-        <button
-          className={nav === 'div' && 'selected'}
-          onClick={() => {
-            setNav('div');
-          }}
-        >
-          Divisions
-        </button>
-        <button
-          className={nav === 'sch' && 'selected'}
-          onClick={() => {
-            setNav('sch');
-          }}
-        >
-          Schedule
-        </button>
-      </div>
+      <div>{btns}</div>
     </nav>
   );
 }

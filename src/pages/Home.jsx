@@ -18,7 +18,7 @@ Home.propTypes = {
 };
 
 export default function Home({ gameState }) {
-  const [nav, setNav] = useState('rec');
+  const [nav, setNav] = useState({ window: 'rec', sub: null });
   const playerTeam = [
     '1',
     '2',
@@ -35,7 +35,11 @@ export default function Home({ gameState }) {
   ];
 
   let shop = null;
-  if (nav === 'wep' || nav === 'arm' || nav === 'mag') {
+  if (
+    nav.window === 'weapon' ||
+    nav.window === 'armory' ||
+    nav.window === 'magic'
+  ) {
     shop = true;
   }
 
@@ -47,11 +51,11 @@ export default function Home({ gameState }) {
         playerTeam={playerTeam}
       />
       <Navigation nav={nav} setNav={setNav} />
-      {shop && <Shop nav={nav} />}
-      {nav === 'trn' && <TrainingGrounds />}
-      {nav === 'rec' && <Recruitment />}
-      {nav === 'div' && <Divisions />}
-      {nav === 'sch' && <Schedule />}
+      {shop && <Shop nav={nav} setNav={setNav} />}
+      {nav.window === 'training' && <TrainingGrounds />}
+      {nav.window === 'recruitment' && <Recruitment />}
+      {nav.window === 'divisions' && <Divisions />}
+      {nav.window === 'schedule' && <Schedule />}
     </>
   );
 }

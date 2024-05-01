@@ -129,7 +129,14 @@ nav div:nth-child(2) {
   overflow: auto;
 }
 
-.selected {
+nav button:hover {
+  background-color: gray;
+  color: azure;
+  transition-property: background-color, color;
+  transition-duration: 1s;
+}
+
+nav .selected-window {
   background-color: gray;
   color: azure;
 }

@@ -26,7 +26,9 @@ export default function Login({ setSignUp }) {
       <h1>Login</h1>
       <form onSubmit={handleLogIn}>
         <div className='form-field'>
-          <label htmlFor='username'>Username:</label>
+          <div>
+            <label htmlFor='username'>Username:</label>
+          </div>
           <input
             type='text'
             name='username'
@@ -35,7 +37,9 @@ export default function Login({ setSignUp }) {
           />
         </div>
         <div className='form-field'>
-          <label htmlFor='password'>Password:</label>
+          <div>
+            <label htmlFor='password'>Password:</label>
+          </div>
           <input
             type='password'
             name='password'

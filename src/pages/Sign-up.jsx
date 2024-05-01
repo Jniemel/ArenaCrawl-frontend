@@ -29,7 +29,9 @@ export default function SignUp({ setSignUp }) {
       <h1>Sign-up!</h1>
       <form onSubmit={handleSignUp}>
         <div className='form-field'>
-          <label htmlFor='new-username'>Username:</label>
+          <div>
+            <label htmlFor='new-username'>Username:</label>
+          </div>
           <input
             type='text'
             name='new-username'
@@ -38,7 +40,9 @@ export default function SignUp({ setSignUp }) {
           />
         </div>
         <div className='form-field'>
-          <label htmlFor='new-password'>Password:</label>
+          <div>
+            <label htmlFor='new-password'>Password:</label>
+          </div>
           <input
             type='password'
             name='new-password'

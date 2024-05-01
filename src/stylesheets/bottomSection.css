@@ -30,6 +30,14 @@
   background-color: beige;
   border: 4px outset burlywood;
   border-radius: 0;
+  transition-property: background-color;
+  transition-duration: 0.75s;
+}
+
+.shop-nav .selected-sub-window {
+  background-color: burlywood;
+  transition-property: background-color;
+  transition-duration: 0.75s;
 }
 
 .table-container {

@@ -5,13 +5,13 @@ import spells from '../assets/spells.json';
 export default function getShopInventory(shop, itemType = null) {
   let json;
   switch (shop) {
-    case 'wep':
+    case 'weapon':
       json = weapons;
       break;
-    case 'arm':
+    case 'armory':
       json = armory;
       break;
-    case 'mag':
+    case 'magic':
       json = spells;
       break;
     default:
