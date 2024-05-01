@@ -39,11 +39,14 @@ input {
   margin-top: 0.3em;
   width: fit-content;
   color: blue;
+  scale: 1;
+  transition-property: scale;
+  transition-duration: 0.2s;
 }
 
 .signup-login:hover {
-  transform: scale(1.18);
-  transition-property: transform;
+  scale: 1.18;
+  transition-property: scale;
   transition-duration: 0.2s;
 }
 

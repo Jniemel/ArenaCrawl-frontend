@@ -1,8 +1,11 @@
+import { newRecruits } from '../utils/gameManagement';
+
 export default function Recruitment() {
   return (
     <section className='bottom-section'>
-      <h2>Recruitment</h2>
-      <div className='recruitment-window'>ITEMS</div>
+      <div className='recruitment-window'>
+        <button onClick={newRecruits}>newRecruits</button>
+      </div>
     </section>
   );
 }

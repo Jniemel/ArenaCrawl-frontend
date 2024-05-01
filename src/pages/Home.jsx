@@ -18,7 +18,7 @@ Home.propTypes = {
 };
 
 export default function Home({ gameState }) {
-  const [nav, setNav] = useState({ window: 'rec', sub: null });
+  const [nav, setNav] = useState({ window: 'recruitment', sub: null });
   const playerTeam = [
     '1',
     '2',

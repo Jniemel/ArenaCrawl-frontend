@@ -1,8 +1,7 @@
 export default function Schedule() {
   return (
     <section className='bottom-section'>
-      <h2>Schedule</h2>
-      <div className='schedule-window'>ITEMS</div>
+      <div className='schedule-window'>WORK IN PROGRESS...</div>
     </section>
   );
 }

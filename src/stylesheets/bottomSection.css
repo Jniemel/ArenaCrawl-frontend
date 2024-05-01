@@ -29,14 +29,20 @@
 
 .weapon-window {
   border-color: darkgoldenrod;
+  transition-property: border-color;
+  transition-duration: 0.5s;
 }
 
 .armory-window {
   border-color: gray;
+  transition-property: border-color;
+  transition-duration: 0.5s;
 }
 
 .magic-window {
   border-color: slateblue;
+  transition-property: border-color;
+  transition-duration: 0.5s;
 }
 
 .shop-nav {
@@ -81,4 +87,28 @@ td {
 
 .shop-table tbody tr td:not(:first-child) {
   width: 25%;
+}
+
+.training-window {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recruitment-window {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.divisions-window {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.schedule-window {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

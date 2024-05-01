@@ -1,15 +1,15 @@
-export async function fetchGameState() {
-  try {
-    const res = await fetch('http://localhost:3000/api/home', {
-      method: 'GET',
-      credentials: 'include',
-    });
-    const json = await res.json();
-    return json;
-  } catch (err) {
-    console.log(err);
-    return null;
+export async function newRecruits() {
+  const res = await fetch('http://localhost:3000/api/char/recruits', {
+    method: 'GET',
+    credentials: 'include',
+  });
+  /*
+  let json = null;
+  if (res.ok) {
+    json = await res.json();
   }
+  */
+  console.log(res);
 }
 
 export function saveGameState() {
