@@ -4,9 +4,7 @@ import { useState } from 'react';
 import HomeHeader from '../components/HomeHeader';
 import TeamWindow from '../components/TeamWindow';
 import Navigation from '../components/Navigation';
-import WeaponShop from '../components/WeaponShop';
-import Armory from '../components/Armory';
-import MagicShop from '../components/MagicShop';
+import Shop from '../components/Shop';
 import TrainingGrounds from '../components/TrainingGrounds';
 import Recruitment from '../components/Recruitment';
 import Schedule from '../components/Schedule';
@@ -36,6 +34,11 @@ export default function Home({ gameState }) {
     '12',
   ];
 
+  let shop = null;
+  if (nav === 'wep' || nav === 'arm' || nav === 'mag') {
+    shop = true;
+  }
+
   return (
     <>
       <HomeHeader user={gameState.owner} />
@@ -44,9 +47,7 @@ export default function Home({ gameState }) {
         playerTeam={playerTeam}
       />
       <Navigation nav={nav} setNav={setNav} />
-      {nav === 'wep' && <WeaponShop nav={nav} />}
-      {nav === 'arm' && <Armory />}
-      {nav === 'mag' && <MagicShop />}
+      {shop && <Shop nav={nav} />}
       {nav === 'trn' && <TrainingGrounds />}
       {nav === 'rec' && <Recruitment />}
       {nav === 'div' && <Divisions />}

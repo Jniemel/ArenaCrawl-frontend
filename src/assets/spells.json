@@ -1,0 +1,26 @@
+{
+  "offensive": [
+    {
+      "name": "Insult",
+      "price": "200",
+      "stat": "2"
+    },
+    {
+      "name": "zap",
+      "price": "350",
+      "stat": "3"
+    }
+  ],
+  "healing": [
+    {
+      "name": "Friendly words",
+      "price": "200",
+      "stat": "2"
+    },
+    {
+      "name": "Minor heal",
+      "price": "400",
+      "stat": "4"
+    }
+  ]
+}
