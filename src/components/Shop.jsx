@@ -25,7 +25,7 @@ export default function Shop({ nav, setNav }) {
 
   return (
     <section className='bottom-section'>
-      <div className='shop-window'>
+      <div className={nav.window + '-window'}>
         <div className='shop-nav'>{btns}</div>
         <ShopTable nav={nav} />
       </div>

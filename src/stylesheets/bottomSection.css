@@ -12,13 +12,31 @@
   overflow: auto;
 }
 
-.shop-window {
+.weapon-window,
+.armory-window,
+.magic-window,
+.training-window,
+.recruitment-window,
+.divisions-window,
+.schedule-window {
   flex-grow: 1;
   background-color: seashell;
-  border: 16px ridge darkgoldenrod;
+  border: 16px ridge;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
+}
+
+.weapon-window {
+  border-color: darkgoldenrod;
+}
+
+.armory-window {
+  border-color: gray;
+}
+
+.magic-window {
+  border-color: slateblue;
 }
 
 .shop-nav {
