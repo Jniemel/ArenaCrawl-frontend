@@ -99,10 +99,27 @@ header button:hover {
   align-items: center;
 }
 
-.champ-icon-div > div:hover {
-  scale: 1.8;
+.champ-icon-div > div,
+.champ-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  scale: 1;
   transition-property: scale;
   transition-duration: 0.3s;
+}
+
+.champ-icon-div > div:hover,
+.champ-selected:hover {
+  scale: 1.32;
+  transition-property: scale;
+  transition-duration: 0.3s;
+}
+
+.champ-selected {
+  border: 2px solid blue;
+  border-radius: 6px;
 }
 
 .champ-details {

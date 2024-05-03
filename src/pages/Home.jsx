@@ -19,20 +19,6 @@ Home.propTypes = {
 
 export default function Home({ gameState }) {
   const [nav, setNav] = useState({ window: 'recruitment', sub: null });
-  const playerTeam = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
-  ];
 
   let shop = null;
   if (
@@ -46,10 +32,7 @@ export default function Home({ gameState }) {
   return (
     <>
       <HomeHeader user={gameState.owner} />
-      <TeamWindow
-        teamName={gameState.owner + "'s team"}
-        playerTeam={playerTeam}
-      />
+      <TeamWindow playerTeam={gameState.playerTeam} />
       <Navigation nav={nav} setNav={setNav} />
       {shop && <Shop nav={nav} setNav={setNav} />}
       {nav.window === 'training' && <TrainingGrounds />}
