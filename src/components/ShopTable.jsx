@@ -2,18 +2,10 @@ import PropTypes from 'prop-types';
 import getShopInventory from '../utils/getShopInventory';
 
 ShopTable.propTypes = {
-  /* shopType: PropTypes.string,
-  itemType: PropTypes.string, */
   nav: PropTypes.object,
 };
 
-export default function ShopTable({ /* shopType, itemType */ nav }) {
-  /* const tableData = getShopInventory(shopType, itemType);
-
-  if (itemType && !tableData) {
-    return null;
-  } */
-
+export default function ShopTable({ nav }) {
   const tableData = getShopInventory(nav.window, nav.sub);
 
   const displayData = tableData.map((entry) => {

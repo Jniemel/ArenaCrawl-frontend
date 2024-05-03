@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import '../stylesheets/home.css';
+import ChampDetails from './ChampDetails';
 
 TeamWindow.propTypes = {
   playerTeam: PropTypes.object,
@@ -10,12 +11,6 @@ export default function TeamWindow({ playerTeam }) {
   const team = playerTeam.champs;
   const [champ, setChamp] = useState(team[0]);
   const [selected, setSelected] = useState(team[0]._id);
-
-  /*
-  function displayDetails(champDetails) {
-    setChamp(champDetails)
-  }
-  */
 
   const champList = team.map((member) => (
     <div className='champ-icon-div' key={member._id}>
@@ -45,13 +40,7 @@ export default function TeamWindow({ playerTeam }) {
       </div>
       <div className='team-preview'>{champList}</div>
       <div className='champ-details'>
-        <button
-          onClick={() => {
-            console.log(playerTeam.champs);
-          }}
-        >
-          consolelog
-        </button>
+        <ChampDetails champ={champ} />
       </div>
     </section>
   );
