@@ -37,31 +37,39 @@ export default function Recruitment({
     );
   });
 
+  async function handleBuyClick() {
+    const res = await buyRecruit(selectedRecruit, numOfCharacters, playerMoney);
+    console.log(res);
+  }
+
   return (
     <section className='bottom-section'>
-      <div className='recruitment-window'>
-        <div className='recruit-list'>
-          <div className='recruit-list-header'>
-            <div>Name</div>
-            <div>Class</div>
-            <div>Age</div>
-            <div>Price</div>
-          </div>
-          {recruitList}
-        </div>
-        <div className='recruit-preview'>
-          <ChampDetails champ={selectedRecruit.recruitee} />
-          <div className='buy-recruit'>
-            <button
-              onClick={() => {
-                console.log(selectedRecruit, numOfCharacters, playerMoney);
-              }}
-            >
-              Buy
-            </button>
+      {!recruitees.lenght ? (
+        <div className='recruitment-window'>
+          <div className='recruitment-empty'>
+            <h2>There are no champions to recruit. Come back later.</h2>
+            <button>getNewRecruits</button>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className='recruitment-window'>
+          <div className='recruit-list'>
+            <div className='recruit-list-header'>
+              <div>Name</div>
+              <div>Class</div>
+              <div>Age</div>
+              <div>Price</div>
+            </div>
+            {recruitList}
+          </div>
+          <div className='recruit-preview'>
+            <ChampDetails champ={selectedRecruit.recruitee} />
+            <div className='buy-recruit'>
+              <button onClick={handleBuyClick}>Buy</button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
