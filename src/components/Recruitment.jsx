@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
-import { buyRecruit } from '../utils/gameManagement';
+import { TESTCMD_getNewRecruits, buyRecruit } from '../utils/gameManagement';
 import ChampDetails from './ChampDetails';
 
 Recruitment.propTypes = {
@@ -47,13 +47,21 @@ export default function Recruitment({
     }
   }
 
+  async function NEW_RECRUITS_TEST() {
+    const res = await TESTCMD_getNewRecruits();
+    console.log(res);
+    if (res === 200) {
+      return nav(0);
+    }
+  }
+
   return (
     <section className='bottom-section'>
       {!recruitees.length ? (
         <div className='recruitment-window'>
           <div className='recruitment-empty'>
             <h2>There are no champions to recruit. Come back later.</h2>
-            <button>NEW_RECRUITS_TEST</button>
+            <button onClick={NEW_RECRUITS_TEST}>NEW_RECRUITS_TEST</button>
           </div>
         </div>
       ) : (
