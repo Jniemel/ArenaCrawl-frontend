@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 import { buyRecruit } from '../utils/gameManagement';
 import ChampDetails from './ChampDetails';
 
 Recruitment.propTypes = {
-  recruitees: PropTypes.object,
+  recruitees: PropTypes.array,
   numOfCharacters: PropTypes.number,
   playerMoney: PropTypes.number,
 };
@@ -37,18 +38,22 @@ export default function Recruitment({
     );
   });
 
+  const nav = useNavigate();
+
   async function handleBuyClick() {
     const res = await buyRecruit(selectedRecruit, numOfCharacters, playerMoney);
-    console.log(res);
+    if (res === 200) {
+      return nav(0);
+    }
   }
 
   return (
     <section className='bottom-section'>
-      {!recruitees.lenght ? (
+      {!recruitees.length ? (
         <div className='recruitment-window'>
           <div className='recruitment-empty'>
             <h2>There are no champions to recruit. Come back later.</h2>
-            <button>getNewRecruits</button>
+            <button>NEW_RECRUITS_TEST</button>
           </div>
         </div>
       ) : (
