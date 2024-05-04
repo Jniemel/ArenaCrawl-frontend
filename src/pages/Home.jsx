@@ -36,7 +36,9 @@ export default function Home({ gameState }) {
       <Navigation nav={nav} setNav={setNav} />
       {shop && <Shop nav={nav} setNav={setNav} />}
       {nav.window === 'training' && <TrainingGrounds />}
-      {nav.window === 'recruitment' && <Recruitment />}
+      {nav.window === 'recruitment' && (
+        <Recruitment recruitees={gameState.recruitment} />
+      )}
       {nav.window === 'divisions' && <Divisions />}
       {nav.window === 'schedule' && <Schedule />}
     </>

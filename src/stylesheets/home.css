@@ -147,6 +147,12 @@ header button:hover {
   padding-bottom: 1px;
 }
 
+.det-name-class > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .det-stats {
   display: flex;
   justify-content: center;
