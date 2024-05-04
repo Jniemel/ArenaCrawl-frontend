@@ -37,7 +37,11 @@ export default function Home({ gameState }) {
       {shop && <Shop nav={nav} setNav={setNav} />}
       {nav.window === 'training' && <TrainingGrounds />}
       {nav.window === 'recruitment' && (
-        <Recruitment recruitees={gameState.recruitment} />
+        <Recruitment
+          recruitees={gameState.recruitment}
+          numOfCharacters={gameState.playerTeam.champs.length}
+          playerMoney={gameState.playerTeam.money}
+        />
       )}
       {nav.window === 'divisions' && <Divisions />}
       {nav.window === 'schedule' && <Schedule />}

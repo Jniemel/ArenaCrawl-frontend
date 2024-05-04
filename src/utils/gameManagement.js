@@ -1,15 +1,26 @@
-export async function newRecruits() {
-  const res = await fetch('http://localhost:3000/api/char/recruits', {
-    method: 'GET',
-    credentials: 'include',
-  });
-  /*
-  let json = null;
-  if (res.ok) {
-    json = await res.json();
+export async function buyRecruit(recruit, chars, money) {
+  if (!(chars < 12)) {
+    alert('Your team is full. You cannot have more than 12 champions.');
+  } else if (money < recruit.price) {
+    alert(
+      `You cannot afford to recruit this champion!.\nRecruit cost: ${selectedRecruit.price} coins.\n You have: ${playerMoney} coins.`,
+    );
   }
-  */
-  console.log(res);
+  try {
+    const char = recruit.recruitee;
+    const res = await fetch('http://localhost:3000/api/char/buy', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ char }),
+    });
+    return res.status;
+  } catch (err) {
+    console.log(err.name);
+    return { error: err };
+  }
 }
 
 export function saveGameState() {

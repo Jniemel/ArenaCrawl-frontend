@@ -192,10 +192,16 @@ nav div {
   justify-content: space-between;
   padding-left: var(--default-gap);
   padding-right: var(--default-gap);
+  gap: 1em;
 }
 
 nav div:nth-child(2) {
   overflow: auto;
+}
+
+nav div button {
+  flex-grow: 1;
+  flex-basis: 0;
 }
 
 nav button:hover {
