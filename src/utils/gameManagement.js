@@ -39,3 +39,19 @@ export async function TESTCMD_getNewRecruits() {
     return { error: err };
   }
 }
+
+export async function startBattle() {
+  try {
+    const res = await fetch('http://localhost:3000/api/battle/start', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return res.status;
+  } catch (err) {
+    console.log(err.name);
+    return { error: err };
+  }
+}

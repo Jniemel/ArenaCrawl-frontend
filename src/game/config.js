@@ -9,8 +9,14 @@ export const config = {
   type: Phaser.AUTO,
   height: 640,
   width: 480,
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 0 },
+    },
+  },
+  scene: [Preloader, Game],
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
   },
-  scene: [Preloader, Game],
 };

@@ -27,7 +27,7 @@ export default function GameWindow({ setBattle }) {
             setBattle(false);
           }}
         >
-          Exit battle
+          TESTBTN_STOP_BATTLE
         </button>
       </div>
       <div id='game-container' className={isReady ? 'visible' : 'invisible'} />

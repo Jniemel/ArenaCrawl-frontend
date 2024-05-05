@@ -8,6 +8,12 @@ export default class Game extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.add.image(0, 0, 'tiles');
+    const map = this.make.tilemap({ key: 'arena-1' });
+    const tileset = map.addTilesetImage('arena', 'tiles');
+
+    map.createLayer('Ground', tileset);
+    const wallsLayer = map.createLayer('Walls', tileset);
+
+    wallsLayer.setCollisionByProperty({ collides: true });
   }
 }
