@@ -4,7 +4,7 @@ import { useState } from 'react';
 import HomeHeader from '../components/HomeHeader';
 import TeamWindow from '../components/TeamWindow';
 import Navigation from '../components/Navigation';
-import Game from '../components/Game.jsx';
+import Game from '../components/GameWindow.jsx';
 // stylesheets
 import '../stylesheets/home.css';
 import '../stylesheets/bottomSection.css';
@@ -21,14 +21,7 @@ export default function Home({ gameState }) {
   if (battle) {
     return (
       <>
-        <button
-          onClick={() => {
-            setBattle(false);
-          }}
-        >
-          Exit battle
-        </button>
-        <Game />
+        <Game setBattle={setBattle} />
       </>
     );
   }

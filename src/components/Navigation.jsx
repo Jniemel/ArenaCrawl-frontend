@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import '../stylesheets/home.css';
 
 Navigation.propTypes = {
   nav: PropTypes.object,

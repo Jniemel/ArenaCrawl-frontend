@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Phaser from 'phaser';
 import { useEffect, useState } from 'react';
-import Game from '../game/game.js';
+import Game from '../scenes/game.js';
 import '../stylesheets/game.css';
 
 GameWindow.propTypes = {

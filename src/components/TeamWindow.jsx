@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import '../stylesheets/home.css';
 import ChampDetails from './ChampDetails';
 
 TeamWindow.propTypes = {
@@ -16,7 +15,7 @@ export default function TeamWindow({ playerTeam }) {
     <div className='champ-icon-div' key={member._id}>
       <div className={selected === member._id && 'champ-selected'}>
         <img
-          src={`./assets/img/characters/${member.class.toLowerCase()}.png`}
+          src={`./assets/game/characters/${member.class.toLowerCase()}.png`}
           alt='class-img'
           onClick={() => {
             setSelected(member._id);
