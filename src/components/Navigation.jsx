@@ -4,9 +4,11 @@ import '../stylesheets/home.css';
 Navigation.propTypes = {
   nav: PropTypes.object,
   setNav: PropTypes.func,
+  battle: PropTypes.boolean,
+  setBattle: PropTypes.func,
 };
 
-export default function Navigation({ nav, setNav }) {
+export default function Navigation({ nav, setNav, battle, setBattle }) {
   const navBtns = [
     { name: 'weapon', defaultSub: 'swords' },
     { name: 'armory', defaultSub: 'armors' },
@@ -37,13 +39,13 @@ export default function Navigation({ nav, setNav }) {
       <div className='to-battle'>
         <button
           onClick={() => {
-            console.log('En garde!');
+            setBattle(battle ? false : true);
           }}
         >
           <span>To battle!</span>
         </button>
       </div>
-      <div>{btns}</div>
+      {!battle && <div>{btns}</div>}
     </nav>
   );
 }

@@ -4,14 +4,11 @@ import { useState } from 'react';
 import HomeHeader from '../components/HomeHeader';
 import TeamWindow from '../components/TeamWindow';
 import Navigation from '../components/Navigation';
-import Shop from '../components/Shop';
-import TrainingGrounds from '../components/TrainingGrounds';
-import Recruitment from '../components/Recruitment';
-import Schedule from '../components/Schedule';
-import Divisions from '../components/Divisions';
+import Game from '../components/Game.jsx';
 // stylesheets
 import '../stylesheets/home.css';
 import '../stylesheets/bottomSection.css';
+import BottomSection from '../components/bottomSection.jsx';
 
 Home.propTypes = {
   gameState: PropTypes.object,
@@ -19,32 +16,33 @@ Home.propTypes = {
 
 export default function Home({ gameState }) {
   const [nav, setNav] = useState({ window: 'recruitment', sub: null });
+  const [battle, setBattle] = useState(false);
 
-  let shop = null;
-  if (
-    nav.window === 'weapon' ||
-    nav.window === 'armory' ||
-    nav.window === 'magic'
-  ) {
-    shop = true;
+  if (battle) {
+    return (
+      <>
+        <button
+          onClick={() => {
+            setBattle(false);
+          }}
+        >
+          Exit battle
+        </button>
+        <Game />
+      </>
+    );
   }
-
   return (
     <>
       <HomeHeader user={gameState.owner} />
       <TeamWindow playerTeam={gameState.playerTeam} />
-      <Navigation nav={nav} setNav={setNav} />
-      {shop && <Shop nav={nav} setNav={setNav} />}
-      {nav.window === 'training' && <TrainingGrounds />}
-      {nav.window === 'recruitment' && (
-        <Recruitment
-          recruitees={gameState.recruitment}
-          numOfCharacters={gameState.playerTeam.champs.length}
-          playerMoney={gameState.playerTeam.money}
-        />
-      )}
-      {nav.window === 'divisions' && <Divisions />}
-      {nav.window === 'schedule' && <Schedule />}
+      <Navigation
+        nav={nav}
+        setNav={setNav}
+        battle={battle}
+        setBattle={setBattle}
+      />
+      <BottomSection nav={nav} setNav={setNav} gameState={gameState} />
     </>
   );
 }
