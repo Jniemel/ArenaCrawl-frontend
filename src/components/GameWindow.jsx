@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Phaser from 'phaser';
 import { useEffect, useState } from 'react';
-import Game from '../scenes/game.js';
+import { config } from '../game/config.js';
 import '../stylesheets/game.css';
 
 GameWindow.propTypes = {
@@ -11,17 +11,6 @@ GameWindow.propTypes = {
 export default function GameWindow({ setBattle }) {
   const [isReady, setReady] = useState(false);
   useEffect(() => {
-    const config = {
-      parent: 'game-container',
-      type: Phaser.AUTO,
-      height: 640,
-      width: 480,
-      scale: {
-        parent: 'game-container',
-        autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
-      },
-      scene: [Game],
-    };
     const game = new Phaser.Game(config);
     game.events.on('gameReady', setReady);
     return () => {

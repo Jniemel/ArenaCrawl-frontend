@@ -7,5 +7,7 @@ export default class Game extends Phaser.Scene {
 
   preload() {}
 
-  create() {}
+  create() {
+    this.add.image(0, 0, 'tiles');
+  }
 }

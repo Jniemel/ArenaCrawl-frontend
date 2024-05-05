@@ -4,11 +4,11 @@ import { useState } from 'react';
 import HomeHeader from '../components/HomeHeader';
 import TeamWindow from '../components/TeamWindow';
 import Navigation from '../components/Navigation';
-import Game from '../components/GameWindow.jsx';
+import GameWindow from '../components/GameWindow.jsx';
+import BottomSection from '../components/bottomSection.jsx';
 // stylesheets
 import '../stylesheets/home.css';
 import '../stylesheets/bottomSection.css';
-import BottomSection from '../components/bottomSection.jsx';
 
 Home.propTypes = {
   gameState: PropTypes.object,
@@ -21,7 +21,7 @@ export default function Home({ gameState }) {
   if (battle) {
     return (
       <>
-        <Game setBattle={setBattle} />
+        <GameWindow setBattle={setBattle} />
       </>
     );
   }
