@@ -16,7 +16,7 @@ export default function Battle() {
         setFail(true);
         return;
       }
-      const data = res.json();
+      const data = await res.json();
       setBattleData(data);
       setLoading(false);
     }

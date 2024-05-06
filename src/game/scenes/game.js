@@ -7,7 +7,8 @@ export default class Game extends Phaser.Scene {
 
   preload() {}
 
-  create() {
+  create(battleData) {
+    console.log(battleData);
     const map = this.make.tilemap({ key: 'arena-1' });
     const tileset = map.addTilesetImage('arena', 'tiles');
 
