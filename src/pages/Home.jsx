@@ -4,7 +4,6 @@ import { useState } from 'react';
 import HomeHeader from '../components/HomeHeader';
 import TeamWindow from '../components/TeamWindow';
 import Navigation from '../components/Navigation';
-import GameWindow from '../components/GameWindow.jsx';
 import BottomSection from '../components/bottomSection.jsx';
 // stylesheets
 import '../stylesheets/home.css';

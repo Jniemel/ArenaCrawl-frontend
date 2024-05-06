@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
+import { startBattle } from '../utils/gameManagement';
+import { useNavigate } from 'react-router-dom';
 
 Navigation.propTypes = {
   nav: PropTypes.object,
   setNav: PropTypes.func,
   battle: PropTypes.boolean,
-  setBattle: PropTypes.func,
 };
 
-export default function Navigation({ nav, setNav, battle, setBattle }) {
+export default function Navigation({ nav, setNav }) {
+  const navigate = useNavigate();
   const navBtns = [
     { name: 'weapon', defaultSub: 'swords' },
     { name: 'armory', defaultSub: 'armors' },
@@ -33,14 +35,18 @@ export default function Navigation({ nav, setNav, battle, setBattle }) {
     );
   });
 
+  async function ToBattleClick() {
+    const res = await startBattle();
+    if (res.error) {
+      alert(`Something went wrong. Error: ${res.error}`);
+    }
+    navigate(0);
+  }
+
   return (
     <nav>
       <div className='to-battle'>
-        <button
-          onClick={() => {
-            setBattle(true);
-          }}
-        >
+        <button onClick={ToBattleClick}>
           <span>To battle!</span>
         </button>
       </div>
