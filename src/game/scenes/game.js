@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import UnitBase from '../units/unitBase';
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -7,12 +8,15 @@ export default class Game extends Phaser.Scene {
 
   init(data) {
     this.state = data.battleData;
+    this.southTeam = createTeam(this.state.south);
+    this.northTeam = createTeam(this.state.north);
   }
 
   preload() {}
 
   create() {
-    console.log(this.state);
+    // console.log(this.southTeam);
+    // console.log(this.northTeam);
     // create map
     const map = this.make.tilemap({ key: 'arena-1' });
     const tileset = map.addTilesetImage('arena', 'tiles');
@@ -21,9 +25,17 @@ export default class Game extends Phaser.Scene {
     wallsLayer.setCollisionByProperty({ collides: true });
 
     // place teams
-    placeTeam(this.state.south, 'south', 576, this);
-    placeTeam(this.state.north, 'north', 32, this);
+    placeTeam(this.southTeam, 'south', 576, this);
+    placeTeam(this.northTeam, 'north', 32, this);
   }
+}
+
+function createTeam(champs) {
+  let arr = [];
+  champs.forEach((champ) => {
+    arr.push(new UnitBase(champ));
+  });
+  return arr;
 }
 
 function placeTeam(champs, team, yPos, self) {
@@ -39,9 +51,11 @@ function placeTeam(champs, team, yPos, self) {
       x = 192;
     }
     const cName = champ.class.charAt(0).toLowerCase() + champ.class.slice(1);
+    champ.x = x;
+    champ.y = y;
     self.physics.add.sprite(x, y, cName).setOrigin(0, 0);
-    console.log(cName);
     x += 32;
     count += 1;
   });
+  console.log(self.southTeam);
 }
