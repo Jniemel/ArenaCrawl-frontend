@@ -12,7 +12,7 @@ export default function GameWindow({ battleData }) {
   useEffect(() => {
     async function launchGame() {
       const game = new Phaser.Game(config);
-      game.scene.start('preloader', { battleData: battleData });
+      game.scene.start('preloader', { battleData });
       return () => {
         game.destroy(true);
       };

@@ -10,7 +10,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON('arena-1', './assets/game/maps/div4.json');
   }
 
-  create(battleData) {
-    this.scene.start('game', battleData);
+  create(data) {
+    this.scene.start('game', data);
   }
 }
