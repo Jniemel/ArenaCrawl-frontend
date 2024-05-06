@@ -39,7 +39,7 @@ function placeTeam(champs, team, yPos, self) {
       x = 192;
     }
     const cName = champ.class.charAt(0).toLowerCase() + champ.class.slice(1);
-    self.add.sprite(x, y, cName).setOrigin(0, 0);
+    self.physics.add.sprite(x, y, cName).setOrigin(0, 0);
     console.log(cName);
     x += 32;
     count += 1;
