@@ -6,6 +6,7 @@ import './stylesheets/app.css';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/Sign-up';
+import Battle from './pages/Battle';
 
 function App() {
   const [gameState, setGameState] = useState();
@@ -33,16 +34,29 @@ function App() {
   ) : (
     <>
       <Routes>
-        <Route
-          path='/'
-          element={
-            gameState ? <Navigate to='/home' /> : <Navigate to='/auth' />
-          }
-        />
+        <Route path='/' element={<Navigate to='/home' />} />
         <Route
           path='/home'
           element={
-            gameState ? <Home gameState={gameState} /> : <Navigate to='/auth' />
+            !gameState ? (
+              <Navigate to='/auth' />
+            ) : gameState.battle.status === 'active' ? (
+              <Navigate to='/battle' />
+            ) : (
+              <Home gameState={gameState} />
+            )
+          }
+        />
+        <Route
+          path='/battle'
+          element={
+            !gameState ? (
+              <Navigate to='/auth' />
+            ) : gameState.battle.status === 'inactive' ? (
+              <Home gameState={gameState} />
+            ) : (
+              <Battle />
+            )
           }
         />
         <Route

@@ -49,7 +49,11 @@ export async function startBattle() {
         'Content-Type': 'application/json',
       },
     });
-    return res.status;
+    if (res.status === 200) {
+      const json = await res.json();
+      return json;
+    }
+    return { error: 'response status not 200' };
   } catch (err) {
     console.log(err.name);
     return { error: err };

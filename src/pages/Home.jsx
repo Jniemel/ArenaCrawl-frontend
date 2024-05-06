@@ -18,13 +18,6 @@ export default function Home({ gameState }) {
   const [nav, setNav] = useState({ window: 'recruitment', sub: null });
   const [battle, setBattle] = useState(false);
 
-  if (battle) {
-    return (
-      <>
-        <GameWindow setBattle={setBattle} />
-      </>
-    );
-  }
   return (
     <>
       <HomeHeader user={gameState.owner} />

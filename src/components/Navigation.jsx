@@ -38,13 +38,13 @@ export default function Navigation({ nav, setNav, battle, setBattle }) {
       <div className='to-battle'>
         <button
           onClick={() => {
-            setBattle(battle ? false : true);
+            setBattle(true);
           }}
         >
           <span>To battle!</span>
         </button>
       </div>
-      {!battle && <div>{btns}</div>}
+      <div>{btns}</div>
     </nav>
   );
 }
