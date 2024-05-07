@@ -55,7 +55,7 @@ function App() {
             ) : gameState.battle.status === 'inactive' ? (
               <Home gameState={gameState} />
             ) : (
-              <Battle />
+              <Battle battleState={gameState.battle} />
             )
           }
         />

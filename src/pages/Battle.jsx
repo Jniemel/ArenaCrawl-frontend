@@ -1,23 +1,30 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import GameWindow from '../components/GameWindow';
 
-export default function Battle() {
+Battle.propTypes = {
+  battleState: PropTypes.object,
+};
+
+export default function Battle({ battleState }) {
   const [isLoading, setLoading] = useState(true);
   const [fail, setFail] = useState(false);
-  const [battleData, setBattleData] = useState();
+  const [battleData, setBattleData] = useState(battleState);
 
   useEffect(() => {
     async function launchGame() {
-      const res = await fetch('http://localhost:3000/api/battle/start', {
-        method: 'GET',
-        credentials: 'include',
-      });
-      if (!res.status === 200) {
-        setFail(true);
-        return;
+      if (battleState.status === 'inactive') {
+        const res = await fetch('http://localhost:3000/api/battle/start', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (!res.status === 200) {
+          setFail(true);
+          return;
+        }
+        const data = await res.json();
+        setBattleData(data);
       }
-      const data = await res.json();
-      setBattleData(data);
       setLoading(false);
     }
     launchGame();
