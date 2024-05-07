@@ -1,61 +1,36 @@
-export default class UnitBase {
-  constructor(character) {
+import Phaser from 'phaser';
+
+export default class UnitBase extends Phaser.GameObjects.Sprite {
+  constructor(character, scene, x, y, texture, frame) {
+    super(scene, x, y, texture, frame);
     this.name = character.name;
     this.id = character._id;
     this.class = character.class;
     this.stats = character.stats;
     this.health = this.stats.constitution;
-    this.isDead = false;
-    this.posX = 0;
-    this.posY = 0;
-  }
+    this.died = false;
 
-  getPosX() {
-    return this.x;
-  }
-
-  getPosY() {
-    return this.y;
+    scene.physics.world.enable(this);
+    scene.add.existing(this);
   }
 
   getPos() {
-    return [this.x, this.y];
+    return { x: this.x, y: this.y };
+  }
+
+  setPos(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  isDead() {
+    return this.died;
+  }
+
+  setDead() {
+    this.isDead = true;
   }
 
   // south + , north -
   // west -, east +
-  move(dir) {
-    switch (dir) {
-      case 'n':
-        this.posY -= 32;
-        break;
-      case 's':
-        this.posY += 32;
-        break;
-      case 'w':
-        this.posX -= 32;
-        break;
-      case 'e':
-        this.posX += 32;
-        break;
-      case 'nw':
-        this.posY -= 32;
-        this.posX -= 32;
-        break;
-      case 'ne':
-        this.posY -= 32;
-        this.posX += 32;
-        break;
-      case 'sw':
-        this.posY += 32;
-        this.posX -= 32;
-        break;
-      case 'se':
-        this.posY += 32;
-        this.posX += 32;
-        break;
-      case 'wait':
-        break;
-    }
-  }
 }

@@ -1,50 +1,43 @@
 export default class Turn {
-  constructor(teamSouth, teamNorth) {
-    this.tSouth = teamSouth;
-    this.tNorth = teamNorth;
+  constructor() {
     this.southQueue = [];
     this.northQueue = [];
     this.player = null;
-    this.underControl = {};
+    this.currentUnitId = null;
     this.turnNumber = 1;
-    this.initRound();
   }
 
-  initRound() {
-    this.southQueue = this.sortQueue(this.tSouth);
-    this.northQueue = this.sortQueue(this.tNorth);
-    this.player = this.getFirstPlayer();
+  initRound(teamSouth, teamNorth) {
+    this.southQueue = this.sortQueue(teamSouth);
+    this.northQueue = this.sortQueue(teamNorth);
+    this.startRound();
   }
 
   sortQueue(team) {
     let queue = [];
     team.forEach((unit) => {
-      if (!unit.isDead) {
-        queue.push(unit);
+      if (!unit.isDead()) {
+        queue.push({ unitId: unit.id, dex: unit.stats.dexterity });
       }
     });
-    return queue.sort((a, b) => b.stats.dexterity - a.stats.dexterity);
+    return queue.sort((a, b) => a.dex - b.dex);
   }
 
   startRound() {
     if (
-      this.southQueue[-1].stats.dexterity >= this.northQueue[-1].stats.dexterity
+      this.southQueue[this.southQueue.length - 1].dex >=
+      this.northQueue[this.northQueue.length - 1].dex
     ) {
       this.player = 'south';
-      this.underControl = this.southQueue[-1];
+      this.currentUnitId = this.southQueue[this.southQueue.length - 1].unitId;
     } else {
       this.player = 'north';
-      this.underControl = this.northQueue[-1];
+      this.currentUnitId = this.northQueue[this.northQueue.length - 1].unitId;
     }
   }
 
-  end() {
-    // remove unit from queue
-    this.player === 'south' ? this.southQueue.pop() : this.northQueue.pop();
-    this.next();
-  }
-
   next() {
+    this.player === 'south' ? this.southQueue.pop() : this.northQueue.pop();
     const sDone = !this.southQueue.length ? true : false;
     const nDone = !this.northQueue.length ? true : false;
     // round done
@@ -57,11 +50,18 @@ export default class Turn {
     } else if (this.player === 'north' && !sDone) {
       this.player = 'south';
     }
-    this.startRound();
+    this.startTurn();
   }
 
   startTurn() {
-    this.underControl =
-      this.player === 'south' ? this.southQueue[-1] : this.northQueue[-1];
+    console.log('hello');
+    this.currentUnitId =
+      this.player === 'south'
+        ? this.southQueue[this.southQueue.length - 1].unitId
+        : this.northQueue[this.northQueue.length - 1].unitId;
+  }
+
+  getCurrentUnit() {
+    return { team: this.player, unitId: this.currentUnitId };
   }
 }

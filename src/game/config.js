@@ -7,7 +7,7 @@ import Game from './scenes/game.js';
 export const config = {
   parent: 'game-container',
   type: Phaser.AUTO,
-  height: 640,
+  height: 820,
   width: 480,
   physics: {
     default: 'arcade',
