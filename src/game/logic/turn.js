@@ -1,5 +1,6 @@
 export default class Turn {
-  constructor() {
+  constructor(eventEmitter) {
+    this.eventEmitter = eventEmitter;
     this.southQueue = [];
     this.northQueue = [];
     this.player = null;
@@ -42,7 +43,7 @@ export default class Turn {
     const nDone = !this.northQueue.length ? true : false;
     // round done
     if (sDone && nDone) {
-      this.initRound();
+      this.eventEmitter.emit('newRound');
       return;
     }
     if (this.player === 'south' && !nDone) {
@@ -54,7 +55,6 @@ export default class Turn {
   }
 
   startTurn() {
-    console.log('hello');
     this.currentUnitId =
       this.player === 'south'
         ? this.southQueue[this.southQueue.length - 1].unitId

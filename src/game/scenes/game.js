@@ -49,24 +49,35 @@ export default class Game extends Phaser.Scene {
     placeTeam(this.northTeam, 'north', 32, this);
 
     // turn manager
-    this.turn = new Turn();
+    this.turn = new Turn(this.events);
     this.turn.initRound(this.southTeam, this.northTeam);
 
     console.log(this.turn.southQueue, this.turn.northQueue);
 
     // event listeners
-    this.events.on('moveNorth', moveNorth, this);
+    this.events.on('move', handleMovement, this);
+    this.events.on('newRound', handleNewRound, this);
 
-    function moveNorth() {
+    function handleMovement(dir) {
       const current = this.turn.getCurrentUnit();
       if (current.team === 'south') {
         this.southTeam.find((unit) => {
           if (unit.id === current.unitId) {
-            unit.y += 32;
+            unit.move(dir);
+          }
+        });
+      } else {
+        this.northTeam.find((unit) => {
+          if (unit.id === current.unitId) {
+            unit.move(dir);
           }
         });
       }
       this.turn.next();
+    }
+
+    function handleNewRound() {
+      this.turn.initRound(this.southTeam, this.northTeam);
     }
   }
 }

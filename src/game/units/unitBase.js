@@ -31,6 +31,44 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.isDead = true;
   }
 
-  // south + , north -
-  // west -, east +
+  // y: south + , north -
+  // x: west +, east -
+  move(dir) {
+    let x = 0;
+    let y = 0;
+    switch (dir) {
+      case 'ne':
+        y = -32;
+        x = -32;
+        break;
+      case 'n':
+        y = -32;
+        break;
+      case 'nw':
+        y = -32;
+        x = +32;
+        break;
+      case 'e':
+        x = -32;
+        break;
+      case 'w':
+        x = +32;
+        break;
+      case 'se':
+        y = +32;
+        x = -32;
+        break;
+      case 's':
+        y = +32;
+        break;
+      case 'sw':
+        y = +32;
+        x = +32;
+        break;
+      default:
+        break;
+    }
+    this.x += x;
+    this.y += y;
+  }
 }

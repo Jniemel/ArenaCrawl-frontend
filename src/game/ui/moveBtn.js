@@ -10,19 +10,7 @@ export default class MoveBtn extends Phaser.GameObjects.Container {
     this.setInteractive().on(
       Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
       () => {
-        switch (dir) {
-          case 'n':
-            this.scene.events.emit('moveNorth');
-            break;
-          /*		
-          case 'n':
-            this.scene.events.emit('moveNorth');
-            break;
-          default:
-            break;
-				*/
-        }
-        console.log(`direction : ${dir}`);
+        this.scene.events.emit('move', dir);
       },
     );
   }
