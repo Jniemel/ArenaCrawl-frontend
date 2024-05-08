@@ -44,7 +44,6 @@ export default class Turn {
     }
     // set the starting unit
     this.currentUnitId = this.queue[this.queue.length - 1].unitId;
-    console.log(this.currentUnitId);
   }
 
   // sort turn order of the teams units based on dexterity
@@ -65,6 +64,10 @@ export default class Turn {
 
   next() {
     this.queue.pop();
+    this.eventEmitter.emit('setIndicator', {
+      set: false,
+      unitId: this.currentUnitId,
+    });
     if (!this.queue.length) {
       this.eventEmitter.emit('newRound');
       return;
@@ -73,12 +76,13 @@ export default class Turn {
   }
 
   startTurn() {
-    // save previous units id
-    const prevId = this.currentUnitId;
     this.player = this.queue[this.queue.length - 1].player;
     this.currentUnitId = this.queue[this.queue.length - 1].unitId;
     // set current units turn indicator visible and previous units indicator invisible
-    this.eventEmitter.emit('setIndicator', prevId, this.currentUnitId);
+    this.eventEmitter.emit('setIndicator', {
+      set: true,
+      unitId: this.currentUnitId,
+    });
   }
 
   getCurrentUnit() {

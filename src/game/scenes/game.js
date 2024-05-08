@@ -52,23 +52,26 @@ export default class Game extends Phaser.Scene {
     // turn manager
     this.turn = new Turn(this.events);
     this.turn.initRound(this.unitPool);
+    let first = this.turn.getCurrentUnit().unitId;
+    this.unitPool.find((unit) => {
+      if (unit.id === first) {
+        unit.setInd(true);
+      }
+    });
 
     // event listeners
-    // this.events.on('setIndicator', handleIndicator, this)
+    this.events.on('setIndicator', handleIndicator, this);
     this.events.on('move', handleMovement, this);
     this.events.on('newRound', handleNewRound, this);
 
-    /*
-    function handleIndicator(prevId, current) {
-      let found = false;
-      this.southTeam.find(unit => {
-        if (unit.id === prevId || ) {
-          unit.setInd(false);
-          found = true;
+    function handleIndicator(data) {
+      console.log(data);
+      this.unitPool.forEach((unit) => {
+        if (unit.id === data.unitId) {
+          unit.setInd(data.set);
         }
       });
     }
-    */
 
     function handleMovement(dir) {
       const current = this.turn.getCurrentUnit();
@@ -82,6 +85,12 @@ export default class Game extends Phaser.Scene {
 
     function handleNewRound() {
       this.turn.initRound(this.unitPool);
+      first = this.turn.getCurrentUnit().unitId;
+      this.unitPool.find((unit) => {
+        if (unit.id === first) {
+          unit.setInd(true);
+        }
+      });
     }
   }
 }

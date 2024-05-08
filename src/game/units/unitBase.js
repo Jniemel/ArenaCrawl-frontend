@@ -10,6 +10,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.stats = character.stats;
     this.health = this.stats.constitution;
     this.died = false;
+    this.scene = scene;
 
     // enable physics
     scene.physics.world.enable(this);
@@ -17,8 +18,10 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
 
     // turn indicator
     this.indicator = scene.add.graphics();
-    this.indicator.lineStyle(2, 0xffd700, 1);
-    this.indicator.strokeRect(x - this.width / 2, y - this.height / 2, 32, 32);
+    this.indicator.lineStyle(1, 0xffff00, 1);
+    this.indicator.x = this.x;
+    this.indicator.y = this.y;
+    this.indicator.strokeRect(this.x, this.y, 32, 32);
     this.indicator.setVisible(false);
   }
 
@@ -40,7 +43,24 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   }
 
   setInd(bool) {
+    this.indicator.x = this.x;
+    this.indicator.y = this.y;
     this.indicator.setVisible(bool);
+    if (bool && this.fadeTween) {
+      this.fadeTween.restart();
+    } else if (bool && !this.fadeTween) {
+      this.fadeTween = this.scene.tweens.add({
+        targets: this,
+        alpha: { from: 0.4, to: 1 },
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+        repeat: -1,
+        duration: 600,
+      });
+    } else {
+      this.fadeTween.pause();
+      this.alpha = 1;
+    }
   }
 
   // one tile: 32x32 px
