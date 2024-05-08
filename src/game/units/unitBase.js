@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 
 export default class UnitBase extends Phaser.GameObjects.Sprite {
-  constructor(character, scene, x, y, texture, frame) {
+  constructor(character, team, scene, x, y, texture, frame) {
     super(scene, x, y, texture, frame);
+    this.team = team;
     this.name = character.name;
     this.id = character._id;
     this.class = character.class;
@@ -10,8 +11,15 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.health = this.stats.constitution;
     this.died = false;
 
+    // enable physics
     scene.physics.world.enable(this);
     scene.add.existing(this);
+
+    // turn indicator
+    this.indicator = scene.add.graphics();
+    this.indicator.lineStyle(2, 0xffd700, 1);
+    this.indicator.strokeRect(x - this.width / 2, y - this.height / 2, 32, 32);
+    this.indicator.setVisible(false);
   }
 
   getPos() {
@@ -31,22 +39,25 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.isDead = true;
   }
 
-  // y: south + , north -
-  // x: west +, east -
+  setInd(bool) {
+    this.indicator.setVisible(bool);
+  }
+
+  // one tile: 32x32 px
   move(dir) {
     let x = 0;
     let y = 0;
     switch (dir) {
       case 'ne':
         y = -32;
-        x = -32;
+        x = +32;
         break;
       case 'n':
         y = -32;
         break;
       case 'nw':
         y = -32;
-        x = +32;
+        x = -32;
         break;
       case 'e':
         x = -32;

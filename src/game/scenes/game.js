@@ -6,6 +6,7 @@ import Turn from '../logic/turn';
 export default class Game extends Phaser.Scene {
   constructor() {
     super('game');
+    this.unitPool = [];
   }
 
   init(data) {
@@ -43,50 +44,56 @@ export default class Game extends Phaser.Scene {
     });
 
     // teams
-    this.southTeam = createTeam(this.initialState.south, this);
-    this.northTeam = createTeam(this.initialState.north, this);
+    this.southTeam = createTeam(this.initialState.south, 'south', this);
+    this.northTeam = createTeam(this.initialState.north, 'north', this);
     placeTeam(this.southTeam, 'south', 576, this);
     placeTeam(this.northTeam, 'north', 32, this);
+    // fill unit pool
+    this.unitPool = this.southTeam.concat(this.northTeam);
 
     // turn manager
     this.turn = new Turn(this.events);
-    this.turn.initRound(this.southTeam, this.northTeam);
-
-    console.log(this.turn.southQueue, this.turn.northQueue);
+    this.turn.initRound(this.unitPool);
+    // this.turn.initRound(this.southTeam, this.northTeam);
 
     // event listeners
+    // this.events.on('setIndicator', handleIndicator, this)
     this.events.on('move', handleMovement, this);
     this.events.on('newRound', handleNewRound, this);
 
+    /*
+    function handleIndicator(prevId, current) {
+      let found = false;
+      this.southTeam.find(unit => {
+        if (unit.id === prevId || ) {
+          unit.setInd(false);
+          found = true;
+        }
+      });
+    }
+    */
+
     function handleMovement(dir) {
       const current = this.turn.getCurrentUnit();
-      if (current.team === 'south') {
-        this.southTeam.find((unit) => {
-          if (unit.id === current.unitId) {
-            unit.move(dir);
-          }
-        });
-      } else {
-        this.northTeam.find((unit) => {
-          if (unit.id === current.unitId) {
-            unit.move(dir);
-          }
-        });
-      }
+      this.unitPool.find((unit) => {
+        if (unit.id === current.unitId) {
+          unit.move(dir);
+        }
+      });
       this.turn.next();
     }
 
     function handleNewRound() {
-      this.turn.initRound(this.southTeam, this.northTeam);
+      this.turn.initRound(this.unitPool);
     }
   }
 }
 
-function createTeam(champs, scene) {
+function createTeam(champs, team, scene) {
   let arr = [];
   champs.forEach((champ) => {
     const texture = champ.class.charAt(0).toLowerCase() + champ.class.slice(1);
-    arr.push(new UnitBase(champ, scene, 0, 0, texture).setOrigin(0, 0));
+    arr.push(new UnitBase(champ, team, scene, 0, 0, texture).setOrigin(0, 0));
   });
   return arr;
 }
