@@ -16,8 +16,6 @@ export default class Game extends Phaser.Scene {
   preload() {}
 
   create() {
-    // console.log(this.southTeam);
-    // console.log(this.northTeam);
     // create map
     const map = this.make.tilemap({ key: 'arena-1' });
     const tileset = map.addTilesetImage('arena', 'tiles');
@@ -54,7 +52,6 @@ export default class Game extends Phaser.Scene {
     // turn manager
     this.turn = new Turn(this.events);
     this.turn.initRound(this.unitPool);
-    // this.turn.initRound(this.southTeam, this.northTeam);
 
     // event listeners
     // this.events.on('setIndicator', handleIndicator, this)

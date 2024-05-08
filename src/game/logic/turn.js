@@ -1,19 +1,12 @@
 export default class Turn {
   constructor(eventEmitter) {
     this.eventEmitter = eventEmitter;
-    // this.southQueue = [];
-    // this.northQueue = [];
     this.queue = [];
     this.player = null;
     this.currentUnitId = null;
     this.turnNumber = 1;
   }
 
-  // initRound(teamSouth, teamNorth) {
-  /*
-    this.southQueue = this.sortQueue(teamSouth);
-    this.northQueue = this.sortQueue(teamNorth);
-    */
   initRound(unitPool) {
     // split teams from unit pool
     let teamSouth = [];
@@ -52,7 +45,6 @@ export default class Turn {
     // set the starting unit
     this.currentUnitId = this.queue[this.queue.length - 1].unitId;
     console.log(this.currentUnitId);
-    // this.startRound();
   }
 
   // sort turn order of the teams units based on dexterity
@@ -71,21 +63,6 @@ export default class Turn {
     return queue.sort((a, b) => a.dex - b.dex);
   }
 
-  /*
-  startRound() {
-    if (       
-      this.southQueue[this.southQueue.length - 1].dex >=
-      this.northQueue[this.northQueue.length - 1].dex
-    ) {
-      this.player = 'south';
-      this.currentUnitId = this.southQueue[this.southQueue.length - 1].unitId;
-    } else {
-      this.player = 'north';
-      this.currentUnitId = this.northQueue[this.northQueue.length - 1].unitId;
-    }
-  }
-  */
-
   next() {
     this.queue.pop();
     if (!this.queue.length) {
@@ -93,22 +70,6 @@ export default class Turn {
       return;
     }
     this.startTurn();
-    /*
-    this.player === 'south' ? this.southQueue.pop() : this.northQueue.pop();
-    const sDone = !this.southQueue.length ? true : false;
-    const nDone = !this.northQueue.length ? true : false;   
-    // round done
-    if (sDone && nDone) {
-      this.eventEmitter.emit('newRound');
-      return;
-    }    
-    if (this.player === 'south' && !nDone) {
-      this.player = 'north';
-    } else if (this.player === 'north' && !sDone) {
-      this.player = 'south';
-    }
-    this.startTurn();
-    */
   }
 
   startTurn() {
@@ -118,13 +79,6 @@ export default class Turn {
     this.currentUnitId = this.queue[this.queue.length - 1].unitId;
     // set current units turn indicator visible and previous units indicator invisible
     this.eventEmitter.emit('setIndicator', prevId, this.currentUnitId);
-
-    /*
-    this.currentUnitId =
-      this.player === 'south'
-        ? this.southQueue[this.southQueue.length - 1].unitId
-        : this.northQueue[this.northQueue.length - 1].unitId;
-    */
   }
 
   getCurrentUnit() {
