@@ -14,7 +14,7 @@ export default class npcUnit extends UnitBase {
             scaleX: 1.3,
             scaleY: 1.3,
             alpha: { from: 1, to: 0 },
-            duration: 300,
+            duration: 500,
           },
           {
             alpha: 1,

@@ -27,15 +27,6 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     */
   }
 
-  getPos() {
-    return { x: this.x, y: this.y };
-  }
-
-  setPos(x, y) {
-    this.x = x;
-    this.y = y;
-  }
-
   isDead() {
     return this.died;
   }
@@ -43,31 +34,13 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   setDead() {
     this.isDead = true;
   }
-  /*
-  setInd(bool) {
-    this.indicator.x = this.x;
-    this.indicator.y = this.y;
-    this.indicator.setVisible(bool);
-    if (bool && this.fadeTween) {
-      this.fadeTween.restart();
-    } else if (bool && !this.fadeTween) {
-      this.fadeTween = this.scene.tweens.add({
-        targets: this,
-        alpha: { from: 0.4, to: 1 },
-        ease: 'Sine.easeInOut',
-        yoyo: true,
-        repeat: -1,
-        duration: 600,
-      });
-    } else {
-      this.fadeTween.pause();
-      this.alpha = 1;
-    }
+
+  getPos() {
+    return { x: this.x, y: this.y };
   }
-  */
 
   // one tile: 32x32 px
-  move(dir) {
+  getNewPos(dir) {
     let x = 0;
     let y = 0;
     switch (dir) {
@@ -102,7 +75,11 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
       default:
         break;
     }
-    this.x += x;
-    this.y += y;
+    return { x: this.x + x, y: this.y + y };
+  }
+
+  setPos(x, y) {
+    this.x = x;
+    this.y = y;
   }
 }

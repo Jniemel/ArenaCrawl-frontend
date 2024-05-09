@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import UnitBase from '../units/unitBase';
 import MoveBtn from '../ui/moveBtn';
 import Turn from '../logic/turn';
 import playerUnit from '../units/playerUnit';
@@ -53,8 +52,21 @@ export default class Game extends Phaser.Scene {
     this.northTeam = createTeam(this.initialState.north, 'north', this);
     placeTeam(this.southTeam, 'south', 592, this);
     placeTeam(this.northTeam, 'north', 48, this);
+
     // fill unit pool
+    // this.unitPool = this.physics.add.group();
     this.unitPool = this.southTeam.concat(this.northTeam);
+
+    // collision detection
+    /*
+    this.physics.add.collider(
+      this.unitPool,
+      this.unitPool,
+      handleCollision,
+      null,
+      this,
+    );
+    */
 
     // turn manager
     this.turn = new Turn(this.events);
@@ -81,13 +93,42 @@ export default class Game extends Phaser.Scene {
 
     function handleMovement(dir) {
       const current = this.turn.getCurrentUnit();
-      this.unitPool.find((unit) => {
+      let newPos;
+      // get the new position and unit instance
+      const unit = this.unitPool.find((unit) => {
         if (unit.id === current.unitId) {
-          unit.move(dir);
+          newPos = unit.getNewPos(dir);
+          return unit;
         }
       });
+      // check if new position occupied and return occupying unit (if any)
+      const occupied = this.unitPool.find(
+        (unit) => JSON.stringify(unit.getPos()) === JSON.stringify(newPos),
+      );
+      // if not occupied -> move
+      // if occupied by ally -> swap
+      // if occupied by enemy -> attack
+      if (!occupied) {
+        unit.setPos(newPos.x, newPos.y);
+      } else if (occupied.team === unit.team) {
+        const swapPos = unit.getPos();
+        occupied.setPos(swapPos.x, swapPos.y);
+        unit.setPos(newPos.x, newPos.y);
+      } else if (occupied.team !== unit.team) {
+        return;
+      }
       this.turn.next();
     }
+
+    /*
+    let collided = false;
+    function handleCollision(unit, target) {
+      if (!collided) {
+        console.log(unit, target);
+        collided = true;
+      }
+    }
+    */
 
     function handleNewRound() {
       this.turn.initRound(this.unitPool);
