@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import UnitBase from '../units/unitBase';
 import MoveBtn from '../ui/moveBtn';
 import Turn from '../logic/turn';
+import playerUnit from '../units/playerUnit';
+import npcUnit from '../units/npcUnit';
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -42,7 +44,12 @@ export default class Game extends Phaser.Scene {
     });
 
     // teams
-    this.southTeam = createTeam(this.initialState.south, 'south', this);
+    this.southTeam = createTeam(
+      this.initialState.south,
+      'south',
+      this,
+      'player',
+    );
     this.northTeam = createTeam(this.initialState.north, 'north', this);
     placeTeam(this.southTeam, 'south', 576, this);
     placeTeam(this.northTeam, 'north', 32, this);
@@ -54,7 +61,7 @@ export default class Game extends Phaser.Scene {
     this.turn.initRound(this.unitPool);
     let first = this.turn.getCurrentUnit().unitId;
     this.unitPool.find((unit) => {
-      if (unit.id === first) {
+      if (unit.id === first && unit) {
         unit.setInd(true);
       }
     });
@@ -65,7 +72,6 @@ export default class Game extends Phaser.Scene {
     this.events.on('newRound', handleNewRound, this);
 
     function handleIndicator(data) {
-      console.log(data);
       this.unitPool.forEach((unit) => {
         if (unit.id === data.unitId) {
           unit.setInd(data.set);
@@ -95,11 +101,17 @@ export default class Game extends Phaser.Scene {
   }
 }
 
-function createTeam(champs, team, scene) {
+function createTeam(champs, team, scene, player = 'npc') {
   let arr = [];
   champs.forEach((champ) => {
     const texture = champ.class.charAt(0).toLowerCase() + champ.class.slice(1);
-    arr.push(new UnitBase(champ, team, scene, 0, 0, texture).setOrigin(0, 0));
+    if (player === 'player') {
+      arr.push(
+        new playerUnit(champ, team, scene, 0, 0, texture).setOrigin(0, 0),
+      );
+    } else {
+      arr.push(new npcUnit(champ, team, scene, 0, 0, texture).setOrigin(0, 0));
+    }
   });
   return arr;
 }

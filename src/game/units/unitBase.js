@@ -16,6 +16,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     scene.physics.world.enable(this);
     scene.add.existing(this);
 
+    /*
     // turn indicator
     this.indicator = scene.add.graphics();
     this.indicator.lineStyle(1, 0xffff00, 1);
@@ -23,6 +24,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.indicator.y = this.y;
     this.indicator.strokeRect(this.x, this.y, 32, 32);
     this.indicator.setVisible(false);
+    */
   }
 
   getPos() {
@@ -41,7 +43,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   setDead() {
     this.isDead = true;
   }
-
+  /*
   setInd(bool) {
     this.indicator.x = this.x;
     this.indicator.y = this.y;
@@ -62,6 +64,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
       this.alpha = 1;
     }
   }
+  */
 
   // one tile: 32x32 px
   move(dir) {
