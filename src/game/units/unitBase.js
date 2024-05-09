@@ -1,34 +1,21 @@
 import Phaser from 'phaser';
 
 export default class UnitBase extends Phaser.GameObjects.Sprite {
-  constructor(character, team, scene, x, y, texture, frame) {
+  constructor(character, team, hp, scene, x, y, texture, frame) {
     super(scene, x, y, texture, frame);
+    this.character = character;
     this.team = team;
-    this.name = character.name;
-    this.id = character._id;
-    this.class = character.class;
-    this.stats = character.stats;
-    this.health = this.stats.constitution;
-    this.died = false;
+    this.hp = hp;
+    this.dead = this.hp <= 0 ? true : false;
     this.scene = scene;
 
     // enable physics
     scene.physics.world.enable(this);
     scene.add.existing(this);
-
-    /*
-    // turn indicator
-    this.indicator = scene.add.graphics();
-    this.indicator.lineStyle(1, 0xffff00, 1);
-    this.indicator.x = this.x;
-    this.indicator.y = this.y;
-    this.indicator.strokeRect(this.x, this.y, 32, 32);
-    this.indicator.setVisible(false);
-    */
   }
 
   isDead() {
-    return this.died;
+    return this.dead;
   }
 
   setDead() {
@@ -81,5 +68,15 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   setPos(x, y) {
     this.x = x;
     this.y = y;
+  }
+
+  getUnitState() {
+    return {
+      character: this.character,
+      team: this.team,
+      hp: this.hp,
+      x: this.x,
+      y: this.y,
+    };
   }
 }

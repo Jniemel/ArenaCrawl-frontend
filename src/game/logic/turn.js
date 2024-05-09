@@ -53,8 +53,8 @@ export default class Turn {
       // skip unit if dead
       if (!unit.isDead()) {
         queue.push({
-          unitId: unit.id,
-          dex: unit.stats.dexterity,
+          unitId: unit.character._id,
+          dex: unit.character.stats.dexterity,
           player: unit.team,
         });
       }

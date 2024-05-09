@@ -3,6 +3,7 @@ import MoveBtn from '../ui/moveBtn';
 import playerUnit from '../units/playerUnit';
 import npcUnit from '../units/npcUnit';
 import Turn from '../logic/turn';
+import { saveBattle } from '../../utils/gameManagement';
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -50,6 +51,7 @@ export default class Game extends Phaser.Scene {
           new playerUnit(
             unit.character,
             unit.team,
+            unit.hp,
             this,
             unit.x,
             unit.y,
@@ -61,6 +63,7 @@ export default class Game extends Phaser.Scene {
           new npcUnit(
             unit.character,
             unit.team,
+            unit.hp,
             this,
             unit.x,
             unit.y,
@@ -75,7 +78,7 @@ export default class Game extends Phaser.Scene {
     this.turn.initRound(this.unitPool);
     let first = this.turn.getCurrentUnit().unitId;
     this.unitPool.find((unit) => {
-      if (unit.id === first && unit) {
+      if (unit.character._id === first && unit) {
         unit.setInd(true);
       }
     });
@@ -85,20 +88,22 @@ export default class Game extends Phaser.Scene {
     this.events.on('move', handleMovement, this);
     this.events.on('newRound', handleNewRound, this);
 
+    // handle unit turn indicators
     function handleIndicator(data) {
       this.unitPool.forEach((unit) => {
-        if (unit.id === data.unitId) {
+        if (unit.character._id === data.unitId) {
           unit.setInd(data.set);
         }
       });
     }
 
-    function handleMovement(dir) {
+    // handle unit movement/attack
+    async function handleMovement(dir) {
       const current = this.turn.getCurrentUnit();
       let newPos;
-      // get the new position and unit instance
+      // get unit instance and calculate new position
       const unit = this.unitPool.find((unit) => {
-        if (unit.id === current.unitId) {
+        if (unit.character._id === current.unitId) {
           newPos = unit.getNewPos(dir);
           return unit;
         }
@@ -119,6 +124,13 @@ export default class Game extends Phaser.Scene {
       } else if (occupied.team !== unit.team) {
         return;
       }
+      // save battle
+      const unitStates = [];
+      this.unitPool.forEach((unit) => {
+        unitStates.push(unit.getUnitState());
+      });
+      const res = await saveBattle(unitStates);
+      console.log(res);
       this.turn.next();
     }
 
@@ -126,7 +138,7 @@ export default class Game extends Phaser.Scene {
       this.turn.initRound(this.unitPool);
       first = this.turn.getCurrentUnit().unitId;
       this.unitPool.find((unit) => {
-        if (unit.id === first) {
+        if (unit.character._id === first) {
           unit.setInd(true);
         }
       });

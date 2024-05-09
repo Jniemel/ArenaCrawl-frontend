@@ -1,8 +1,8 @@
 import UnitBase from './unitBase';
 
 export default class npcUnit extends UnitBase {
-  constructor(character, team, scene, x, y, texture, frame) {
-    super(character, team, scene, x, y, texture, frame);
+  constructor(character, team, hp, scene, x, y, texture, frame) {
+    super(character, team, hp, scene, x, y, texture, frame);
   }
 
   setInd(bool) {

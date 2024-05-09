@@ -1,8 +1,8 @@
 import UnitBase from './unitBase';
 
 export default class playerUnit extends UnitBase {
-  constructor(character, team, scene, x, y, texture, frame) {
-    super(character, team, scene, x, y, texture, frame);
+  constructor(character, team, hp, scene, x, y, texture, frame) {
+    super(character, team, hp, scene, x, y, texture, frame);
 
     // turn indicator
     this.indicator = scene.add.graphics();

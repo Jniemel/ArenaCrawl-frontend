@@ -59,3 +59,20 @@ export async function startBattle() {
     return { error: err };
   }
 }
+
+export async function saveBattle(unitStates) {
+  try {
+    const res = await fetch('http://localhost:3000/api/battle/save', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ unitStates }),
+    });
+    return res.status;
+  } catch (err) {
+    console.log(err.name);
+    return { error: err };
+  }
+}

@@ -2,6 +2,7 @@ export default class InitUnit {
   constructor(character, team, x, y, player, texture) {
     this.team = team;
     this.character = character;
+    this.hp = character.maxHp;
     this.x = x;
     this.y = y;
     this.player = player;
