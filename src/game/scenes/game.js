@@ -70,33 +70,6 @@ export default class Game extends Phaser.Scene {
       }
     });
 
-    /*
-    // teams
-    this.southTeam = createTeam(
-      this.initialState.south,
-      'south',
-      this,
-      'player',
-    );
-    this.northTeam = createTeam(this.initialState.north, 'north', this);
-    placeTeam(this.southTeam, 'south', 592, this);
-    placeTeam(this.northTeam, 'north', 48, this);
-
-    // fill unit pool
-    // this.unitPool = this.physics.add.group();
-    this.unitPool = this.southTeam.concat(this.northTeam);
-    
-    // collision detection
-    
-    this.physics.add.collider(
-      this.unitPool,
-      this.unitPool,
-      handleCollision,
-      null,
-      this,
-    );
-    */
-
     // turn manager
     this.turn = new Turn(this.events);
     this.turn.initRound(this.unitPool);
@@ -149,16 +122,6 @@ export default class Game extends Phaser.Scene {
       this.turn.next();
     }
 
-    /*
-    let collided = false;
-    function handleCollision(unit, target) {
-      if (!collided) {
-        console.log(unit, target);
-        collided = true;
-      }
-    }
-    */
-
     function handleNewRound() {
       this.turn.initRound(this.unitPool);
       first = this.turn.getCurrentUnit().unitId;
@@ -170,37 +133,3 @@ export default class Game extends Phaser.Scene {
     }
   }
 }
-
-/*
-function createTeam(champs, team, scene, player = 'npc') {
-  let arr = [];
-  champs.forEach((champ) => {
-    const texture = champ.class.charAt(0).toLowerCase() + champ.class.slice(1);
-    if (player === 'player') {
-      arr.push(new playerUnit(champ, team, scene, 0, 0, texture));
-    } else {
-      arr.push(new npcUnit(champ, team, scene, 0, 0, texture));
-    }
-  });
-  return arr;
-}
-
-function placeTeam(champs, team, yPos) {
-  let y = yPos;
-  let x = 208;
-  let count = 1;
-  champs.forEach((champ) => {
-    if (count === 4 && team === 'south') {
-      y -= 32;
-      x = 208;
-    } else if (count === 4 && team === 'north') {
-      y += 32;
-      x = 208;
-    }
-    champ.x = x;
-    champ.y = y;
-    x += 32;
-    count += 1;
-  });
-}
-*/
