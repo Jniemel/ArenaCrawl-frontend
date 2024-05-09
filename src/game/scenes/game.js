@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import MoveBtn from '../ui/moveBtn';
-import Turn from '../logic/turn';
 import playerUnit from '../units/playerUnit';
 import npcUnit from '../units/npcUnit';
+import Turn from '../logic/turn';
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -11,7 +11,8 @@ export default class Game extends Phaser.Scene {
   }
 
   init(data) {
-    this.initialState = data.battleData;
+    // this.initialState = data.battleData;
+    this.units = data.units;
   }
 
   preload() {}
@@ -42,6 +43,34 @@ export default class Game extends Phaser.Scene {
       count += 1;
     });
 
+    // create game objects for units and store into unit pool
+    this.units.forEach((unit) => {
+      if (unit.player === 'player') {
+        this.unitPool.push(
+          new playerUnit(
+            unit.character,
+            unit.team,
+            this,
+            unit.x,
+            unit.y,
+            unit.texture,
+          ),
+        );
+      } else {
+        this.unitPool.push(
+          new npcUnit(
+            unit.character,
+            unit.team,
+            this,
+            unit.x,
+            unit.y,
+            unit.texture,
+          ),
+        );
+      }
+    });
+
+    /*
     // teams
     this.southTeam = createTeam(
       this.initialState.south,
@@ -56,9 +85,9 @@ export default class Game extends Phaser.Scene {
     // fill unit pool
     // this.unitPool = this.physics.add.group();
     this.unitPool = this.southTeam.concat(this.northTeam);
-
+    
     // collision detection
-    /*
+    
     this.physics.add.collider(
       this.unitPool,
       this.unitPool,
@@ -142,6 +171,7 @@ export default class Game extends Phaser.Scene {
   }
 }
 
+/*
 function createTeam(champs, team, scene, player = 'npc') {
   let arr = [];
   champs.forEach((champ) => {
@@ -173,3 +203,4 @@ function placeTeam(champs, team, yPos) {
     count += 1;
   });
 }
+*/

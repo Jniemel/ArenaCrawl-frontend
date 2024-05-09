@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 // scenes
 import Preloader from './scenes/preloader.js';
 import Game from './scenes/game.js';
+import initBattle from './scenes/initBattle.js';
 
 export const config = {
   parent: 'game-container',
@@ -15,7 +16,7 @@ export const config = {
       gravity: { y: 0 },
     },
   },
-  scene: [Preloader, Game],
+  scene: [Preloader, initBattle, Game],
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
   },
