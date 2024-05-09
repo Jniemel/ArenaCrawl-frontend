@@ -26,4 +26,15 @@ export default class npcUnit extends UnitBase {
       });
     }
   }
+
+  getUnitState() {
+    return {
+      character: this.character,
+      player: 'npc',
+      team: this.team,
+      hp: this.hp,
+      x: this.x,
+      y: this.y,
+    };
+  }
 }

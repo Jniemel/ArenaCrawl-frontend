@@ -33,4 +33,15 @@ export default class playerUnit extends UnitBase {
       this.alpha = 1;
     }
   }
+
+  getUnitState() {
+    return {
+      character: this.character,
+      player: 'player',
+      team: this.team,
+      hp: this.hp,
+      x: this.x,
+      y: this.y,
+    };
+  }
 }

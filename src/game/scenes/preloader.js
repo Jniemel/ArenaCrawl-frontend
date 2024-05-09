@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
+import InitUnit from '../units/initUnit';
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
     super('preloader');
+    this.units = [];
   }
 
   preload() {
@@ -29,7 +31,24 @@ export default class Preloader extends Phaser.Scene {
     if (data.battleData.status === 'init') {
       this.scene.start('initBattle', data);
     } else {
-      this.scene.start('game', data);
+      console.log(data.battleData);
+      // prepare saved data
+      data.battleData.unitStates.forEach((unit) => {
+        const texture =
+          unit.character.class.charAt(0).toLowerCase() +
+          unit.character.class.slice(1);
+        this.units.push(
+          new InitUnit(
+            unit.character,
+            unit.team,
+            unit.x,
+            unit.y,
+            unit.player,
+            texture,
+          ),
+        );
+      });
+      this.scene.start('game', { units: this.units });
     }
   }
 }

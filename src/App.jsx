@@ -40,10 +40,10 @@ function App() {
           element={
             !gameState ? (
               <Navigate to='/auth' />
-            ) : gameState.battle.status === 'active' ? (
-              <Navigate to='/battle' />
-            ) : (
+            ) : gameState.battle.status === 'inactive' ? (
               <Home gameState={gameState} />
+            ) : (
+              <Navigate to='/battle' battleState={gameState.battle} />
             )
           }
         />

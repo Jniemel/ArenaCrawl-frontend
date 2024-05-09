@@ -69,14 +69,4 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.x = x;
     this.y = y;
   }
-
-  getUnitState() {
-    return {
-      character: this.character,
-      team: this.team,
-      hp: this.hp,
-      x: this.x,
-      y: this.y,
-    };
-  }
 }
