@@ -9,7 +9,7 @@ export default class playerUnit extends UnitBase {
     this.indicator.lineStyle(1, 0xffff00, 1);
     this.indicator.x = this.x;
     this.indicator.y = this.y;
-    this.indicator.strokeRect(this.x, this.y, 32, 32);
+    this.indicator.strokeRect(-this.width / 2, -this.height / 2, 32, 32);
     this.indicator.setVisible(false);
   }
 
