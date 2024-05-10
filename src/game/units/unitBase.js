@@ -13,7 +13,9 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     // enable physics
     scene.physics.world.enable(this);
     scene.add.existing(this);
+    this.body.setCollideWorldBounds(true);
 
+    // create health/mana bars
     this.createUnitBars();
   }
 
@@ -40,6 +42,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
       this.width - 4,
       2,
     );
+
     // mana bar fg
     this.manaBarFg = this.scene.add.graphics();
     this.updateManaBar();
@@ -66,6 +69,16 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
       ((this.width - 4) * this.mp) / this.mp,
       2,
     );
+  }
+
+  updateBarPositions() {
+    // Setting this.bar.x = this.x and this.bar.y = this.y DOES NOT WORK
+    // Destroying and remaking bars works
+    this.healthBarBg.destroy(this.scene);
+    this.healthBarFg.destroy(this.scene);
+    this.manaBarBg.destroy(this.scene);
+    this.manaBarFg.destroy(this.scene);
+    this.createUnitBars();
   }
 
   die() {
@@ -122,6 +135,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   setPos(x, y) {
     this.x = x;
     this.y = y;
+    this.updateBarPositions();
   }
 
   melee(target) {

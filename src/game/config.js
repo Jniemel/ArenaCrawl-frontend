@@ -8,8 +8,8 @@ import initBattle from './scenes/initBattle.js';
 export const config = {
   parent: 'game-container',
   type: Phaser.AUTO,
-  height: 820,
-  width: 480,
+  height: 660,
+  width: 416,
   physics: {
     default: 'arcade',
     arcade: {

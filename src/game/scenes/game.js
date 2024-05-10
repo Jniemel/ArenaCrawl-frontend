@@ -29,12 +29,12 @@ export default class Game extends Phaser.Scene {
     // create ui
     // movement buttons
     const dirs = ['ne', 'n', 'nw', 'w', 'wait', 'e', 'sw', 's', 'se'];
-    let btnsStartX = 438;
-    let btnsStartY = 671;
+    let btnsStartX = 374;
+    let btnsStartY = 512;
     let count = 1;
     dirs.forEach((dir) => {
       if (count % 4 === 0) {
-        btnsStartX = 438;
+        btnsStartX = 374;
         btnsStartY += 58;
         count = 1;
       }
@@ -85,8 +85,8 @@ export default class Game extends Phaser.Scene {
 
     // event listeners
     this.events.on('setIndicator', handleIndicator, this);
-    this.events.on('move', handleMovement, this);
     this.events.on('newRound', handleNewRound, this);
+    this.events.on('move', handleMovement, this);
 
     // handle unit turn indicators
     function handleIndicator(data) {

@@ -18,7 +18,7 @@ export default class initBattle extends Phaser.Scene {
     this.southTeam = createTeam(this.initialState.south, 'south', 'player');
     this.northTeam = createTeam(this.initialState.north, 'north');
     // set x- and y-values for units
-    placeTeam(this.southTeam, 'south', 592);
+    placeTeam(this.southTeam, 'south', 432);
     placeTeam(this.northTeam, 'north', 48);
     // merge into one unit pool
     this.units = this.southTeam.concat(this.northTeam);
@@ -38,15 +38,15 @@ function createTeam(champs, team, player = 'npc') {
 
 function placeTeam(champs, team, yPos) {
   let y = yPos;
-  let x = 208;
+  let x = 176;
   let count = 1;
   champs.forEach((champ) => {
     if (count === 4 && team === 'south') {
       y -= 32;
-      x = 208;
+      x = 176;
     } else if (count === 4 && team === 'north') {
       y += 32;
-      x = 208;
+      x = 176;
     }
     champ.x = x;
     champ.y = y;
