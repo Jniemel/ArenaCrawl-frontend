@@ -39,11 +39,14 @@ export default class Preloader extends Phaser.Scene {
         this.units.push(
           new InitUnit(
             unit.character,
+            unit.player,
             unit.team,
+            texture,
             unit.x,
             unit.y,
-            unit.player,
-            texture,
+            unit.hp,
+            unit.mp,
+            unit.played,
           ),
         );
       });

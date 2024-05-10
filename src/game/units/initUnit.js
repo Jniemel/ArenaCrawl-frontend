@@ -1,11 +1,13 @@
 export default class InitUnit {
-  constructor(character, team, x, y, player, texture) {
-    this.team = team;
+  constructor(character, player, team, texture, x, y, hp, mp, played) {
     this.character = character;
-    this.hp = character.maxHp;
+    this.player = player;
+    this.team = team;
+    this.texture = texture;
     this.x = x;
     this.y = y;
-    this.player = player;
-    this.texture = texture;
+    this.hp = hp ? hp : character.maxHp;
+    this.mp = mp ? mp : character.maxMp;
+    this.played = played ? true : false;
   }
 }

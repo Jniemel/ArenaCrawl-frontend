@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import UnitBase from './unitBase';
 
 export default class playerUnit extends UnitBase {
-  constructor(character, team, hp, scene, x, y, texture, frame) {
-    super(character, team, hp, scene, x, y, texture, frame);
+  constructor(character, team, hp, mp, played, scene, x, y, texture, frame) {
+    super(character, team, hp, mp, played, scene, x, y, texture, frame);
 
     if (
       this.scene.game.renderer instanceof Phaser.Renderer.WebGL.WebGLRenderer
@@ -96,8 +96,10 @@ export default class playerUnit extends UnitBase {
       player: 'player',
       team: this.team,
       hp: this.hp,
+      mp: this.mp,
       x: this.x,
       y: this.y,
+      played: this.played,
     };
   }
 }

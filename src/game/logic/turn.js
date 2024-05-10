@@ -8,6 +8,19 @@ export default class Turn {
   }
 
   initRound(unitPool) {
+    // make sure not all units have played turn
+    let turnLeft = false;
+    unitPool.find((unit) => {
+      if (!unit.isDone()) {
+        turnLeft = true;
+      }
+    });
+    // if all turns played, reset
+    if (!turnLeft) {
+      unitPool.forEach((unit) => {
+        unit.setDone();
+      });
+    }
     // split teams from unit pool
     let teamSouth = [];
     let teamNorth = [];
@@ -21,6 +34,16 @@ export default class Turn {
     // sort the turn order of the teams units
     const sQue = this.sortQueue(teamSouth);
     const nQue = this.sortQueue(teamNorth);
+    // check if queues are empty
+    if (!sQue.length) {
+      this.queue = nQue;
+      this.currentUnitId = this.queue[this.queue.length - 1].unitId;
+      return;
+    } else if (!nQue.length) {
+      this.queue = sQue;
+      this.currentUnitId = this.queue[this.queue.length - 1].unitId;
+      return;
+    }
     // set starting player (who has the fastest unit)
     this.player =
       sQue[sQue.length - 1].dex >= nQue[nQue.length - 1].dex
@@ -35,11 +58,19 @@ export default class Turn {
     }
     for (let i = 0; i < len; i++) {
       if (this.player === 'south') {
-        this.queue.push(nQue[i]);
-        this.queue.push(sQue[i]);
+        if (nQue[i]) {
+          this.queue.push(nQue[i]);
+        }
+        if (sQue[i]) {
+          this.queue.push(sQue[i]);
+        }
       } else {
-        this.queue.push(sQue[i]);
-        this.queue.push(nQue[i]);
+        if (sQue[i]) {
+          this.queue.push(sQue[i]);
+        }
+        if (nQue[i]) {
+          this.queue.push(nQue[i]);
+        }
       }
     }
     // set the starting unit
@@ -50,8 +81,8 @@ export default class Turn {
   sortQueue(team) {
     let queue = [];
     team.forEach((unit) => {
-      // skip unit if dead
-      if (!unit.isDead()) {
+      // skip unit if dead or has played turn
+      if (!unit.isDead() && !unit.isDone()) {
         queue.push({
           unitId: unit.character._id,
           dex: unit.character.stats.dexterity,

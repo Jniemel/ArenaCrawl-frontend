@@ -1,12 +1,13 @@
 import Phaser from 'phaser';
 
 export default class UnitBase extends Phaser.GameObjects.Sprite {
-  constructor(character, team, hp, scene, x, y, texture, frame) {
+  constructor(character, team, hp, mp, played, scene, x, y, texture, frame) {
     super(scene, x, y, texture, frame);
     this.character = character;
     this.team = team;
     this.hp = hp;
-    this.mp = character.stats.intelligence;
+    this.mp = mp;
+    this.played = played;
     this.dead = this.hp <= 0 ? true : false;
     this.scene = scene;
 
@@ -81,12 +82,20 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.createUnitBars();
   }
 
-  die() {
+  setDead() {
     this.dead = true;
   }
 
   isDead() {
     return this.dead;
+  }
+
+  setDone() {
+    this.played = this.played ? false : true;
+  }
+
+  isDone() {
+    return this.played;
   }
 
   getPos() {
@@ -165,7 +174,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     }
     this.hp -= amount;
     if (this.hp <= 0) {
-      this.die();
+      this.setDead();
     }
     this.updateHealthBar();
   }

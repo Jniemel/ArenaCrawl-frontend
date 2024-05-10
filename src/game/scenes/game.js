@@ -12,7 +12,6 @@ export default class Game extends Phaser.Scene {
   }
 
   init(data) {
-    // this.initialState = data.battleData;
     this.units = data.units;
   }
 
@@ -52,6 +51,8 @@ export default class Game extends Phaser.Scene {
             unit.character,
             unit.team,
             unit.hp,
+            unit.mp,
+            unit.played,
             this,
             unit.x,
             unit.y,
@@ -64,6 +65,8 @@ export default class Game extends Phaser.Scene {
             unit.character,
             unit.team,
             unit.hp,
+            unit.mp,
+            unit.played,
             this,
             unit.x,
             unit.y,
@@ -84,8 +87,9 @@ export default class Game extends Phaser.Scene {
     });
 
     // event listeners
-    this.events.on('setIndicator', handleIndicator, this);
     this.events.on('newRound', handleNewRound, this);
+    this.events.on('setIndicator', handleIndicator, this);
+    this.events.on('endTurn', handleEndTurn, this);
     this.events.on('move', handleMovement, this);
 
     // handle unit turn indicators
@@ -128,13 +132,7 @@ export default class Game extends Phaser.Scene {
       } else if (occupied.team !== unit.team) {
         unit.melee(occupied);
       }
-      // save battle
-      const unitStates = [];
-      this.unitPool.forEach((unit) => {
-        unitStates.push(unit.getUnitState());
-      });
-      this.turn.next();
-      await saveBattle(unitStates);
+      this.events.emit('endTurn', unit);
     }
 
     function checkObstacles(unit, pos) {
@@ -146,7 +144,21 @@ export default class Game extends Phaser.Scene {
       return false;
     }
 
+    async function handleEndTurn(unit) {
+      unit.setDone();
+      // save battle
+      const unitStates = [];
+      this.unitPool.forEach((unit) => {
+        unitStates.push(unit.getUnitState());
+      });
+      await saveBattle(unitStates);
+      this.turn.next();
+    }
+
     function handleNewRound() {
+      this.unitPool.forEach((unit) => {
+        unit.setDone();
+      });
       this.turn.initRound(this.unitPool);
       first = this.turn.getCurrentUnit().unitId;
       this.unitPool.find((unit) => {

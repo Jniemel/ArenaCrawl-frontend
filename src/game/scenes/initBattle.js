@@ -31,7 +31,7 @@ function createTeam(champs, team, player = 'npc') {
   let arr = [];
   champs.forEach((champ) => {
     const texture = champ.class.charAt(0).toLowerCase() + champ.class.slice(1);
-    arr.push(new InitUnit(champ, team, 0, 0, player, texture));
+    arr.push(new InitUnit(champ, player, team, texture, 0, 0));
   });
   return arr;
 }
