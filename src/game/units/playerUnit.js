@@ -40,6 +40,29 @@ export default class playerUnit extends UnitBase {
     }
   }
 
+  collision() {
+    this.scene.tweens.chain({
+      targets: this,
+      tweens: [
+        {
+          angle: 8,
+          duration: 25,
+          ease: 'linear',
+        },
+        {
+          angle: -8,
+          duration: 25,
+          ease: 'linear',
+        },
+        {
+          angle: 0,
+          duration: 10,
+        },
+      ],
+      loop: 2,
+    });
+  }
+
   getUnitState() {
     return {
       character: this.character,

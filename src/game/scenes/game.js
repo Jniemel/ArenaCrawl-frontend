@@ -112,11 +112,15 @@ export default class Game extends Phaser.Scene {
       const occupied = this.unitPool.find(
         (unit) => JSON.stringify(unit.getPos()) === JSON.stringify(newPos),
       );
-      // if not occupied -> move
+      // if not occupied -> check if wall/obstacle -> if ok, move
       // if occupied by ally -> swap
       // if occupied by enemy -> attack
       if (!occupied) {
-        unit.setPos(newPos.x, newPos.y);
+        if (!checkObstacles(unit, newPos)) {
+          unit.setPos(newPos.x, newPos.y);
+        } else {
+          return;
+        }
       } else if (occupied.team === unit.team) {
         const swapPos = unit.getPos();
         occupied.setPos(swapPos.x, swapPos.y);
@@ -129,8 +133,17 @@ export default class Game extends Phaser.Scene {
       this.unitPool.forEach((unit) => {
         unitStates.push(unit.getUnitState());
       });
-      await saveBattle(unitStates);
       this.turn.next();
+      await saveBattle(unitStates);
+    }
+
+    function checkObstacles(unit, pos) {
+      const tile = wallsLayer.getTileAtWorldXY(pos.x, pos.y);
+      if (tile && tile.properties.collides) {
+        unit.collision();
+        return true;
+      }
+      return false;
     }
 
     function handleNewRound() {
