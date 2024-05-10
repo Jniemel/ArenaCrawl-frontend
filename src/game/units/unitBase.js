@@ -6,12 +6,66 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.character = character;
     this.team = team;
     this.hp = hp;
+    this.mp = character.stats.intelligence;
     this.dead = this.hp <= 0 ? true : false;
     this.scene = scene;
 
     // enable physics
     scene.physics.world.enable(this);
     scene.add.existing(this);
+
+    this.createUnitBars();
+  }
+
+  createUnitBars() {
+    // Health bar bg
+    this.healthBarBg = this.scene.add.graphics();
+    this.healthBarBg.fillStyle(0xff0000, 1);
+    this.healthBarBg.fillRect(
+      this.x + 2 - this.width / 2,
+      this.y + 14,
+      this.width - 4,
+      2,
+    );
+    // Health bar fg
+    this.healthBarFg = this.scene.add.graphics();
+    this.updateHealthBar();
+
+    // Mana bar bg
+    this.manaBarBg = this.scene.add.graphics();
+    this.manaBarBg.fillStyle(0x000000, 1);
+    this.manaBarBg.fillRect(
+      this.x + 2 - this.width / 2,
+      this.y + 16,
+      this.width - 4,
+      2,
+    );
+    // mana bar fg
+    this.manaBarFg = this.scene.add.graphics();
+    this.updateManaBar();
+  }
+
+  updateHealthBar() {
+    this.healthBarFg.clear();
+    this.healthBarFg.fillStyle(0x32cd32, 1);
+    this.healthBarFg.fillRect(
+      this.x + 2 - this.width / 2,
+      this.y + 14,
+      ((this.width - 4) * this.hp) / this.character.maxHp,
+      2,
+    );
+  }
+
+  updateManaBar() {
+    this.manaBarFg.clear();
+    this.manaBarFg.fillStyle(0x0000cd, 1);
+    this.manaBarFg.fillRect(
+      this.x + 2 - this.width / 2,
+      this.y + 16,
+      // #todo change to maxMp in future
+      ((this.width - 4) * this.mp) / this.mp,
+      2,
+    );
   }
 
   die() {
@@ -99,6 +153,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     if (this.hp <= 0) {
       this.die();
     }
+    this.updateHealthBar();
   }
 
   dodgeHit() {
