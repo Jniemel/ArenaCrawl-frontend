@@ -1,8 +1,27 @@
+import Phaser from 'phaser';
 import UnitBase from './unitBase';
 
 export default class playerUnit extends UnitBase {
   constructor(character, team, hp, scene, x, y, texture, frame) {
     super(character, team, hp, scene, x, y, texture, frame);
+
+    if (
+      this.scene.game.renderer instanceof Phaser.Renderer.WebGL.WebGLRenderer
+    ) {
+      this.fx = this.preFX.addGlow(0x1e90ff, 1, 0);
+      this.fx.active = false;
+      this.renderer = 'webGL';
+    } else {
+      this.renderer = 'canvas';
+      this.indicator = scene.add.graphics();
+      this.indicator
+        .lineStyle(1, 0x0000cd, 1)
+        .strokeRect(-this.width / 2, -this.height / 2, 32, 32)
+        .setDepth(0)
+        .setVisible(false);
+      this.indicator.x = this.x;
+      this.indicator.y = this.y;
+    }
 
     /*
     // yellow rectangle around character
@@ -17,11 +36,19 @@ export default class playerUnit extends UnitBase {
   }
 
   setInd(bool) {
-    /*
-    this.indicator.x = this.x;
-    this.indicator.y = this.y;
-    this.indicator.setVisible(bool);
-    */
+    if (bool && this.renderer === 'canvas') {
+      this.indicator.x = this.x;
+      this.indicator.y = this.y;
+      this.indicator.setVisible(bool);
+    } else if (bool && this.renderer === 'webGL') {
+      this.fx.active = bool;
+    } else if (!bool) {
+      if (this.renderer === 'canvas') {
+        this.indicator.setVisible(bool);
+      } else {
+        this.fx.active = bool;
+      }
+    }
 
     if (bool && this.fadeTween) {
       this.fadeTween.restart();

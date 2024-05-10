@@ -20,60 +20,60 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   }
 
   createUnitBars() {
-    // Health bar bg
+    // health bar bg
     this.healthBarBg = this.scene.add.graphics();
-    this.healthBarBg.fillStyle(0xff0000, 1);
-    this.healthBarBg.fillRect(
-      this.x + 2 - this.width / 2,
-      this.y + 14,
-      this.width - 4,
-      2,
-    );
-    // Health bar fg
+    this.healthBarBg
+      .fillStyle(0xff0000, 1)
+      .fillRect(this.x + 2 - this.width / 2, this.y + 14, this.width - 4, 2)
+      .setDepth(1);
+
+    // health bar fg
     this.healthBarFg = this.scene.add.graphics();
+    this.healthBarFg.setDepth(1);
+
     this.updateHealthBar();
 
     // Mana bar bg
     this.manaBarBg = this.scene.add.graphics();
-    this.manaBarBg.fillStyle(0x000000, 1);
-    this.manaBarBg.fillRect(
-      this.x + 2 - this.width / 2,
-      this.y + 16,
-      this.width - 4,
-      2,
-    );
+    this.manaBarBg
+      .fillStyle(0x000000, 1)
+      .fillRect(this.x + 2 - this.width / 2, this.y + 16, this.width - 4, 2)
+      .setDepth(1);
 
     // mana bar fg
     this.manaBarFg = this.scene.add.graphics();
+    this.manaBarFg.setDepth(1);
     this.updateManaBar();
   }
 
   updateHealthBar() {
-    this.healthBarFg.clear();
-    this.healthBarFg.fillStyle(0x32cd32, 1);
-    this.healthBarFg.fillRect(
-      this.x + 2 - this.width / 2,
-      this.y + 14,
-      ((this.width - 4) * this.hp) / this.character.maxHp,
-      2,
-    );
+    this.healthBarFg
+      .clear()
+      .fillStyle(0x32cd32, 1)
+      .fillRect(
+        this.x + 2 - this.width / 2,
+        this.y + 14,
+        ((this.width - 4) * this.hp) / this.character.maxHp,
+        2,
+      );
   }
 
   updateManaBar() {
-    this.manaBarFg.clear();
-    this.manaBarFg.fillStyle(0x0000cd, 1);
-    this.manaBarFg.fillRect(
-      this.x + 2 - this.width / 2,
-      this.y + 16,
-      // #todo change to maxMp in future
-      ((this.width - 4) * this.mp) / this.mp,
-      2,
-    );
+    this.manaBarFg
+      .clear()
+      .fillStyle(0x0000cd, 1)
+      .fillRect(
+        this.x + 2 - this.width / 2,
+        this.y + 16,
+        // #todo change to maxMp in future
+        ((this.width - 4) * this.mp) / this.mp,
+        2,
+      );
   }
 
   updateBarPositions() {
     // Setting this.bar.x = this.x and this.bar.y = this.y DOES NOT WORK
-    // Destroying and remaking bars works
+    // Destroying and remaking bars works "for now"
     this.healthBarBg.destroy(this.scene);
     this.healthBarFg.destroy(this.scene);
     this.manaBarBg.destroy(this.scene);
@@ -140,10 +140,10 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
 
   melee(target) {
     // dmg = (wpnDmg + wepSkill + strModif) - armor
-    // strModif = (str - 15) / 2
+    // strModif = (str - 10) / 2
     // #todo wepSkill, +1 for every 5 levels of weapon skill
     const dmg = Math.ceil(
-      rollDice(8) + (this.character.stats.strenght - 15) / 2,
+      rollDice(8) + (this.character.stats.strenght - 10) / 2,
     ); /* + wepSkill */
     const targetAC = target.calcAC();
     if (dmg > targetAC) {
@@ -154,8 +154,8 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   }
 
   calcAC() {
-    // AC = armor rating + dexModif ((dex - 15 )/ 2)
-    return Math.ceil(3 + (this.character.stats.dexterity - 15) / 2); /* + AR */
+    // AC = armor rating + dexModif ((dex - 10 )/ 2)
+    return Math.ceil(3 + (this.character.stats.dexterity - 10) / 2); /* + AR */
   }
 
   receiveHit(source, amount) {

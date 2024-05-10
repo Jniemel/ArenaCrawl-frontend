@@ -12,14 +12,20 @@ export default class npcUnit extends UnitBase {
     } else {
       this.renderer = 'canvas';
       this.indicator = scene.add.graphics();
-      this.indicator.lineStyle(1, 0xff0000, 1);
+      this.indicator
+        .lineStyle(1, 0xff0000, 1)
+        .strokeRect(-this.width / 2, -this.height / 2, 32, 32)
+        .setDepth(0);
       this.indicator.x = this.x;
       this.indicator.y = this.y;
-      this.indicator.strokeRect(-this.width / 2, -this.height / 2, 32, 32);
     }
   }
 
   setInd(bool) {
+    if (this.renderer === 'canvas') {
+      this.indicator.x = this.x;
+      this.indicator.y = this.y;
+    }
     if (bool) {
       this.scaleTween = this.scene.tweens.add({
         targets: this,
