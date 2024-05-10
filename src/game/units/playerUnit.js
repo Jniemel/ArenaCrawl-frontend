@@ -22,6 +22,7 @@ export default class playerUnit extends UnitBase {
     this.indicator.y = this.y;
     this.indicator.setVisible(bool);
     */
+
     if (bool && this.fadeTween) {
       this.fadeTween.restart();
     } else if (bool && !this.fadeTween) {

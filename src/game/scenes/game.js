@@ -122,15 +122,14 @@ export default class Game extends Phaser.Scene {
         occupied.setPos(swapPos.x, swapPos.y);
         unit.setPos(newPos.x, newPos.y);
       } else if (occupied.team !== unit.team) {
-        return;
+        unit.melee(occupied);
       }
       // save battle
       const unitStates = [];
       this.unitPool.forEach((unit) => {
         unitStates.push(unit.getUnitState());
       });
-      const res = await saveBattle(unitStates);
-      console.log(res);
+      await saveBattle(unitStates);
       this.turn.next();
     }
 

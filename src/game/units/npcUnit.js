@@ -4,12 +4,13 @@ import UnitBase from './unitBase';
 export default class npcUnit extends UnitBase {
   constructor(character, team, hp, scene, x, y, texture, frame) {
     super(character, team, hp, scene, x, y, texture, frame);
-
     if (
       this.scene.game.renderer instanceof Phaser.Renderer.WebGL.WebGLRenderer
     ) {
-      this.preFX.addGlow(0xff0000, 1, 0);
+      this.fx = this.preFX.addGlow(0xff0000, 1, 0);
+      this.renderer = 'webGL';
     } else {
+      this.renderer = 'canvas';
       this.indicator = scene.add.graphics();
       this.indicator.lineStyle(1, 0xff0000, 1);
       this.indicator.x = this.x;
@@ -31,30 +32,6 @@ export default class npcUnit extends UnitBase {
       });
     }
   }
-
-  /*
-  setInd(bool) {
-    if (bool) {
-      this.scene.tweens.chain({
-        targets: this,
-        tweens: [
-          {
-            scaleX: 1.3,
-            scaleY: 1.3,
-            alpha: { from: 1, to: 0.4 },
-            duration: 200,
-          },
-          {
-            alpha: 1,
-            scaleX: 1,
-            scaleY: 1,
-            duration: 0,
-          },
-        ],
-      });
-    }
-  }
-	*/
 
   getUnitState() {
     return {
