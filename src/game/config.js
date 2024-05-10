@@ -16,6 +16,9 @@ export const config = {
       gravity: { y: 0 },
     },
   },
+  render: {
+    pixelArt: true,
+  },
   scene: [Preloader, initBattle, Game],
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,

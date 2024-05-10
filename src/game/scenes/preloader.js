@@ -31,7 +31,6 @@ export default class Preloader extends Phaser.Scene {
     if (data.battleData.status === 'init') {
       this.scene.start('initBattle', data);
     } else {
-      console.log(data.battleData);
       // prepare saved data
       data.battleData.unitStates.forEach((unit) => {
         const texture =

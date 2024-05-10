@@ -4,6 +4,8 @@ export default class playerUnit extends UnitBase {
   constructor(character, team, hp, scene, x, y, texture, frame) {
     super(character, team, hp, scene, x, y, texture, frame);
 
+    /*
+    // yellow rectangle around character
     // turn indicator
     this.indicator = scene.add.graphics();
     this.indicator.lineStyle(1, 0xffff00, 1);
@@ -11,12 +13,15 @@ export default class playerUnit extends UnitBase {
     this.indicator.y = this.y;
     this.indicator.strokeRect(-this.width / 2, -this.height / 2, 32, 32);
     this.indicator.setVisible(false);
+    */
   }
 
   setInd(bool) {
+    /*
     this.indicator.x = this.x;
     this.indicator.y = this.y;
     this.indicator.setVisible(bool);
+    */
     if (bool && this.fadeTween) {
       this.fadeTween.restart();
     } else if (bool && !this.fadeTween) {
@@ -26,7 +31,7 @@ export default class playerUnit extends UnitBase {
         ease: 'Sine.easeInOut',
         yoyo: true,
         repeat: -1,
-        duration: 600,
+        duration: 500,
       });
     } else {
       this.fadeTween.pause();
