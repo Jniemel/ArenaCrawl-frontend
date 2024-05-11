@@ -9,6 +9,8 @@ export default class Game extends Phaser.Scene {
   constructor() {
     super('game');
     this.unitPool = [];
+    this.errorState = false;
+    this.wait = false;
   }
 
   init(data) {
@@ -49,6 +51,7 @@ export default class Game extends Phaser.Scene {
         this.unitPool.push(
           new playerUnit(
             unit.character,
+            unit.player,
             unit.team,
             unit.hp,
             unit.mp,
@@ -63,6 +66,7 @@ export default class Game extends Phaser.Scene {
         this.unitPool.push(
           new npcUnit(
             unit.character,
+            unit.player,
             unit.team,
             unit.hp,
             unit.mp,
@@ -96,29 +100,186 @@ export default class Game extends Phaser.Scene {
     this.events.on('newRound', handleNewRound, this);
     this.events.on('setIndicator', handleIndicator, this);
     this.events.on('endTurn', handleEndTurn, this);
+    this.events.on('triggerNpcAction', handleNpcAction, this);
     this.events.on('move', handleMovement, this);
     this.events.on('unitDied', handleDeath, this);
 
+    /// DEBUGGING ///
+    /*
+    const closest = this.add.graphics();
+    closest.lineStyle(2, 0xff0000, 1).strokeRect(0, 0, 32, 32).setVisible(true);
+    this.events.on('markClosest', markClosest, this);
+    function markClosest(unit) {
+      closest.x = unit.x - 16;
+      closest.y = unit.y - 16;
+    }
+    
+    const chosenMove = this.add.graphics();
+    chosenMove
+      .lineStyle(2, 0x00008b, 1)
+      .strokeRect(0, 0, 32, 32)
+      .setVisible(true);
+    this.events.on('markMove', markMove, this);
+    function markMove(chosen) {
+      chosenMove.x = chosen.x - 16;
+      chosenMove.y = chosen.y - 16;
+    }
+    */
+    ///////////////////
+
+    function handleNewRound() {
+      this.unitPool.forEach((u) => {
+        u.setDone();
+      });
+      this.turn.initRound(this.unitPool);
+      const first = this.turn.getCurrentUnit().unitId;
+      this.events.emit('setIndicator', {
+        set: true,
+        unitId: first,
+      });
+    }
+
     // handle unit turn indicators
     function handleIndicator(data) {
-      this.unitPool.forEach((unit) => {
+      this.unitPool.find((unit) => {
         if (unit.character._id === data.unitId) {
           unit.setInd(data.set);
+          // trigger npc action
+          if (data.set && unit.player === 'npc') {
+            this.events.emit('triggerNpcAction', unit);
+          }
         }
       });
     }
 
-    function handleDeath(unitId) {
-      this.turn.removeUnitFromQue(unitId);
+    async function handleEndTurn(unit) {
+      this.wait = true;
+      unit.setDone();
+      let res;
+      // save battle
+      if (!this.errorState) {
+        const unitStates = [];
+        this.unitPool.forEach((u) => {
+          unitStates.push(u.getUnitState());
+        });
+        res = await saveBattle(unitStates);
+        if (res === 200) {
+          const delay = 500;
+          setTimeout(() => {
+            this.turn.next();
+            this.wait = false;
+            return;
+          }, delay);
+        } else {
+          alert(`ErrorState activated, saving off. Response: ${res}`);
+          this.errorState = true;
+          return;
+        }
+      } else {
+        alert('ErrorState active, try refreshing page.');
+        this.wait = false;
+      }
+    }
+
+    function handleNpcAction(npc) {
+      const actions = npcPossibleActions(npc, this);
+      const chosen = npc.chooseAction(actions);
+
+      // DEBUGGING
+      // this.events.emit('markMove', chosen);
+
+      switch (chosen.action) {
+        case 'melee':
+          npc.melee(
+            this.unitPool.find((u) => u.character._id === chosen.targetId),
+          );
+          break;
+        // #TODO add ranged and spell actions
+        case 'ranged':
+        case 'spell':
+          break;
+        case 'move':
+          npc.setPos(chosen.x, chosen.y);
+          break;
+        default:
+          break;
+      }
+      this.events.emit('endTurn', npc);
+    }
+
+    function npcPossibleActions(unit, self) {
+      const dirs = [
+        { dir: 'n', x: 0, y: -32 }, // north
+        { dir: 'nw', x: -32, y: -32 }, // north-west
+        { dir: 'ne', x: 32, y: -32 }, // north-east
+        { dir: 'w', x: 32, y: 0 }, // west
+        { dir: 'e', x: -32, y: 0 }, // east
+        { dir: 's', x: 0, y: 32 }, // south
+        { dir: 'sw', x: 32, y: 32 }, // south-west
+        { dir: 'se', x: -32, y: 32 }, // south-east
+      ];
+      // possible actions
+      const actions = [];
+      // possible movement/melee actions
+      dirs.forEach((dir) => {
+        const pos = { x: unit.x + dir.x, y: unit.y + dir.y };
+        // check if pos occupied
+        const occupied = self.unitPool.find(
+          (u) => JSON.stringify(u.getPos()) === JSON.stringify(pos),
+        );
+        // if not occupied and not obstacle, add 'move' as possible action
+        if (!occupied) {
+          if (!checkObstacles(unit, pos, false)) {
+            actions.push({ x: pos.x, y: pos.y, action: 'move' });
+          }
+        } else {
+          if (occupied.team === unit.team) {
+            actions.push({ x: pos.x, y: pos.y, action: 'swap' });
+          } else if (occupied.team !== unit.team) {
+            actions.push({
+              hp: occupied.hp,
+              targetId: occupied.character._id,
+              action: 'melee',
+            });
+          }
+        }
+      });
+      // #todo add ranged / spell actions
+      /*
+      // possible ranged actions
+      if (ranged) {
+        if (unit.character.equipment.ranged !== 'empty') {
+          actions.push({ x: 0, y: 0, action: 'ranged' });
+        }
+        if (unit.character.spells.lenght) {
+          actions.push({ x: 0, y: 0, action: 'spell' });
+        }
+      }
+      */
+      return actions;
+    }
+
+    function checkObstacles(unit, pos, player = true) {
+      const tile = wallsLayer.getTileAtWorldXY(pos.x, pos.y);
+      if (tile && tile.properties.collides) {
+        if (player) {
+          unit.collision();
+        }
+        return true;
+      }
+      return false;
     }
 
     // handle unit movement/attack
-    async function handleMovement(dir) {
+    function handleMovement(dir) {
       // get unit game object
       const current = this.turn.getCurrentUnit();
       const unit = this.unitPool.find(
         (u) => u.character._id === current.unitId,
       );
+      if (unit.player !== 'player' || this.wait) {
+        return;
+      }
       if (dir === 'wait') {
         this.events.emit('endTurn', unit);
         return;
@@ -147,97 +308,8 @@ export default class Game extends Phaser.Scene {
       this.events.emit('endTurn', unit);
     }
 
-    function checkObstacles(unit, pos, player = true) {
-      const tile = wallsLayer.getTileAtWorldXY(pos.x, pos.y);
-      if (tile && tile.properties.collides) {
-        if (player) {
-          unit.collision();
-        }
-        return true;
-      }
-      return false;
-    }
-
-    // npc check possible actions
-    function npcPossibleActions(unit) {
-      const dirs = [
-        { dir: 'n', x: 0, y: -32 }, // north
-        { dir: 'nw', x: -32, y: -32 }, // north-west
-        { dir: 'ne', x: 32, y: -32 }, // north-east
-        { dir: 'w', x: 32, y: 0 }, // west
-        { dir: 'e', x: -32, y: 0 }, // east
-        { dir: 's', x: 0, y: 32 }, // south
-        { dir: 'sw', x: 32, y: 32 }, // south-west
-        { dir: 'se', x: -32, y: 32 }, // south-east
-      ];
-      // possible actions
-      const actions = [];
-      // let ranged = true;
-      // possible movement/melee actions
-      dirs.forEach((dir) => {
-        const pos = { x: this.x + dir.x, y: this.y + dir.y };
-        // check if pos occupied
-        const occupied = this.unitPool.find(
-          (u) => JSON.stringify(u.getPos()) === JSON.stringify(pos),
-        );
-        // if not occupied and not obstacle, add 'move' as possible action
-        if (!occupied) {
-          if (!checkObstacles(unit, pos, false)) {
-            actions.push({ x: pos.x, y: pos.y, action: 'move' });
-          }
-        } else {
-          if (occupied.team === unit.team) {
-            actions.push({ x: pos.x, y: pos.y, action: 'swap' });
-          } else if (occupied.team !== unit.team) {
-            actions.push({ x: pos.x, y: pos.y, action: 'melee' });
-            // if enemy units adjacent, deny ranged attacks / spells
-            // ranged = false;
-          }
-        }
-      });
-      // #todo add ranged / spell actions
-      /*
-      if (ranged) {
-        if (unit.character.equipment.ranged !== 'empty') {
-          actions.push({ x: 0, y: 0, action: 'ranged' });
-        }
-        if (unit.character.spells.lenght) {
-          actions.push({ x: 0, y: 0, action: 'spell' });
-        }
-      }
-      */
-      return actions;
-    }
-
-    async function handleEndTurn(unit) {
-      unit.setDone();
-      // save battle
-      const unitStates = [];
-      this.unitPool.forEach((u) => {
-        unitStates.push(u.getUnitState());
-      });
-      await saveBattle(unitStates);
-      this.turn.next();
-    }
-
-    function handleNewRound() {
-      this.unitPool.forEach((u) => {
-        u.setDone();
-      });
-      this.turn.initRound(this.unitPool);
-      const first = this.turn.getCurrentUnit().unitId;
-      this.events.emit('setIndicator', {
-        set: true,
-        unitId: first,
-      });
-      /*
-      first = this.turn.getCurrentUnit().unitId;
-      this.unitPool.find((u) => {
-        if (u.character._id === first) {
-          u.setInd(true);
-        }
-      });
-      */
+    function handleDeath(unitId) {
+      this.turn.removeUnitFromQue(unitId);
     }
   }
 }

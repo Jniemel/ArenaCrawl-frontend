@@ -1,9 +1,22 @@
 import Phaser from 'phaser';
 
 export default class UnitBase extends Phaser.GameObjects.Sprite {
-  constructor(character, team, hp, mp, played, scene, x, y, texture, frame) {
+  constructor(
+    character,
+    player,
+    team,
+    hp,
+    mp,
+    played,
+    scene,
+    x,
+    y,
+    texture,
+    frame,
+  ) {
     super(scene, x, y, texture, frame);
     this.character = character;
+    this.player = player;
     this.team = team;
     this.hp = hp;
     this.mp = mp;
@@ -96,7 +109,6 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.scene.tweens.add({
       targets: this,
       angle: 90,
-      y: this.y + 5,
       duration: 500,
     });
     if (this.healthBarBg) {
@@ -172,6 +184,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     }
     this.hp -= amount;
     if (this.hp <= 0) {
+      this.y += 5;
       this.setDead();
     }
     this.updateHealthBar();

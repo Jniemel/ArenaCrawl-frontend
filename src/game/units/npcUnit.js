@@ -2,8 +2,21 @@ import Phaser from 'phaser';
 import UnitBase from './unitBase';
 
 export default class npcUnit extends UnitBase {
-  constructor(character, team, hp, mp, played, scene, x, y, texture, frame) {
-    super(character, team, hp, mp, played, scene, x, y, texture, frame);
+  constructor(
+    character,
+    player,
+    team,
+    hp,
+    mp,
+    played,
+    scene,
+    x,
+    y,
+    texture,
+    frame,
+  ) {
+    super(character, player, team, hp, mp, played, scene, x, y, texture, frame);
+
     if (
       this.scene.game.renderer instanceof Phaser.Renderer.WebGL.WebGLRenderer
     ) {
@@ -21,6 +34,7 @@ export default class npcUnit extends UnitBase {
     }
   }
 
+  // turn indicator
   setInd(bool) {
     if (this.renderer === 'canvas') {
       this.indicator.x = this.x;
@@ -39,6 +53,60 @@ export default class npcUnit extends UnitBase {
     }
   }
 
+  chooseAction(actions) {
+    const moveActions = [];
+    const meleeActions = [];
+    const rangedActions = [];
+    const spellActions = [];
+    actions.forEach((a) => {
+      switch (a.action) {
+        case 'move':
+          moveActions.push(a);
+          break;
+        case 'melee':
+          meleeActions.push(a);
+          break;
+        case 'ranged':
+          rangedActions.push(a);
+          break;
+        case 'spell':
+          spellActions.push(a);
+          break;
+        default:
+          break;
+      }
+    });
+    // if enemy in melee -> no spells or ranged
+    if (meleeActions.length) {
+      return meleeActions.reduce((prev, cur) =>
+        prev.hp < cur.hp ? prev : cur,
+      );
+    } else if (spellActions.length || rangedActions.length) {
+      // #TODO choose spell or ranged action
+      return;
+    } else {
+      let closestEnemy = null;
+      let closestdistance = 9999;
+      // get closest enemy
+      this.scene.unitPool.forEach((u) => {
+        if (u.team !== this.team && !u.isDead()) {
+          const distance = calcDistance(this.x, this.y, u.x, u.y);
+          if (distance < closestdistance) {
+            closestEnemy = u;
+            closestdistance = distance;
+          }
+        }
+      });
+
+      // DEBUGGING, MARK FOUND CLOSEST ENEMY
+      this.scene.events.emit('markClosest', closestEnemy);
+
+      // choose move action
+      return chooseMoveAction(moveActions, closestEnemy);
+    }
+  }
+
+  // get unit state for saving battle
   getUnitState() {
     return {
       character: this.character,
@@ -51,4 +119,26 @@ export default class npcUnit extends UnitBase {
       played: this.played,
     };
   }
+}
+
+function calcDistance(unitX, unitY, enemyX, enemyY) {
+  return Math.sqrt(Math.pow(enemyX - unitX, 2) + Math.pow(enemyY - unitY, 2));
+}
+
+function chooseMoveAction(moveActions, closestEnemy) {
+  let optimalMove = null;
+  let bestResult = null;
+  moveActions.forEach((move) => {
+    const distanceAfterMove = calcDistance(
+      move.x,
+      move.y,
+      closestEnemy.x,
+      closestEnemy.y,
+    );
+    if (!bestResult || distanceAfterMove < bestResult) {
+      bestResult = distanceAfterMove;
+      optimalMove = move;
+    }
+  });
+  return optimalMove;
 }
