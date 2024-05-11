@@ -17,7 +17,12 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.body.setCollideWorldBounds(true);
 
     // create health/mana bars
-    this.createUnitBars();
+    if (!this.dead) {
+      this.createUnitBars();
+      this.setDepth(1);
+    } else {
+      this.setDead();
+    }
   }
 
   createUnitBars() {
@@ -26,11 +31,11 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.healthBarBg
       .fillStyle(0xff0000, 1)
       .fillRect(this.x + 2 - this.width / 2, this.y + 14, this.width - 4, 2)
-      .setDepth(1);
+      .setDepth(2);
 
     // health bar fg
     this.healthBarFg = this.scene.add.graphics();
-    this.healthBarFg.setDepth(1);
+    this.healthBarFg.setDepth(2);
 
     this.updateHealthBar();
 
@@ -39,11 +44,11 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.manaBarBg
       .fillStyle(0x000000, 1)
       .fillRect(this.x + 2 - this.width / 2, this.y + 16, this.width - 4, 2)
-      .setDepth(1);
+      .setDepth(2);
 
     // mana bar fg
     this.manaBarFg = this.scene.add.graphics();
-    this.manaBarFg.setDepth(1);
+    this.manaBarFg.setDepth(2);
     this.updateManaBar();
   }
 
@@ -72,18 +77,30 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
       );
   }
 
-  updateBarPositions() {
+  updateBarPositions(remove = false) {
     // Setting this.bar.x = this.x and this.bar.y = this.y DOES NOT WORK
     // Destroying and remaking bars works "for now"
     this.healthBarBg.destroy(this.scene);
     this.healthBarFg.destroy(this.scene);
     this.manaBarBg.destroy(this.scene);
     this.manaBarFg.destroy(this.scene);
-    this.createUnitBars();
+    if (!remove) {
+      this.createUnitBars();
+    }
   }
 
   setDead() {
     this.dead = true;
+    this.setDepth(0);
+    this.scene.tweens.add({
+      targets: this,
+      angle: 90,
+      y: this.y + 5,
+      duration: 500,
+    });
+    if (this.healthBarBg) {
+      this.updateBarPositions(true);
+    }
   }
 
   isDead() {
@@ -104,41 +121,21 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
 
   // one tile: 32x32 px
   getNewPos(dir) {
-    let x = 0;
-    let y = 0;
-    switch (dir) {
-      case 'ne':
-        y = -32;
-        x = +32;
-        break;
-      case 'n':
-        y = -32;
-        break;
-      case 'nw':
-        y = -32;
-        x = -32;
-        break;
-      case 'e':
-        x = -32;
-        break;
-      case 'w':
-        x = +32;
-        break;
-      case 'se':
-        y = +32;
-        x = -32;
-        break;
-      case 's':
-        y = +32;
-        break;
-      case 'sw':
-        y = +32;
-        x = +32;
-        break;
-      default:
-        break;
+    if (dir === 'wait') {
+      return;
     }
-    return { x: this.x + x, y: this.y + y };
+    const dirs = [
+      { dir: 'n', x: 0, y: -32 }, // north
+      { dir: 'nw', x: -32, y: -32 }, // north-west
+      { dir: 'ne', x: 32, y: -32 }, // north-east
+      { dir: 'w', x: 32, y: 0 }, // west
+      { dir: 'e', x: -32, y: 0 }, // east
+      { dir: 's', x: 0, y: 32 }, // south
+      { dir: 'sw', x: 32, y: 32 }, // south-west
+      { dir: 'se', x: -32, y: 32 }, // south-east
+    ];
+    const offset = dirs.find((d) => d.dir === dir);
+    return { x: this.x + offset.x, y: this.y + offset.y };
   }
 
   setPos(x, y) {

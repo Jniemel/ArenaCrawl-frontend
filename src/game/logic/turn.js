@@ -11,7 +11,7 @@ export default class Turn {
     // make sure not all units have played turn
     let turnLeft = false;
     unitPool.find((unit) => {
-      if (!unit.isDone()) {
+      if (!unit.isDone() && !unit.isDead()) {
         turnLeft = true;
       }
     });

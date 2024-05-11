@@ -103,18 +103,18 @@ export default class Game extends Phaser.Scene {
 
     // handle unit movement/attack
     async function handleMovement(dir) {
+      // get unit game object
       const current = this.turn.getCurrentUnit();
-      let newPos;
-      // get unit instance and calculate new position
-      const unit = this.unitPool.find((unit) => {
-        if (unit.character._id === current.unitId) {
-          newPos = unit.getNewPos(dir);
-          return unit;
-        }
-      });
+      const unit = this.unitPool.find(
+        (u) => u.character._id === current.unitId,
+      );
+      if (dir === 'wait') {
+        this.events.emit('endTurn', unit);
+      }
+      const newPos = unit.getNewPos(dir);
       // check if new position occupied and return occupying unit (if any)
       const occupied = this.unitPool.find(
-        (unit) => JSON.stringify(unit.getPos()) === JSON.stringify(newPos),
+        (u) => JSON.stringify(u.getPos()) === JSON.stringify(newPos),
       );
       // if not occupied -> check if wall/obstacle -> if ok, move
       // if occupied by ally -> swap

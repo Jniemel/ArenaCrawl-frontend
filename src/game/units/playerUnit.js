@@ -35,6 +35,7 @@ export default class playerUnit extends UnitBase {
     */
   }
 
+  // turn indicator
   setInd(bool) {
     if (bool && this.renderer === 'canvas') {
       this.indicator.x = this.x;
@@ -49,7 +50,6 @@ export default class playerUnit extends UnitBase {
         this.fx.active = bool;
       }
     }
-
     if (bool && this.fadeTween) {
       this.fadeTween.restart();
     } else if (bool && !this.fadeTween) {
@@ -66,7 +66,7 @@ export default class playerUnit extends UnitBase {
       this.alpha = 1;
     }
   }
-
+  // visual effect if trying to run into a wall
   collision() {
     this.scene.tweens.chain({
       targets: this,
@@ -89,7 +89,7 @@ export default class playerUnit extends UnitBase {
       loop: 2,
     });
   }
-
+  // get unit state for saving battle
   getUnitState() {
     return {
       character: this.character,
