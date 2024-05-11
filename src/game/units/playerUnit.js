@@ -52,6 +52,9 @@ export default class playerUnit extends UnitBase {
     }
     if (bool && this.fadeTween) {
       this.fadeTween.restart();
+    } else if (!bool && this.fadeTween) {
+      this.fadeTween.pause();
+      this.alpha = 1;
     } else if (bool && !this.fadeTween) {
       this.fadeTween = this.scene.tweens.add({
         targets: this,
@@ -61,11 +64,9 @@ export default class playerUnit extends UnitBase {
         repeat: -1,
         duration: 500,
       });
-    } else {
-      this.fadeTween.pause();
-      this.alpha = 1;
     }
   }
+
   // visual effect if trying to run into a wall
   collision() {
     this.scene.tweens.chain({

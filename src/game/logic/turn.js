@@ -86,7 +86,8 @@ export default class Turn {
         queue.push({
           unitId: unit.character._id,
           dex: unit.character.stats.dexterity,
-          player: unit.team,
+          team: unit.team,
+          player: unit.player,
         });
       }
     });
@@ -118,5 +119,12 @@ export default class Turn {
 
   getCurrentUnit() {
     return { player: this.player, unitId: this.currentUnitId };
+  }
+
+  removeUnitFromQue(unitId) {
+    const index = this.queue.findIndex((i) => i.id === unitId);
+    if (index) {
+      this.queue.splice(index, 1);
+    }
   }
 }

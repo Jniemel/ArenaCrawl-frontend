@@ -91,6 +91,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
 
   setDead() {
     this.dead = true;
+    this.scene.events.emit('unitDied', this.character._id);
     this.setDepth(0);
     this.scene.tweens.add({
       targets: this,
