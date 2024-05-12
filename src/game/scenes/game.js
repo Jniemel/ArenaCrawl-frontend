@@ -11,6 +11,7 @@ export default class Game extends Phaser.Scene {
     this.unitPool = [];
     this.errorState = false;
     this.wait = false;
+    this.auto = false;
   }
 
   init(data) {
@@ -44,6 +45,34 @@ export default class Game extends Phaser.Scene {
       btnsStartX -= 79;
       count += 1;
     });
+    // auto play button
+    let waitAuto = false;
+    const autoBtn = this.add.sprite(84, 565, 'auto-btn').setInteractive();
+    autoBtn.on(
+      'pointerdown',
+      function () {
+        if (!waitAuto) {
+          this.auto = this.auto ? false : true;
+          if (this.auto) {
+            autoBtn.setTexture('auto-btn-down');
+            if (this.turn.getCurrentUnit().player === 'player') {
+              const current = this.turn.getCurrentUnit();
+              const unit = this.unitPool.find(
+                (u) => u.character._id === current.unitId,
+              );
+              this.events.emit('triggerNpcAction', unit);
+            }
+          } else {
+            autoBtn.setTexture('auto-btn');
+          }
+          waitAuto = true;
+          this.time.delayedCall(1000, () => {
+            waitAuto = false;
+          });
+        }
+      },
+      this,
+    );
 
     // create game objects for units and store into unit pool
     this.units.forEach((unit) => {
@@ -83,16 +112,12 @@ export default class Game extends Phaser.Scene {
     // turn manager
     this.turn = new Turn(this.events);
     this.turn.initRound(this.unitPool);
+    this.turn.startTurn();
+    /*
     const first = this.turn.getCurrentUnit().unitId;
     this.events.emit('setIndicator', {
       set: true,
       unitId: first,
-    });
-    /*
-    this.unitPool.find((unit) => {
-      if (unit.character._id === first && unit) {
-        unit.setInd(true);
-      }
     });
     */
 
@@ -145,7 +170,7 @@ export default class Game extends Phaser.Scene {
         if (unit.character._id === data.unitId) {
           unit.setInd(data.set);
           // trigger npc action
-          if (data.set && unit.player === 'npc') {
+          if (data.set && (unit.player === 'npc' || this.auto)) {
             this.events.emit('triggerNpcAction', unit);
           }
         }

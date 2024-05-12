@@ -2,6 +2,7 @@ export default class Turn {
   constructor(eventEmitter) {
     this.eventEmitter = eventEmitter;
     this.queue = [];
+    this.team = null;
     this.player = null;
     this.currentUnitId = null;
     this.turnNumber = 1;
@@ -44,8 +45,8 @@ export default class Turn {
       this.currentUnitId = this.queue[this.queue.length - 1].unitId;
       return;
     }
-    // set starting player (who has the fastest unit)
-    this.player =
+    // set starting team (who has the fastest unit)
+    this.team =
       sQue[sQue.length - 1].dex >= nQue[nQue.length - 1].dex
         ? 'south'
         : 'north';
@@ -57,7 +58,7 @@ export default class Turn {
       len = nQue.length;
     }
     for (let i = 0; i < len; i++) {
-      if (this.player === 'south') {
+      if (this.team === 'south') {
         if (nQue[i]) {
           this.queue.push(nQue[i]);
         }
@@ -108,6 +109,7 @@ export default class Turn {
   }
 
   startTurn() {
+    this.team = this.queue[this.queue.length - 1].team;
     this.player = this.queue[this.queue.length - 1].player;
     this.currentUnitId = this.queue[this.queue.length - 1].unitId;
     // set current units turn indicator visible and previous units indicator invisible
@@ -118,7 +120,7 @@ export default class Turn {
   }
 
   getCurrentUnit() {
-    return { player: this.player, unitId: this.currentUnitId };
+    return { team: this.team, player: this.player, unitId: this.currentUnitId };
   }
 
   removeUnitFromQue(unitId) {

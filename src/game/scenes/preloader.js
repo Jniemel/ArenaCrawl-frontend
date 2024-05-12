@@ -25,6 +25,8 @@ export default class Preloader extends Phaser.Scene {
     this.load.image('sw-btn', './assets/game/ui/sw-btn.png');
     this.load.image('se-btn', './assets/game/ui/se-btn.png');
     this.load.image('wait-btn', './assets/game/ui/wait-btn.png');
+    this.load.image('auto-btn', './assets/game/ui/auto-btn.png');
+    this.load.image('auto-btn-down', './assets/game/ui/auto-btn-pressed.png');
   }
 
   create(data) {

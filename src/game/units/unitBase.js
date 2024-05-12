@@ -234,10 +234,85 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
       },
     });
   }
+
+  // AI
+  chooseAction(actions) {
+    const moveActions = [];
+    const meleeActions = [];
+    const rangedActions = [];
+    const spellActions = [];
+    actions.forEach((a) => {
+      switch (a.action) {
+        case 'move':
+          moveActions.push(a);
+          break;
+        case 'melee':
+          meleeActions.push(a);
+          break;
+        case 'ranged':
+          rangedActions.push(a);
+          break;
+        case 'spell':
+          spellActions.push(a);
+          break;
+        default:
+          break;
+      }
+    });
+    // if enemy in melee -> no spells or ranged
+    if (meleeActions.length) {
+      return meleeActions.reduce((prev, cur) =>
+        prev.hp < cur.hp ? prev : cur,
+      );
+    } else if (spellActions.length || rangedActions.length) {
+      // #TODO choose spell or ranged action
+      return;
+    } else {
+      let closestEnemy = null;
+      let closestdistance = 9999;
+      // calc distance to all enemies to find closest
+      this.scene.unitPool.forEach((u) => {
+        if (u.team !== this.team && !u.isDead()) {
+          const distance = calcDistance(this.x, this.y, u.x, u.y);
+          if (distance < closestdistance) {
+            closestEnemy = u;
+            closestdistance = distance;
+          }
+        }
+      });
+      // DEBUGGING, MARK FOUND CLOSEST ENEMY
+      // this.scene.events.emit('markClosest', closestEnemy);
+
+      // pick the move action which brings unit closest to enemy
+      return chooseMoveAction(moveActions, closestEnemy);
+    }
+  }
 }
 
 function rollDice(sides) {
   return Math.floor(Math.random() * sides) + 1;
 }
 
-// this.setTint(0xff0000);
+// calculate euclidean distance
+function calcDistance(unitX, unitY, enemyX, enemyY) {
+  return Math.sqrt(Math.pow(enemyX - unitX, 2) + Math.pow(enemyY - unitY, 2));
+}
+
+// calculate which available move action makes the euclidean distance the smallest
+function chooseMoveAction(moveActions, closestEnemy) {
+  let optimalMove = null;
+  let bestResult = null;
+  moveActions.forEach((move) => {
+    const distanceAfterMove = calcDistance(
+      move.x,
+      move.y,
+      closestEnemy.x,
+      closestEnemy.y,
+    );
+    if (!bestResult || distanceAfterMove < bestResult) {
+      bestResult = distanceAfterMove;
+      optimalMove = move;
+    }
+  });
+  return optimalMove;
+}
