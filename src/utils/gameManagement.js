@@ -76,3 +76,20 @@ export async function saveBattle(unitStates) {
     return { error: err };
   }
 }
+
+export async function finishBattle(unitStates, result) {
+  try {
+    const res = await fetch('http://localhost:3000/api/battle/finish', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ unitStates, result }),
+    });
+    return res.status;
+  } catch (err) {
+    console.log(err.name);
+    return { error: err };
+  }
+}

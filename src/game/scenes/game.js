@@ -3,7 +3,7 @@ import MoveBtn from '../ui/moveBtn';
 import playerUnit from '../units/playerUnit';
 import npcUnit from '../units/npcUnit';
 import Turn from '../logic/turn';
-import { saveBattle } from '../../utils/gameManagement';
+import { finishBattle, saveBattle } from '../../utils/gameManagement';
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -113,13 +113,26 @@ export default class Game extends Phaser.Scene {
     this.turn = new Turn(this.events);
     this.turn.initRound(this.unitPool);
     this.turn.startTurn();
-    /*
-    const first = this.turn.getCurrentUnit().unitId;
-    this.events.emit('setIndicator', {
-      set: true,
-      unitId: first,
-    });
-    */
+
+    // check if game finished
+    function isBattleWon(unitPool) {
+      let sLeft = false;
+      let nLeft = false;
+      for (let i = 0; i < unitPool.length; i++) {
+        if (!unitPool[i].isDead() && unitPool[i].team === 'south') {
+          sLeft = true;
+        } else if (!unitPool[i].isDead() && unitPool[i].team === 'north') {
+          nLeft = true;
+        }
+        if (sLeft && nLeft) {
+          return false;
+        }
+      }
+      if (sLeft && !nLeft) {
+        return 'south';
+      }
+      return 'north';
+    }
 
     // event listeners
     this.events.on('newRound', handleNewRound, this);
@@ -128,6 +141,7 @@ export default class Game extends Phaser.Scene {
     this.events.on('triggerNpcAction', handleNpcAction, this);
     this.events.on('move', handleMovement, this);
     this.events.on('unitDied', handleDeath, this);
+    this.events.on('battleOver', handleBattleOver, this);
 
     /// DEBUGGING ///
     /*
@@ -335,6 +349,31 @@ export default class Game extends Phaser.Scene {
 
     function handleDeath(unitId) {
       this.turn.removeUnitFromQue(unitId);
+      const result = isBattleWon(this.unitPool);
+      if (result) {
+        this.events.emit('battleOver', result);
+      }
+    }
+
+    async function handleBattleOver(result) {
+      // save final unit states
+      const unitStates = [];
+      this.unitPool.forEach((u) => {
+        unitStates.push(u.getUnitState());
+      });
+      const res = await finishBattle(unitStates, result);
+      if (res === 200) {
+        this.scene.start('battleResult', { winner: result });
+        return;
+      }
+      alert(`Saving failed. Response: ${res}`);
+    }
+
+    // check if battle is over when loading the game up
+    // in case a finished battle is loaded
+    const result = isBattleWon(this.unitPool);
+    if (result) {
+      this.events.emit('battleOver', result);
     }
   }
 }
