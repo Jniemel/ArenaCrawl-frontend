@@ -358,7 +358,7 @@ export default class Game extends Phaser.Scene {
       });
       const res = await finishBattle(unitStates, result);
       if (res === 200) {
-        this.scene.start('battleResult', { winner: result });
+        this.scene.start('battleResult');
         return;
       }
       alert(`Saving failed. Response: ${res}`);

@@ -27,10 +27,14 @@ export default class Preloader extends Phaser.Scene {
     this.load.image('wait-btn', './assets/game/ui/wait-btn.png');
     this.load.image('auto-btn', './assets/game/ui/auto-btn.png');
     this.load.image('auto-btn-down', './assets/game/ui/auto-btn-pressed.png');
+    this.load.image('done-btn', './assets/game/ui/done-btn.png');
+    this.load.image('done-btn-down', './assets/game/ui/done-btn-down.png');
   }
 
   create(data) {
-    if (data.battleData.status === 'init') {
+    if (data.battleData.status === 'finished') {
+      this.scene.start('battleResult', data);
+    } else if (data.battleData.status === 'init') {
       this.scene.start('initBattle', data);
     } else {
       // prepare saved data

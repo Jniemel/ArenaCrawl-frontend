@@ -40,6 +40,7 @@ export async function TESTCMD_getNewRecruits() {
   }
 }
 
+// starts a new battle or returns active battles data
 export async function startBattle() {
   try {
     const res = await fetch('http://localhost:3000/api/battle/start', {
@@ -77,6 +78,7 @@ export async function saveBattle(unitStates) {
   }
 }
 
+// sets final state of the battle
 export async function finishBattle(unitStates, result) {
   try {
     const res = await fetch('http://localhost:3000/api/battle/finish', {
