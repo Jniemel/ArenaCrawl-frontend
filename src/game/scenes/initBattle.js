@@ -15,8 +15,12 @@ export default class initBattle extends Phaser.Scene {
 
   create() {
     // initialize units
-    this.southTeam = createTeam(this.initialState.south, 'south', 'player');
-    this.northTeam = createTeam(this.initialState.north, 'north');
+    this.southTeam = createTeam(
+      this.initialState.southUnits,
+      'south',
+      'player',
+    );
+    this.northTeam = createTeam(this.initialState.northUnits, 'north');
     // set x- and y-values for units
     placeTeam(this.southTeam, 'south', 432);
     placeTeam(this.northTeam, 'north', 48);

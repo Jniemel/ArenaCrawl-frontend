@@ -74,8 +74,6 @@ export default class Turn {
         }
       }
     }
-    // set the starting unit
-    this.currentUnitId = this.queue[this.queue.length - 1].unitId;
   }
 
   // sort turn order of the teams units based on dexterity

@@ -18,7 +18,7 @@ export default class battleResult extends Phaser.Scene {
     bg.setOrigin(0);
 
     const borderWidth = 5;
-    const bOffset = borderWidth / 2;
+    // const bOffset = borderWidth / 2;
 
     // Top border
     let topBorder = this.add.rectangle(

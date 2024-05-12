@@ -112,7 +112,6 @@ export default class Game extends Phaser.Scene {
     // turn manager
     this.turn = new Turn(this.events);
     this.turn.initRound(this.unitPool);
-    this.turn.startTurn();
 
     // check if game finished
     function isBattleWon(unitPool) {
@@ -171,11 +170,7 @@ export default class Game extends Phaser.Scene {
         u.setDone();
       });
       this.turn.initRound(this.unitPool);
-      const first = this.turn.getCurrentUnit().unitId;
-      this.events.emit('setIndicator', {
-        set: true,
-        unitId: first,
-      });
+      this.turn.startTurn();
     }
 
     // handle unit turn indicators
@@ -374,6 +369,8 @@ export default class Game extends Phaser.Scene {
     const result = isBattleWon(this.unitPool);
     if (result) {
       this.events.emit('battleOver', result);
+    } else {
+      this.turn.startTurn();
     }
   }
 }
