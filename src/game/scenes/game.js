@@ -388,10 +388,9 @@ export default class Game extends Phaser.Scene {
       this.unitPool.forEach((u) => {
         unitStates.push(u.getUnitState());
       });
-      // #TODO return battle data after saving, pass to battleResult scene
       const res = await finishBattle(unitStates, data.result, data.logMsg);
       if (res === 200) {
-        this.scene.start('battleResult');
+        window.location.reload();
         return;
       }
       alert(`Saving failed. Response: ${res}`);

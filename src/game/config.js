@@ -4,7 +4,6 @@ import Phaser from 'phaser';
 import Preloader from './scenes/preloader.js';
 import Game from './scenes/game.js';
 import initBattle from './scenes/initBattle.js';
-import battleResult from './scenes/battleResult.js';
 
 export const config = {
   parent: 'game-container',
@@ -20,7 +19,7 @@ export const config = {
   render: {
     pixelArt: true,
   },
-  scene: [Preloader, initBattle, Game, battleResult],
+  scene: [Preloader, initBattle, Game],
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
   },

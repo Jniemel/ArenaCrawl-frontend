@@ -32,9 +32,7 @@ export default class Preloader extends Phaser.Scene {
   }
 
   create(data) {
-    if (data.battleData.status === 'finished') {
-      this.scene.start('battleResult', data);
-    } else if (data.battleData.status === 'init') {
+    if (data.battleData.status === 'init') {
       this.scene.start('initBattle', data);
     } else {
       // prepare saved data
