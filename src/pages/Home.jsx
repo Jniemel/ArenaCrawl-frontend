@@ -33,7 +33,7 @@ export default function Home({ gameState }) {
         <BottomSection nav={nav} setNav={setNav} gameState={gameState} />
       </>
     ) : (
-      <BattleResult gameState={gameState} />
+      <BattleResult gameState={gameState} setViewResults={setViewResults} />
     )
   ) : (
     <GameWindow battleData={gameState.battle} setViewResults={setViewResults} />

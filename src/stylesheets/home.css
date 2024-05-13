@@ -257,3 +257,65 @@ nav .selected-window {
   transition-duration: 0.5s;
   transition-property: font-size, font-weight, transform;
 }
+
+.battle-results {
+  flex-grow: 1;
+  max-height: 90vh;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  max-width: 600px;
+  background-color: linen;
+  border: 6px solid goldenrod;
+  align-items: center;
+  margin-top: 5vh;
+  padding: 1.5em;
+  gap: 1em;
+  overflow: auto;
+}
+
+.result-header {
+  height: 25%;
+}
+
+.combat-log {
+  min-height: 200px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.log {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.8em;
+  background-color: azure;
+  border: 3px solid lightgray;
+
+  overflow: auto;
+}
+
+.log-entry {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid lightgray;
+}
+
+.log-entry > div:first-child {
+  border-right: 1px solid lightgray;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.turn-number {
+  min-width: fit-content;
+  justify-content: center;
+  align-content: center;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+}
