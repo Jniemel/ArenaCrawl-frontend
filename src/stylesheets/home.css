@@ -78,6 +78,14 @@ header button:hover {
 .stat-grid {
   display: grid;
   padding: 0.75em;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 1fr);
+}
+
+.view-battle-results {
+  display: flex;
+  justify-content: end;
+  align-items: center;
 }
 
 .team-preview {

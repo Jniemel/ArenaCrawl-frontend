@@ -6,7 +6,6 @@ import './stylesheets/app.css';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/Sign-up';
-import Battle from './pages/Battle';
 
 function App() {
   const [gameState, setGameState] = useState();
@@ -40,22 +39,8 @@ function App() {
           element={
             !gameState ? (
               <Navigate to='/auth' />
-            ) : gameState.battle.status === 'inactive' ? (
-              <Home gameState={gameState} />
             ) : (
-              <Navigate to='/battle' battleState={gameState.battle} />
-            )
-          }
-        />
-        <Route
-          path='/battle'
-          element={
-            !gameState ? (
-              <Navigate to='/auth' />
-            ) : gameState.battle.status === 'inactive' ? (
               <Home gameState={gameState} />
-            ) : (
-              <Battle battleState={gameState.battle} />
             )
           }
         />

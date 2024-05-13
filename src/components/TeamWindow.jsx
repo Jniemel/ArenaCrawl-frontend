@@ -4,9 +4,10 @@ import ChampDetails from './ChampDetails';
 
 TeamWindow.propTypes = {
   playerTeam: PropTypes.object,
+  setViewResults: PropTypes.func,
 };
 
-export default function TeamWindow({ playerTeam }) {
+export default function TeamWindow({ playerTeam, setViewResults }) {
   const team = playerTeam.champs;
   const [champ, setChamp] = useState(team[0]);
   const [selected, setSelected] = useState(team[0]._id);
@@ -32,9 +33,21 @@ export default function TeamWindow({ playerTeam }) {
         <div className='team-name'>{playerTeam.name}</div>
         <div className='stat-grid'>
           <div className='team-stat'>Money: {playerTeam.money}</div>
-          <div className='team-stat'>Stat2:</div>
-          <div className='team-stat'>Stat3:</div>
-          <div className='team-stat'>Stat4:</div>
+          <div className='team-stat'></div>
+          <div className='team-stat'>Division: </div>
+          <div className='team-stat'></div>
+          <div className='team-stat'></div>
+          <div className='team-stat'></div>
+          <div className='team-stat'></div>
+          <div className='view-battle-results'>
+            <button
+              onClick={() => {
+                setViewResults(true);
+              }}
+            >
+              Latest result
+            </button>
+          </div>
         </div>
       </div>
       <div className='team-preview'>{champList}</div>

@@ -6,9 +6,10 @@ import '../stylesheets/game.css';
 
 GameWindow.propTypes = {
   battleData: PropTypes.object,
+  setViewResults: PropTypes.func,
 };
 
-export default function GameWindow({ battleData }) {
+export default function GameWindow({ battleData, setViewResults }) {
   useEffect(() => {
     async function launchGame() {
       const game = new Phaser.Game(config);
@@ -17,8 +18,9 @@ export default function GameWindow({ battleData }) {
         game.destroy(true);
       };
     }
+    setViewResults(true);
     launchGame();
-  }, [battleData]);
+  }, [battleData, setViewResults]);
 
   return (
     <div className='game-window'>
