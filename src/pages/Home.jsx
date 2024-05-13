@@ -5,11 +5,11 @@ import HomeHeader from '../components/HomeHeader';
 import TeamWindow from '../components/TeamWindow';
 import Navigation from '../components/Navigation';
 import BottomSection from '../components/bottomSection.jsx';
+import BattleResult from '../components/BattleResult.jsx';
+import GameWindow from '../components/GameWindow.jsx';
 // stylesheets
 import '../stylesheets/home.css';
 import '../stylesheets/bottomSection.css';
-import BattleResult from '../components/BattleResult.jsx';
-import GameWindow from '../components/GameWindow.jsx';
 
 Home.propTypes = {
   gameState: PropTypes.object,
@@ -33,7 +33,7 @@ export default function Home({ gameState }) {
         <BottomSection nav={nav} setNav={setNav} gameState={gameState} />
       </>
     ) : (
-      <BattleResult battleData={gameState.battle} />
+      <BattleResult gameState={gameState} />
     )
   ) : (
     <GameWindow battleData={gameState.battle} setViewResults={setViewResults} />

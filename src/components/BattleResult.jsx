@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 
 BattleResult.propTypes = {
-  battleData: PropTypes.object,
+  gameState: PropTypes.object,
 };
 
-export default function BattleResult({ battleData }) {
-  return <h1>BattleData</h1>;
+export default function BattleResult({ gameState }) {
+  return <h1>battleData</h1>;
 }
