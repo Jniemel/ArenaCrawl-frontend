@@ -61,7 +61,7 @@ export async function startBattle() {
   }
 }
 
-export async function saveBattle(unitStates) {
+export async function saveBattle(unitStates, logMsg) {
   try {
     const res = await fetch('http://localhost:3000/api/battle/save', {
       method: 'POST',
@@ -69,7 +69,7 @@ export async function saveBattle(unitStates) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ unitStates }),
+      body: JSON.stringify({ unitStates, logMsg }),
     });
     return res.status;
   } catch (err) {

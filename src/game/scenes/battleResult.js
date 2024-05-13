@@ -30,7 +30,6 @@ export default class battleResult extends Phaser.Scene {
     let bRight = this.add.rectangle(416 - bWidth, 0, bWidth, 660, 0xb8860b);
     bRight.setOrigin(0);
 
-    console.log(this.results);
     if (!this.results) {
       const text = this.add.text(75, 100, 'Unable to load the results', {
         fontFamily: 'Arial',

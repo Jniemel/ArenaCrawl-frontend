@@ -121,10 +121,12 @@ export default class Turn {
     return { team: this.team, player: this.player, unitId: this.currentUnitId };
   }
 
-  removeUnitFromQue(unitId) {
-    const index = this.queue.findIndex((i) => i.id === unitId);
-    if (index) {
-      this.queue.splice(index, 1);
+  skipDeadUnit() {
+    this.queue.pop();
+    if (!this.queue.length) {
+      this.eventEmitter.emit('newRound');
+      return;
     }
+    this.startTurn();
   }
 }

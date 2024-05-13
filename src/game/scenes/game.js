@@ -111,7 +111,6 @@ export default class Game extends Phaser.Scene {
 
     // turn manager
     this.turn = new Turn(this.events);
-    this.turn.initRound(this.unitPool);
 
     // check if game finished
     function isBattleWon(unitPool) {
@@ -139,7 +138,6 @@ export default class Game extends Phaser.Scene {
     this.events.on('endTurn', handleEndTurn, this);
     this.events.on('triggerNpcAction', handleNpcAction, this);
     this.events.on('move', handleMovement, this);
-    this.events.on('unitDied', handleDeath, this);
     this.events.on('battleOver', handleBattleOver, this);
 
     /// DEBUGGING ///
@@ -177,6 +175,11 @@ export default class Game extends Phaser.Scene {
     function handleIndicator(data) {
       this.unitPool.find((unit) => {
         if (unit.character._id === data.unitId) {
+          // check if unit died before its turn
+          if (unit.isDead()) {
+            this.turn.skipDeadUnit();
+            return;
+          }
           unit.setInd(data.set);
           // trigger npc action
           if (data.set && (unit.player === 'npc' || this.auto)) {
@@ -186,17 +189,30 @@ export default class Game extends Phaser.Scene {
       });
     }
 
-    async function handleEndTurn(unit) {
+    async function handleEndTurn(data) {
+      data.unit.setDone();
       this.wait = true;
-      unit.setDone();
-      let res;
-      // save battle
       if (!this.errorState) {
+        // if unit killed, check if battle over
+        if (data.logMsg.action === 'kill') {
+          const result = isBattleWon(this.unitPool);
+          if (result) {
+            const delay = 3000;
+            setTimeout(() => {
+              this.events.emit('battleOver', {
+                result: result,
+                logMsg: data.logMsg,
+              });
+              return;
+            }, delay);
+          }
+        }
+        // save unit states
         const unitStates = [];
         this.unitPool.forEach((u) => {
           unitStates.push(u.getUnitState());
         });
-        res = await saveBattle(unitStates);
+        const res = await saveBattle(unitStates, data.logMsg);
         if (res === 200) {
           const delay = 500;
           setTimeout(() => {
@@ -218,27 +234,34 @@ export default class Game extends Phaser.Scene {
     function handleNpcAction(npc) {
       const actions = npcPossibleActions(npc, this);
       const chosen = npc.chooseAction(actions);
+      let log = null;
+      let target = null;
 
       // DEBUGGING
       // this.events.emit('markMove', chosen);
 
       switch (chosen.action) {
         case 'melee':
-          npc.melee(
-            this.unitPool.find((u) => u.character._id === chosen.targetId),
+          target = this.unitPool.find(
+            (u) => u.character._id === chosen.targetId,
           );
+          log = npc.melee(target);
+          if (target.isDead()) {
+            log.action = 'kill';
+          }
           break;
         // #TODO add ranged and spell actions
         case 'ranged':
         case 'spell':
           break;
         case 'move':
-          npc.setPos(chosen.x, chosen.y);
+          log = npc.setPos(chosen.x, chosen.y);
           break;
         default:
+          log = chosen;
           break;
       }
-      this.events.emit('endTurn', npc);
+      this.events.emit('endTurn', { unit: npc, logMsg: log });
     }
 
     function npcPossibleActions(unit, self) {
@@ -251,6 +274,7 @@ export default class Game extends Phaser.Scene {
         { dir: 's', x: 0, y: 32 }, // south
         { dir: 'sw', x: 32, y: 32 }, // south-west
         { dir: 'se', x: -32, y: 32 }, // south-east
+        { dir: 'wait', x: 0, y: 0 }, // south-east
       ];
       // possible actions
       const actions = [];
@@ -326,37 +350,46 @@ export default class Game extends Phaser.Scene {
       // if not occupied -> check if wall/obstacle -> if ok, move
       // if occupied by ally -> swap
       // if occupied by enemy -> attack
+      let log = null;
       if (!occupied) {
         if (!checkObstacles(unit, newPos)) {
-          unit.setPos(newPos.x, newPos.y);
+          log = unit.setPos(newPos.x, newPos.y);
         } else {
           return;
         }
       } else if (occupied.team === unit.team) {
         const swapPos = unit.getPos();
-        occupied.setPos(swapPos.x, swapPos.y);
-        unit.setPos(newPos.x, newPos.y);
+        const swapLogTarget = occupied.setPos(swapPos.x, swapPos.y);
+        const swapLogUnit = unit.setPos(newPos.x, newPos.y);
+        // combine the two log messages
+        log = {
+          action: 'swap',
+          unitId: swapLogUnit.unitId,
+          unitName: swapLogUnit.name,
+          unitX: swapLogUnit.x,
+          unitY: swapLogUnit.y,
+          targetId: swapLogTarget.unitId,
+          targetName: swapLogTarget.name,
+          targetX: swapLogTarget.x,
+          targetY: swapLogTarget.y,
+        };
       } else if (occupied.team !== unit.team) {
-        unit.melee(occupied);
+        log = unit.melee(occupied);
+        if (occupied.isDead()) {
+          log.action = 'kill';
+        }
       }
-      this.events.emit('endTurn', unit);
+      this.events.emit('endTurn', { unit: unit, logMsg: log });
     }
 
-    function handleDeath(unitId) {
-      this.turn.removeUnitFromQue(unitId);
-      const result = isBattleWon(this.unitPool);
-      if (result) {
-        this.events.emit('battleOver', result);
-      }
-    }
-
-    async function handleBattleOver(result) {
+    async function handleBattleOver(data) {
       // save final unit states
       const unitStates = [];
       this.unitPool.forEach((u) => {
         unitStates.push(u.getUnitState());
       });
-      const res = await finishBattle(unitStates, result);
+      // #TODO return battle data after saving, pass to battleResult scene
+      const res = await finishBattle(unitStates, data.result, data.logMsg);
       if (res === 200) {
         this.scene.start('battleResult');
         return;
@@ -368,8 +401,9 @@ export default class Game extends Phaser.Scene {
     // in case a finished battle is loaded
     const result = isBattleWon(this.unitPool);
     if (result) {
-      this.events.emit('battleOver', result);
+      this.events.emit('battleOver', { result: result, logMsg: null });
     } else {
+      this.turn.initRound(this.unitPool);
       this.turn.startTurn();
     }
   }

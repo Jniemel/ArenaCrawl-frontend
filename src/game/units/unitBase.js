@@ -104,16 +104,12 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
 
   setDead() {
     this.dead = true;
-    this.scene.events.emit('unitDied', this.character._id);
     this.setDepth(0);
     this.scene.tweens.add({
       targets: this,
       angle: 90,
       duration: 500,
     });
-    if (this.healthBarBg) {
-      this.updateBarPositions(true);
-    }
   }
 
   isDead() {
@@ -155,21 +151,39 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.x = x;
     this.y = y;
     this.updateBarPositions();
+    // for battle log
+    return {
+      action: 'move',
+      unitId: this.character._id,
+      name: this.character.name,
+      x: this.x,
+      y: this.y,
+    };
   }
 
   melee(target) {
     // dmg = (wpnDmg + wepSkill + strModif) - armor
     // strModif = (str - 10) / 2
     // #todo wepSkill, +1 for every 5 levels of weapon skill
-    const dmg = Math.ceil(
-      rollDice(8) + (this.character.stats.strenght - 10) / 2,
+    const rollHit = Math.ceil(
+      rollDice(12) + (this.character.stats.strenght - 10) / 2,
     ); /* + wepSkill */
     const targetAC = target.calcAC();
-    if (dmg > targetAC) {
-      target.receiveHit('physical', dmg - targetAC);
+    const dmg = rollHit - targetAC;
+    if (dmg > 0) {
+      target.receiveHit('physical', dmg);
     } else {
       target.dodgeHit();
     }
+    // for battle log
+    return {
+      action: 'melee',
+      unitId: this.character._id,
+      name: this.character.name,
+      targetId: target.character._id,
+      targetName: target.character.name,
+      damage: dmg,
+    };
   }
 
   calcAC() {
@@ -185,7 +199,10 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.hp -= amount;
     if (this.hp <= 0) {
       this.y += 5;
+      // this.scene.turn.removeUnitFromQue(this.character._id);
+      this.updateBarPositions(true);
       this.setDead();
+      return;
     }
     this.updateHealthBar();
   }
@@ -267,7 +284,7 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     } else if (spellActions.length || rangedActions.length) {
       // #TODO choose spell or ranged action
       return;
-    } else {
+    } else if (moveActions.length) {
       let closestEnemy = null;
       let closestdistance = 9999;
       // calc distance to all enemies to find closest
@@ -285,6 +302,12 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
 
       // pick the move action which brings unit closest to enemy
       return chooseMoveAction(moveActions, closestEnemy);
+    } else {
+      return {
+        action: 'wait',
+        unitId: this.character._id,
+        name: this.character.name,
+      };
     }
   }
 }
