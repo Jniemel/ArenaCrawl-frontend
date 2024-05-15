@@ -164,13 +164,28 @@ header button:hover {
 .det-stats {
   display: flex;
   justify-content: center;
-  border-bottom: 1px dashed black;
+  border-bottom: 1px solid black;
 }
 
 .det-stats > div {
   flex-grow: 1;
   display: flex;
   justify-content: center;
+}
+
+.det-equipment {
+  border-bottom: 1px solid black;
+  padding-bottom: 3px;
+  flex-direction: column;
+}
+
+.equipment-slot div:first-child {
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.equipment-slot div:nth-child(2) {
+  text-align: center;
 }
 
 .details-section {

@@ -52,7 +52,7 @@ export default function TeamWindow({ playerTeam, setViewResults }) {
       </div>
       <div className='team-preview'>{champList}</div>
       <div className='champ-details'>
-        <ChampDetails champ={champ} />
+        <ChampDetails champ={champ} diplayEquipment={true} />
       </div>
     </section>
   );
