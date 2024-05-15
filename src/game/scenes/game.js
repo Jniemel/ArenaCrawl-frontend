@@ -391,7 +391,7 @@ export default class Game extends Phaser.Scene {
         unitStates.push(u.getUnitState());
       });
       const res = await finishBattle(unitStates, data.result, data.logMsg);
-      if (res === 200) {
+      if (res.status === 200) {
         window.location.reload();
         return;
       }
