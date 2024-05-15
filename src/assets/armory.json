@@ -3,24 +3,24 @@
     {
       "name": "Padded shirt",
       "price": "250",
-      "stat": "2"
+      "AC": "2"
     },
     {
       "name": "Leather vest",
       "price": "350",
-      "stat": "3"
+      "AC": "3"
     }
   ],
   "shields": [
     {
       "name": "Small shield",
       "price": "200",
-      "stat": "2"
+      "AC": "2"
     },
     {
       "name": "Buckler",
       "price": "400",
-      "stat": "4"
+      "AC": "4"
     }
   ]
 }
