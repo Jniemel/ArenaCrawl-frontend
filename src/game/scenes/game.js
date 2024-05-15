@@ -213,7 +213,7 @@ export default class Game extends Phaser.Scene {
           unitStates.push(u.getUnitState());
         });
         const res = await saveBattle(unitStates, data.logMsg);
-        if (res === 200) {
+        if (res.status === 200) {
           const delay = 500;
           setTimeout(() => {
             this.turn.next();
@@ -221,7 +221,9 @@ export default class Game extends Phaser.Scene {
             return;
           }, delay);
         } else {
-          alert(`ErrorState activated, saving off. Response: ${res}`);
+          alert(
+            `ErrorState activated, saving off. Error: ${res.statusText} Status: ${res.status}`,
+          );
           this.errorState = true;
           return;
         }
@@ -393,7 +395,7 @@ export default class Game extends Phaser.Scene {
         window.location.reload();
         return;
       }
-      alert(`Saving failed. Response: ${res}`);
+      alert(`Saving failed. Error: ${res.statusText} Status: ${res.status}`);
     }
 
     // check if battle is over when loading the game up

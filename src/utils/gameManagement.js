@@ -57,7 +57,7 @@ export async function startBattle() {
     return { error: 'response status not 200' };
   } catch (err) {
     console.log(err.name);
-    return { error: err };
+    return { error: err.statusText };
   }
 }
 
@@ -71,10 +71,10 @@ export async function saveBattle(unitStates, logMsg) {
       },
       body: JSON.stringify({ unitStates, logMsg }),
     });
-    return res.status;
+    return res;
   } catch (err) {
-    console.log(err.name);
-    return { error: err };
+    console.log(err, err.status);
+    return { error: err.statusText, status: err.status };
   }
 }
 
@@ -89,9 +89,9 @@ export async function finishBattle(unitStates, result) {
       },
       body: JSON.stringify({ unitStates, result }),
     });
-    return res.status;
+    return res;
   } catch (err) {
     console.log(err.name);
-    return { error: err };
+    return { error: err.statusText, status: err.status };
   }
 }
