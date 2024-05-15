@@ -3,10 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 ChampDetails.propTypes = {
   champ: PropTypes.object,
-  diplayEquipment: PropTypes.bool,
+  recruitment: PropTypes.bool,
 };
 
-export default function ChampDetails({ champ, diplayEquipment }) {
+export default function ChampDetails({ champ, recruitment }) {
   const stats = Object.entries(champ.stats);
   const statList = stats.map((stat) => {
     return (
@@ -30,11 +30,10 @@ export default function ChampDetails({ champ, diplayEquipment }) {
           <h3 style={{ color: champ.cssColor }}>{champ.class}</h3>
         </div>
       </div>
-      <div className='det-stats'>{statList}</div>
-
+      <div className='det-stats-main'>{statList}</div>
       <div
         className='det-equipment'
-        style={{ display: diplayEquipment ? 'flex' : 'none' }}
+        style={{ display: recruitment ? 'none' : 'flex' }}
       >
         <div className='equipment-slot'>
           <div>{`Hands: `}</div>
@@ -47,6 +46,23 @@ export default function ChampDetails({ champ, diplayEquipment }) {
         <div className='equipment-slot'>
           <div>{`Chest: `}</div>
           <div>{`${champ.equipment.chest.name} (AC${champ.equipment.chest.AC})`}</div>
+        </div>
+      </div>
+      <div className='det-stats-other'>
+        <div>
+          <div>{`Age: ${champ.age}`}</div>
+          <div>{`Hp: ${champ.maxHp}`}</div>
+          <div>{`Mp: ${champ.maxMp}`}</div>
+        </div>
+        <div style={{ display: recruitment ? 'none' : 'flex' }}>
+          <div>{`K: xx`}</div>
+          <div>{`D: xx`}</div>
+          <div>{`K/D: xx`}</div>
+        </div>
+        <div style={{ display: recruitment ? 'none' : 'flex' }}>
+          <div>{`Bat: xx`}</div>
+          <div>{`Inj: xx`}</div>
+          <div></div>
         </div>
       </div>
     </div>

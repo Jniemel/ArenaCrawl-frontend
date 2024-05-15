@@ -78,7 +78,7 @@ export default function Recruitment({
           <div className='recruit-preview'>
             <ChampDetails
               champ={selectedRecruit.recruitee}
-              diplayEquipment={false}
+              recruitment={true}
             />
             <div className='buy-recruit'>
               <button onClick={handleBuyClick}>Buy</button>
