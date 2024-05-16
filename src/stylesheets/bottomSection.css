@@ -104,6 +104,11 @@ td {
   width: 25%;
 }
 
+.table-row-selected {
+  background-color: cornflowerblue;
+  color: white;
+}
+
 .training-window {
   display: flex;
   justify-content: center;

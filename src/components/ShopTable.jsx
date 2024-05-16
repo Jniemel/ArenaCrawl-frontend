@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 ShopTable.propTypes = {
@@ -7,6 +8,7 @@ ShopTable.propTypes = {
 };
 
 export default function ShopTable({ nav, items }) {
+  const [selectedItem, setSelectedItem] = useState();
   let key;
   switch (nav.window) {
     case 'weapons':
@@ -19,14 +21,22 @@ export default function ShopTable({ nav, items }) {
       break;
   }
 
-  const displayData = items.map((entry) => {
+  const displayData = items.map((item) => {
     return (
-      <tr key={uuidv4()}>
-        <td>{entry.name}</td>
-        <td>{entry.price}</td>
+      <tr
+        key={uuidv4()}
+        className={
+          selectedItem === item ? 'table-row-selected' : 'item-list-row'
+        }
+        onClick={() => {
+          setSelectedItem(item);
+        }}
+      >
+        <td>{item.name}</td>
+        <td>{item.price}</td>
         <td>
-          {entry[key] > 1 && entry[key]}
-          {key === 'dies' && `d${entry.sides}`}
+          {item[key] > 1 && item[key]}
+          {key === 'dies' && `d${item.sides}`}
         </td>
       </tr>
     );
