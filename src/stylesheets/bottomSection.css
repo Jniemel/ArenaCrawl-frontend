@@ -117,6 +117,8 @@ td {
   background-color: var(--default-bg-color);
   color: black;
   font-size: 14px;
+  transition-property: border-color, color;
+  transition-duration: 0.5s;
 }
 
 .buy-cell div:hover {
