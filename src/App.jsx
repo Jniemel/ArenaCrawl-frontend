@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import storageAvailable from './utils/localStorage';
 import './stylesheets/app.css';
 
 // pages
@@ -11,6 +12,8 @@ function App() {
   const [gameState, setGameState] = useState();
   const [signUp, setSignUp] = useState();
   const [isLoading, setLoading] = useState(true);
+  const [shopLoading, setShopLoading] = useState(true);
+  const [shopInventory, setShopInventory] = useState(null);
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -28,6 +31,36 @@ function App() {
     dataFetch();
   }, []);
 
+  useEffect(() => {
+    const shopDataFetch = async () => {
+      let saveLocally = false;
+      if (storageAvailable('localStorage')) {
+        if (localStorage.getItem('shopInventory')) {
+          setShopInventory(JSON.parse(localStorage.getItem('shopInventory')));
+          setShopLoading(false);
+          return;
+        } else {
+          saveLocally = true;
+        }
+      }
+      const res = await fetch('http://localhost:3000/api/equipment/inventory', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      let json = null;
+      if (res.ok) {
+        json = await res.json();
+        if (saveLocally) {
+          localStorage.setItem('shopInventory', JSON.stringify(json));
+        }
+      }
+      setShopInventory(json);
+      setShopLoading(false);
+    };
+    shopDataFetch();
+  }, []);
+
   return isLoading ? (
     <h1>Loading...</h1>
   ) : (
@@ -40,7 +73,11 @@ function App() {
             !gameState ? (
               <Navigate to='/auth' />
             ) : (
-              <Home gameState={gameState} />
+              <Home
+                gameState={gameState}
+                shopLoading={shopLoading}
+                shopInventory={shopInventory}
+              />
             )
           }
         />

@@ -13,9 +13,11 @@ import '../stylesheets/bottomSection.css';
 
 Home.propTypes = {
   gameState: PropTypes.object,
+  shopLoading: PropTypes.bool,
+  shopInventory: PropTypes.object,
 };
 
-export default function Home({ gameState }) {
+export default function Home({ gameState, shopLoading, shopInventory }) {
   const [nav, setNav] = useState({ window: 'recruitment', sub: null });
   const [viewResults, setViewResults] = useState();
 
@@ -30,7 +32,13 @@ export default function Home({ gameState }) {
           setViewResults={setViewResults}
         />
         <Navigation nav={nav} setNav={setNav} />
-        <BottomSection nav={nav} setNav={setNav} gameState={gameState} />
+        <BottomSection
+          nav={nav}
+          setNav={setNav}
+          gameState={gameState}
+          shopLoading={shopLoading}
+          ShopInventory={shopInventory}
+        />
       </>
     ) : (
       <BattleResult gameState={gameState} setViewResults={setViewResults} />

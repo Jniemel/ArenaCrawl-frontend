@@ -9,9 +9,17 @@ BottomSection.propTypes = {
   nav: PropTypes.object,
   setNav: PropTypes.func,
   gameState: PropTypes.object,
+  shopLoading: PropTypes.bool,
+  shopInventory: PropTypes.object,
 };
 
-export default function BottomSection({ nav, setNav, gameState }) {
+export default function BottomSection({
+  nav,
+  setNav,
+  gameState,
+  shopLoading,
+  shopInventory,
+}) {
   let shop = null;
   if (
     nav.window === 'weapon' ||
@@ -23,7 +31,14 @@ export default function BottomSection({ nav, setNav, gameState }) {
 
   return (
     <>
-      {shop && <Shop nav={nav} setNav={setNav} />}
+      {shop && (
+        <Shop
+          nav={nav}
+          setNav={setNav}
+          loading={shopLoading}
+          inventory={shopInventory}
+        />
+      )}
       {nav.window === 'training' && <TrainingGrounds />}
       {nav.window === 'recruitment' && (
         <Recruitment
