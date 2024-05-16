@@ -32,7 +32,20 @@ export default function ShopTable({ nav, items }) {
           setSelectedItem(item);
         }}
       >
-        <td>{item.name}</td>
+        <td>
+          <button
+            className='buy-item-btn'
+            style={{
+              display: selectedItem === item ? 'inline-block' : 'none',
+            }}
+          >
+            Buy
+          </button>
+        </td>
+        <td>
+          <div>{item.name}</div>
+          <div></div>
+        </td>
         <td>{item.price}</td>
         <td>
           {item[key] > 1 && item[key]}
@@ -46,6 +59,7 @@ export default function ShopTable({ nav, items }) {
     <div className='table-container'>
       <table className='shop-table'>
         <tr>
+          <th></th>
           <th>Name</th>
           <th>Price</th>
           <th>{key === 'dies' ? 'damage' : key}</th>
