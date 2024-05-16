@@ -32,15 +32,15 @@ export default function ShopTable({ nav, items }) {
           setSelectedItem(item);
         }}
       >
-        <td>
-          <button
-            className='buy-item-btn'
-            style={{
-              display: selectedItem === item ? 'inline-block' : 'none',
+        <td className='buy-cell'>
+          <div
+            style={{ display: selectedItem === item ? 'block' : 'none' }}
+            onClick={() => {
+              console.log('hey');
             }}
           >
-            Buy
-          </button>
+            buy
+          </div>
         </td>
         <td>
           <div>{item.name}</div>
