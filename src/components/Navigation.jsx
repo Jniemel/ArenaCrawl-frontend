@@ -11,9 +11,9 @@ Navigation.propTypes = {
 export default function Navigation({ nav, setNav }) {
   const navigate = useNavigate();
   const navBtns = [
-    { name: 'weapon', defaultSub: 'swords' },
+    { name: 'weapons', defaultSub: 'swords' },
     { name: 'armory', defaultSub: 'armors' },
-    { name: 'magic', defaultSub: 'offensive' },
+    { name: 'spells', defaultSub: 'offensive' },
     { name: 'training', defaultSub: null },
     { name: 'recruitment', defaultSub: null },
     { name: 'divisions', defaultSub: null },

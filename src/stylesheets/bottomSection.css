@@ -21,9 +21,9 @@
   overflow: auto;
 }
 
-.weapon-window,
+.weapons-window,
 .armory-window,
-.magic-window,
+.spells-window,
 .training-window,
 .recruitment-window,
 .divisions-window,
@@ -38,7 +38,7 @@
   overflow: auto;
 }
 
-.weapon-window {
+.weapons-window {
   border-color: darkgoldenrod;
   transition-property: border-color;
   transition-duration: 0.5s;
@@ -50,7 +50,7 @@
   transition-duration: 0.5s;
 }
 
-.magic-window {
+.spells-window {
   border-color: slateblue;
   transition-property: border-color;
   transition-duration: 0.5s;

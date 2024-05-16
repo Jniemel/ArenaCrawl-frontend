@@ -1,16 +1,15 @@
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import getShopInventory from '../utils/getShopInventory';
 
 ShopTable.propTypes = {
   nav: PropTypes.object,
+  items: PropTypes.object,
 };
 
-export default function ShopTable({ nav }) {
-  const tableData = getShopInventory(nav.window, nav.sub);
+export default function ShopTable({ nav, items }) {
   let key;
   switch (nav.window) {
-    case 'weapon':
+    case 'weapons':
       key = 'dies';
       break;
     case 'armory':
@@ -20,7 +19,7 @@ export default function ShopTable({ nav }) {
       break;
   }
 
-  const displayData = tableData.map((entry) => {
+  const displayData = items.map((entry) => {
     return (
       <tr key={uuidv4()}>
         <td>{entry.name}</td>

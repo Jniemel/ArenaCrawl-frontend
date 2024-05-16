@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import ShopTable from './ShopTable';
-import getShopInventory from '../utils/getShopInventory';
 
 Shop.propTypes = {
   nav: PropTypes.object,
@@ -12,7 +11,7 @@ Shop.propTypes = {
 export default function Shop({ nav, setNav, loading, inventory }) {
   let btns;
   if (!loading) {
-    const types = Object.keys(getShopInventory(nav.window));
+    const types = Object.keys(inventory[nav.window]);
     btns = types.map((type) => {
       return (
         <button
@@ -32,7 +31,7 @@ export default function Shop({ nav, setNav, loading, inventory }) {
     <section className='bottom-section'>
       <div className={nav.window + '-window'}>
         <div className='shop-nav'>{btns}</div>
-        <ShopTable nav={nav} />
+        <ShopTable nav={nav} items={inventory[nav.window][nav.sub]} />
       </div>
     </section>
   ) : (

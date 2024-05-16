@@ -22,9 +22,9 @@ export default function BottomSection({
 }) {
   let shop = null;
   if (
-    nav.window === 'weapon' ||
+    nav.window === 'weapons' ||
     nav.window === 'armory' ||
-    nav.window === 'magic'
+    nav.window === 'spells'
   ) {
     shop = true;
   }

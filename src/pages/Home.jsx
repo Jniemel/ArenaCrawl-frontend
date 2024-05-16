@@ -37,7 +37,7 @@ export default function Home({ gameState, shopLoading, shopInventory }) {
           setNav={setNav}
           gameState={gameState}
           shopLoading={shopLoading}
-          ShopInventory={shopInventory}
+          shopInventory={shopInventory}
         />
       </>
     ) : (
