@@ -12,7 +12,7 @@ export default function Navigation({ nav, setNav }) {
   const navigate = useNavigate();
   const navBtns = [
     { name: 'weapons', defaultSub: 'swords' },
-    { name: 'armory', defaultSub: 'armors' },
+    { name: 'armory', defaultSub: 'chest' },
     { name: 'spells', defaultSub: 'offensive' },
     { name: 'training', defaultSub: null },
     { name: 'recruitment', defaultSub: null },

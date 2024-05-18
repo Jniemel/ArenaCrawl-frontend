@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 import { buyItem } from '../utils/equipmentManagement';
 
 ShopTable.propTypes = {
@@ -12,6 +13,9 @@ ShopTable.propTypes = {
 
 export default function ShopTable({ nav, items, selectedChamp, playerMoney }) {
   const [selectedItem, setSelectedItem] = useState();
+  const navigate = useNavigate();
+
+  // change last column header-text according to shop window
   let key;
   switch (nav.window) {
     case 'weapons':
@@ -25,6 +29,7 @@ export default function ShopTable({ nav, items, selectedChamp, playerMoney }) {
   }
 
   async function handleBuyRequest() {
+    // check which slot the new equipment uses
     let slot;
     if (nav.window === 'weapons') {
       slot = 'mWeapon';
@@ -37,8 +42,9 @@ export default function ShopTable({ nav, items, selectedChamp, playerMoney }) {
       }
     } else if (nav.window === 'armory') {
       slot = 'chest';
-    } /* else if (nav.window === 'spells' ) { slot = spells} */
+    } /* else if (nav.window === 'spells' ) { slot = spells } */
 
+    // check player has enough funds
     if (
       playerMoney + selectedChamp.equipment[slot].sellPrice <
       selectedItem.price
@@ -52,16 +58,18 @@ export default function ShopTable({ nav, items, selectedChamp, playerMoney }) {
       );
       return;
     }
-
     const res = await buyItem({
       shop: nav.window,
       type: nav.sub,
+      slot,
       item: selectedItem,
       targetId: selectedChamp._id,
     });
     const json = await res.json();
+    console.log(res, json);
     if (res.status === 200) {
-      console.log(json);
+      if (!json.reject) {
+      }
     }
   }
 
