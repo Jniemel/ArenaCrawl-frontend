@@ -1,26 +1,28 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import ChampDetails from './ChampDetails';
 
 TeamWindow.propTypes = {
   playerTeam: PropTypes.object,
   setViewResults: PropTypes.func,
+  selectedChamp: PropTypes.object,
+  setSelectedChamp: PropTypes.func,
 };
 
-export default function TeamWindow({ playerTeam, setViewResults }) {
+export default function TeamWindow({
+  playerTeam,
+  setViewResults,
+  selectedChamp,
+  setSelectedChamp,
+}) {
   const team = playerTeam.champs;
-  const [champ, setChamp] = useState(team[0]);
-  const [selected, setSelected] = useState(team[0]._id);
-
   const champList = team.map((member) => (
     <div className='champ-icon-div' key={member._id}>
-      <div className={selected === member._id && 'champ-selected'}>
+      <div className={selectedChamp._id === member._id && 'champ-selected'}>
         <img
           src={`./assets/game/characters/${member.class.toLowerCase()}.png`}
           alt='class-img'
           onClick={() => {
-            setSelected(member._id);
-            setChamp(member);
+            setSelectedChamp(member);
           }}
         />
       </div>
@@ -52,7 +54,7 @@ export default function TeamWindow({ playerTeam, setViewResults }) {
       </div>
       <div className='team-preview'>{champList}</div>
       <div className='champ-details'>
-        <ChampDetails champ={champ} recruitment={false} />
+        <ChampDetails champ={selectedChamp} recruitment={false} />
       </div>
     </section>
   );

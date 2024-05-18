@@ -20,6 +20,9 @@ Home.propTypes = {
 export default function Home({ gameState, shopLoading, shopInventory }) {
   const [nav, setNav] = useState({ window: 'recruitment', sub: null });
   const [viewResults, setViewResults] = useState();
+  const [selectedChamp, setSelectedChamp] = useState(
+    gameState.playerTeam.champs[0],
+  );
 
   return gameState.battle.status === 'inactive' ||
     gameState.battle.status === 'finished' ? (
@@ -30,6 +33,8 @@ export default function Home({ gameState, shopLoading, shopInventory }) {
           playerTeam={gameState.playerTeam}
           viewResults={viewResults}
           setViewResults={setViewResults}
+          selectedChamp={selectedChamp}
+          setSelectedChamp={setSelectedChamp}
         />
         <Navigation nav={nav} setNav={setNav} />
         <BottomSection
