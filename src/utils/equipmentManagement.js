@@ -1,4 +1,4 @@
-export async function buyItem(item) {
+export async function buyItem(buyReq) {
   try {
     const res = await fetch('http://localhost:3000/api/equipment/buy', {
       method: 'POST',
@@ -6,7 +6,7 @@ export async function buyItem(item) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ item }),
+      body: JSON.stringify({ buyReq }),
     });
     return res;
   } catch (err) {

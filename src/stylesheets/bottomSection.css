@@ -106,7 +106,7 @@ td {
   width: 25%;
 }
 
-.table-row-selected {
+.item-list-selected {
   background-color: cornflowerblue;
   color: white;
 }

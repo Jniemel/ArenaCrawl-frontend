@@ -43,6 +43,7 @@ export default function Home({ gameState, shopLoading, shopInventory }) {
           gameState={gameState}
           shopLoading={shopLoading}
           shopInventory={shopInventory}
+          selectedChamp={selectedChamp}
         />
       </>
     ) : (

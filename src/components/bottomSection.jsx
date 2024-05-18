@@ -11,6 +11,7 @@ BottomSection.propTypes = {
   gameState: PropTypes.object,
   shopLoading: PropTypes.bool,
   shopInventory: PropTypes.object,
+  selectedChamp: PropTypes.object,
 };
 
 export default function BottomSection({
@@ -19,6 +20,7 @@ export default function BottomSection({
   gameState,
   shopLoading,
   shopInventory,
+  selectedChamp,
 }) {
   let shop = null;
   if (
@@ -37,6 +39,8 @@ export default function BottomSection({
           setNav={setNav}
           loading={shopLoading}
           inventory={shopInventory}
+          playerMoney={gameState.playerTeam.money}
+          selectedChamp={selectedChamp}
         />
       )}
       {nav.window === 'training' && <TrainingGrounds />}
