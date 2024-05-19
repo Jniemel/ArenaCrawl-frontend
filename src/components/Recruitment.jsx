@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { GameStateContext } from '../contexts/gameStateContext';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { TESTCMD_getNewRecruits, buyRecruit } from '../utils/gameManagement';
@@ -11,13 +12,12 @@ Recruitment.propTypes = {
   playerMoney: PropTypes.number,
 };
 
-export default function Recruitment({
-  recruitees,
-  numOfCharacters,
-  playerMoney,
-}) {
-  const [selectedRecruit, setSelectedRecruit] = useState(recruitees[0]);
-  const recruitList = recruitees.map((recruit) => {
+export default function Recruitment() {
+  const { gameState, setGameState } = useContext(GameStateContext);
+  const [selectedRecruit, setSelectedRecruit] = useState(
+    gameState.recruitment[0],
+  );
+  const recruitList = gameState.recruitment.map((recruit) => {
     return (
       <div
         key={uuidv4()}
@@ -41,23 +41,28 @@ export default function Recruitment({
   const nav = useNavigate();
 
   async function handleBuyClick() {
-    const res = await buyRecruit(selectedRecruit, numOfCharacters, playerMoney);
-    if (res === 200) {
-      return nav(0);
+    const res = await buyRecruit(
+      selectedRecruit,
+      gameState.playerTeam.champs.length,
+      gameState.playerTeam.money,
+    );
+    if (res.status === 200) {
+      const json = await res.json();
+      setGameState(json.state);
     }
   }
 
   async function NEW_RECRUITS_TEST() {
     const res = await TESTCMD_getNewRecruits();
-    console.log(res);
-    if (res === 200) {
-      return nav(0);
+    if (res.status === 200) {
+      const json = await res.json();
+      setGameState(json.state);
     }
   }
 
   return (
     <section className='bottom-section'>
-      {!recruitees.length ? (
+      {!gameState.recruitment.length ? (
         <div className='recruitment-window'>
           <div className='recruitment-empty'>
             <h2>There are no champions to recruit. Come back later.</h2>

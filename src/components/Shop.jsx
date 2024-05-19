@@ -15,7 +15,6 @@ export default function Shop({
   setNav,
   loading,
   inventory,
-  playerMoney,
   selectedChamp,
 }) {
   let btns;
@@ -44,7 +43,6 @@ export default function Shop({
           nav={nav}
           items={inventory[nav.window][nav.sub]}
           selectedChamp={selectedChamp}
-          playerMoney={playerMoney}
         />
       </div>
     </section>

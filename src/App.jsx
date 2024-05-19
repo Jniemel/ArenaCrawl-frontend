@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import GameStateProvider from './contexts/gameStateContext';
 import './stylesheets/app.css';
-
 // pages
 import Menu from './pages/Menu';
 import Home from './pages/Home';
@@ -50,7 +50,15 @@ function App() {
         />
         <Route
           path='/home'
-          element={user && loadGame ? <Home /> : <Navigate to='/menu' />}
+          element={
+            user && loadGame ? (
+              <GameStateProvider>
+                <Home />
+              </GameStateProvider>
+            ) : (
+              <Navigate to='/menu' />
+            )
+          }
         />
         <Route
           path='/auth'

@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { GameStateContext } from '../contexts/gameStateContext';
 import { buyItem } from '../utils/equipmentManagement';
 
 ShopTable.propTypes = {
   nav: PropTypes.object,
   items: PropTypes.object,
   selectedChamp: PropTypes.object,
-  playerMoney: PropTypes.number,
 };
 
-export default function ShopTable({ nav, items, selectedChamp, playerMoney }) {
+export default function ShopTable({ nav, items, selectedChamp }) {
   const [selectedItem, setSelectedItem] = useState();
-  const navigate = useNavigate();
+  const { gameState, setGameState } = useContext(GameStateContext);
 
   // change last column header-text according to shop window
   let key;
@@ -46,15 +46,15 @@ export default function ShopTable({ nav, items, selectedChamp, playerMoney }) {
 
     // check player has enough funds
     if (
-      playerMoney + selectedChamp.equipment[slot].sellPrice <
+      gameState.playerTeam.money + selectedChamp.equipment[slot].sellPrice <
       selectedItem.price
     ) {
       alert(
         `Insufficient funds.
         Price: ${selectedItem.price}
-        You have: ${playerMoney}
+        You have: ${gameState.playerTeam.money}
         Current item refund: ${selectedChamp.equipment[slot].sellPrice}
-        You are missing: ${selectedItem.price - (playerMoney + selectedChamp.equipment[slot].sellPrice)}`,
+        You are missing: ${selectedItem.price - (gameState.playerTeam.money + selectedChamp.equipment[slot].sellPrice)}`,
       );
       return;
     }
@@ -66,9 +66,11 @@ export default function ShopTable({ nav, items, selectedChamp, playerMoney }) {
       targetId: selectedChamp._id,
     });
     const json = await res.json();
-    console.log(res, json);
     if (res.status === 200) {
       if (!json.reject) {
+        setGameState(json.newState);
+      } else {
+        alert(json.msg);
       }
     }
   }

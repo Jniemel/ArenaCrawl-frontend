@@ -17,7 +17,7 @@ export async function buyRecruit(recruit, chars, money) {
       },
       body: JSON.stringify({ recruit }),
     });
-    return res.status;
+    return res;
   } catch (err) {
     console.log(err.name);
     return { error: err };
@@ -33,7 +33,7 @@ export async function TESTCMD_getNewRecruits() {
         'Content-Type': 'application/json',
       },
     });
-    return res.status;
+    return res;
   } catch (err) {
     console.log(err.name);
     return { error: err };

@@ -8,7 +8,6 @@ import Divisions from '../components/Divisions';
 BottomSection.propTypes = {
   nav: PropTypes.object,
   setNav: PropTypes.func,
-  gameState: PropTypes.object,
   shopLoading: PropTypes.bool,
   shopInventory: PropTypes.object,
   selectedChamp: PropTypes.object,
@@ -17,7 +16,6 @@ BottomSection.propTypes = {
 export default function BottomSection({
   nav,
   setNav,
-  gameState,
   shopLoading,
   shopInventory,
   selectedChamp,
@@ -39,18 +37,11 @@ export default function BottomSection({
           setNav={setNav}
           loading={shopLoading}
           inventory={shopInventory}
-          playerMoney={gameState.playerTeam.money}
           selectedChamp={selectedChamp}
         />
       )}
       {nav.window === 'training' && <TrainingGrounds />}
-      {nav.window === 'recruitment' && (
-        <Recruitment
-          recruitees={gameState.recruitment}
-          numOfCharacters={gameState.playerTeam.champs.length}
-          playerMoney={gameState.playerTeam.money}
-        />
-      )}
+      {nav.window === 'recruitment' && <Recruitment />}
       {nav.window === 'divisions' && <Divisions />}
       {nav.window === 'schedule' && <Schedule />}
     </>

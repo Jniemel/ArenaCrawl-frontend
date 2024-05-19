@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import storageAvailable from '../utils/localStorage.js';
+import { GameStateContext } from '../contexts/gameStateContext.jsx';
+
 // components
 import HomeHeader from '../components/HomeHeader';
 import TeamWindow from '../components/TeamWindow';
@@ -25,7 +27,8 @@ export default function Home() {
   const [selectedChamp, setSelectedChamp] = useState();
   const [shopLoading, setShopLoading] = useState();
   const [shopInventory, setShopInventory] = useState();
-  const [gameState, setGameState] = useState();
+  const { gameState, setGameState } = useContext(GameStateContext);
+  // const [gameState, setGameState] = useState();
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -42,7 +45,7 @@ export default function Home() {
       setLoading(false);
     };
     dataFetch();
-  }, []);
+  }, [setGameState]);
 
   useEffect(() => {
     const shopDataFetch = async () => {
@@ -83,7 +86,6 @@ export default function Home() {
         <HomeHeader user={gameState.owner} />
         <TeamWindow
           playerTeam={gameState.playerTeam}
-          viewResults={viewResults}
           setViewResults={setViewResults}
           selectedChamp={selectedChamp}
           setSelectedChamp={setSelectedChamp}
@@ -92,7 +94,6 @@ export default function Home() {
         <BottomSection
           nav={nav}
           setNav={setNav}
-          gameState={gameState}
           shopLoading={shopLoading}
           shopInventory={shopInventory}
           selectedChamp={selectedChamp}
