@@ -17,7 +17,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [nav, setNav] = useState({ window: 'recruitment', sub: null });
   const [viewResults, setViewResults] = useState();
-  // const [selectedChamp, setSelectedChamp] = useState();
   const [shopLoading, setShopLoading] = useState();
   const [shopInventory, setShopInventory] = useState();
   const { gameState, setGameState, setSelectedChamp } =
