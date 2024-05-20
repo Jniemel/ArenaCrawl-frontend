@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useState, useEffect, useContext } from 'react';
 import storageAvailable from '../utils/localStorage.js';
 import { GameStateContext } from '../contexts/gameStateContext.jsx';
@@ -14,21 +13,15 @@ import GameWindow from '../components/GameWindow.jsx';
 import '../stylesheets/home.css';
 import '../stylesheets/bottomSection.css';
 
-Home.propTypes = {
-  gameState: PropTypes.object,
-  shopLoading: PropTypes.bool,
-  shopInventory: PropTypes.object,
-};
-
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [nav, setNav] = useState({ window: 'recruitment', sub: null });
   const [viewResults, setViewResults] = useState();
-  const [selectedChamp, setSelectedChamp] = useState();
+  // const [selectedChamp, setSelectedChamp] = useState();
   const [shopLoading, setShopLoading] = useState();
   const [shopInventory, setShopInventory] = useState();
-  const { gameState, setGameState } = useContext(GameStateContext);
-  // const [gameState, setGameState] = useState();
+  const { gameState, setGameState, setSelectedChamp } =
+    useContext(GameStateContext);
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -45,7 +38,7 @@ export default function Home() {
       setLoading(false);
     };
     dataFetch();
-  }, [setGameState]);
+  }, [setGameState, setSelectedChamp]);
 
   useEffect(() => {
     const shopDataFetch = async () => {
@@ -87,8 +80,6 @@ export default function Home() {
         <TeamWindow
           playerTeam={gameState.playerTeam}
           setViewResults={setViewResults}
-          selectedChamp={selectedChamp}
-          setSelectedChamp={setSelectedChamp}
         />
         <Navigation nav={nav} setNav={setNav} />
         <BottomSection
@@ -96,7 +87,6 @@ export default function Home() {
           setNav={setNav}
           shopLoading={shopLoading}
           shopInventory={shopInventory}
-          selectedChamp={selectedChamp}
         />
       </>
     ) : (

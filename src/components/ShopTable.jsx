@@ -8,12 +8,12 @@ import { buyItem } from '../utils/equipmentManagement';
 ShopTable.propTypes = {
   nav: PropTypes.object,
   items: PropTypes.object,
-  selectedChamp: PropTypes.object,
 };
 
-export default function ShopTable({ nav, items, selectedChamp }) {
+export default function ShopTable({ nav, items }) {
   const [selectedItem, setSelectedItem] = useState();
-  const { gameState, setGameState } = useContext(GameStateContext);
+  const { gameState, setGameState, selectedChamp } =
+    useContext(GameStateContext);
 
   // change last column header-text according to shop window
   let key;

@@ -6,17 +6,9 @@ Shop.propTypes = {
   setNav: PropTypes.func,
   loading: PropTypes.bool,
   inventory: PropTypes.object,
-  playerMoney: PropTypes.number,
-  selectedChamp: PropTypes.object,
 };
 
-export default function Shop({
-  nav,
-  setNav,
-  loading,
-  inventory,
-  selectedChamp,
-}) {
+export default function Shop({ nav, setNav, loading, inventory }) {
   let btns;
   if (!loading) {
     const types = Object.keys(inventory[nav.window]);
@@ -39,11 +31,7 @@ export default function Shop({
     <section className='bottom-section'>
       <div className={nav.window + '-window'}>
         <div className='shop-nav'>{btns}</div>
-        <ShopTable
-          nav={nav}
-          items={inventory[nav.window][nav.sub]}
-          selectedChamp={selectedChamp}
-        />
+        <ShopTable nav={nav} items={inventory[nav.window][nav.sub]} />
       </div>
     </section>
   ) : (
