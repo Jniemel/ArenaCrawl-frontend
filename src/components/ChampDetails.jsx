@@ -20,6 +20,11 @@ export default function ChampDetails({ champ, recruitment }) {
     );
   });
 
+  const skills = Object.entries(champ.skills);
+  const skillList = skills.map((skill) => {
+    return <h5 key={uuidv4()}>{`${skill[0].slice(0, 2)}: ${skill[1]}`}</h5>;
+  });
+
   return (
     <div className='details'>
       <div className='det-name-class'>
@@ -27,7 +32,10 @@ export default function ChampDetails({ champ, recruitment }) {
           <h3 style={{ color: 'darkblue' }}>{champ.name},</h3>
         </div>
         <div>
-          <h3 style={{ color: champ.cssColor }}>{champ.class}</h3>
+          <h3 style={{ color: champ.cssColor }}>{champ.class},</h3>
+        </div>
+        <div>
+          <h4>{champ.age}</h4>
         </div>
       </div>
       <div className='det-stats-main'>{statList}</div>
@@ -48,23 +56,7 @@ export default function ChampDetails({ champ, recruitment }) {
           <div>{`${champ.equipment.chest.name} (AC${champ.equipment.chest.AC})`}</div>
         </div>
       </div>
-      <div className='det-stats-other'>
-        <div>
-          <div>{`Age: ${champ.age}`}</div>
-          <div>{`Hp: ${champ.maxHp}`}</div>
-          <div>{`Mp: ${champ.maxMp}`}</div>
-        </div>
-        <div style={{ display: recruitment ? 'none' : 'flex' }}>
-          <div>{`K: xx`}</div>
-          <div>{`D: xx`}</div>
-          <div>{`K/D: xx`}</div>
-        </div>
-        <div style={{ display: recruitment ? 'none' : 'flex' }}>
-          <div>{`Bat: xx`}</div>
-          <div>{`Inj: xx`}</div>
-          <div></div>
-        </div>
-      </div>
+      <div className='det-skills'>{skillList}</div>
     </div>
   );
 }
