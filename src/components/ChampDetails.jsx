@@ -28,15 +28,12 @@ export default function ChampDetails({ champ, recruitment }) {
   return (
     <div className='details'>
       <div className='det-name-class'>
-        <div>
-          <h3 style={{ color: 'darkblue' }}>{champ.name},</h3>
-        </div>
-        <div>
-          <h3 style={{ color: champ.cssColor }}>{champ.class},</h3>
-        </div>
-        <div>
-          <h4>{champ.age}</h4>
-        </div>
+        <h3>
+          <span style={{ color: 'darkblue' }}>{champ.name}</span>
+          {`, `}
+          <span style={{ color: champ.cssColor }}>{champ.class}</span>
+          {`, ${champ.age}`}
+        </h3>
       </div>
       <div className='det-stats-main'>{statList}</div>
       <div

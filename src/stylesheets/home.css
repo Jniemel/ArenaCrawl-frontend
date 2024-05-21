@@ -147,12 +147,12 @@ header button:hover {
 }
 
 .det-name-class {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
+  text-align: center;
   border-bottom: 3px double black;
+  text-wrap: nowrap;
   padding: 3px;
   padding-bottom: 1px;
+  overflow: auto;
 }
 
 .det-name-class > div {
