@@ -162,14 +162,19 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   }
 
   melee(target) {
-    // dmg = (wpnDmg + wepSkill + strModif) - armor
-    // strModif = (str - 10) / 2
-    // #todo wepSkill, +1 for every 5 levels of weapon skill
-    const rollHit = Math.ceil(
-      rollDice(12) + (this.character.stats.strenght - 10) / 2,
-    ); /* + wepSkill */
+    const dies = this.character.equipment.mWeapon.dies;
+    const sides = this.character.equipment.mWeapon.dieSides;
+    const wepType = this.character.equipment.mWeapon.subType;
+    const strBonus = Math.floor(this.character.stats.strength / 3);
+    let skillBonus = 0;
+    if (wepType === 'fists') {
+      skillBonus = Math.floor(this.character.skills[wepType] / 20);
+    } else {
+      skillBonus = Math.floor(this.character.skills[wepType] / 10);
+    }
+    const roll = rollDies(dies, sides) + strBonus + skillBonus;
     const targetAC = target.calcAC();
-    const dmg = rollHit - targetAC;
+    const dmg = roll - targetAC;
     if (dmg > 0) {
       target.receiveHit('physical', dmg);
     } else {
@@ -187,8 +192,10 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   }
 
   calcAC() {
-    // AC = armor rating + dexModif ((dex - 10 )/ 2)
-    return Math.ceil(3 + (this.character.stats.dexterity - 10) / 2); /* + AR */
+    return (
+      Math.ceil(this.character.stats.dexterity / 5) +
+      this.character.equipment.chest.AC
+    );
   }
 
   receiveHit(source, amount) {
@@ -199,7 +206,6 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
     this.hp -= amount;
     if (this.hp <= 0) {
       this.y += 5;
-      // this.scene.turn.removeUnitFromQue(this.character._id);
       this.updateBarPositions(true);
       this.setDead();
       return;
@@ -312,8 +318,12 @@ export default class UnitBase extends Phaser.GameObjects.Sprite {
   }
 }
 
-function rollDice(sides) {
-  return Math.floor(Math.random() * sides) + 1;
+function rollDies(dies = 1, sides = 5) {
+  let sum = 0;
+  for (let i = 0; i < dies; i++) {
+    sum += Math.floor(Math.random() * sides) + 1;
+  }
+  return sum;
 }
 
 // calculate euclidean distance
